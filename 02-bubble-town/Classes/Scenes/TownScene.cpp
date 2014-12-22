@@ -12,6 +12,10 @@
 #include "AppMacros.h"
 #include "AppStartScene.h"
 
+enum {
+    kTagTileMap = 1,
+};
+
 Scene* TownScene::scene()
 {
     // 'scene' is an autorelease object
@@ -23,7 +27,7 @@ Scene* TownScene::scene()
     // add layer as a child to scene
     scene->addChild(layer);
 
-    // return the scene
+    // return the scene                                           
     return scene;
 }
 
@@ -72,6 +76,14 @@ bool TownScene::init()
 
     // add the label as a child to this layer
     this->addChild(label, 1);
+
+
+    auto map = cocos2d::experimental::TMXTiledMap::create("scn_town/town.tmx");
+    addChild(map, 0, kTagTileMap);
+
+    auto s = map->getContentSize();
+    CCLOG("ContentSize: %f, %f", s.width,s.height);
+    map->setPosition(Vec2(-s.width/2,0));
 
     return true;
 }
