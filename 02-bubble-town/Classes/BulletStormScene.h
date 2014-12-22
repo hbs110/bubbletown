@@ -1,8 +1,9 @@
-#ifndef __HELLOWORLD_SCENE_H__
-#define __HELLOWORLD_SCENE_H__
+#ifndef __BULLET_STORM_SCENE_H__
+#define __BULLET_STORM_SCENE_H__
 
 #include "cocos2d.h"
 
+#include "GameGui.h"
 
 enum class MoveStatus
 {
@@ -50,7 +51,7 @@ public:
     std::function<void ()> onFinish;
 };
 
-class BulletStormScene : public cocos2d::Layer
+class BulletStormScene : public cocos2d::Layer, public GameGuiListener
 {
 public:
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
@@ -90,6 +91,10 @@ private:
     void OnShootFinished();
 
     bool IsOutOfScene(cocos2d::Sprite* bullet);
+
+    GameGui* m_gui;
+
+    virtual void OnMenuItem(Ref* sender);
 };
 
 #endif // __HELLOWORLD_SCENE_H__

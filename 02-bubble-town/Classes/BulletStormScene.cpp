@@ -1,8 +1,9 @@
 #include "stdafx.h"
-#include "HelloWorldScene.h"
+#include "BulletStormScene.h"
 #include "AppMacros.h"
 
 #include "GameGui.h"
+#include "AppStartScene.h"
 
 std::pair<float, int> GShootSchedule[] = 
 {
@@ -141,16 +142,8 @@ bool BulletStormScene::init()
 
 void BulletStormScene::menuCloseCallback(Ref* sender)
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
-    return;
-#endif
-
-    Director::getInstance()->end();
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-    exit(0);
-#endif
+    auto director = Director::getInstance();
+    director->replaceScene(AppStartScene::scene());
 }
 
 void BulletStormScene::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
@@ -323,4 +316,18 @@ bool BulletStormScene::IsOutOfScene(cocos2d::Sprite* bullet)
     viewport.size = Director::getInstance()->getVisibleSize() + Size(GAME_SceneBorderMargin, GAME_SceneBorderMargin);
     return !viewport.containsPoint(pos);
 }
+
+void BulletStormScene::OnMenuItem(Ref* sender)
+{
+    auto mi = dynamic_cast<MenuItemLabel*>(sender);
+    if (!mi)
+        return;
+
+    auto label = dynamic_cast<LabelProtocol*>(mi->getLabel());
+    if (!label)
+        return;
+
+    CCLOG("HelloWorld::OnMenuItem -> %s", label->getString().c_str());
+}
+
 
