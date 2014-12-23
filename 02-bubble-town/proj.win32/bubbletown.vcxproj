@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
+    <ClCompile Include="..\Classes\Core\BtGuiUtil.cpp" />
     <ClCompile Include="..\Classes\GameGui.cpp" />
     <ClCompile Include="..\Classes\BulletStormScene.cpp" />
     <ClCompile Include="..\Classes\AppStartScene.cpp" />
@@ -141,6 +142,9 @@
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\AppMacros.h" />
+    <ClInclude Include="..\Classes\Core\BtCoreDef.h" />
+    <ClInclude Include="..\Classes\Core\BtGuiDef.h" />
+    <ClInclude Include="..\Classes\Core\BtGuiUtil.h" />
     <ClInclude Include="..\Classes\GameGui.h" />
     <ClInclude Include="..\Classes\GameGuiDef.h" />
     <ClInclude Include="..\Classes\BulletStormScene.h" />

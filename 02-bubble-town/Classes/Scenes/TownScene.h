@@ -12,10 +12,15 @@
 
 #include "GameGui.h"
 
-class TownScene : public cocos2d::Layer
+#include "Core/BtGuiUtil.h"
+
+typedef cocos2d::experimental::TMXTiledMap  tileMap_t;
+
+class TownScene : public cocos2d::Layer, public BtGuiListener
 {
 public:
-    virtual ~TownScene();
+    TownScene() : m_tileMap(nullptr) {}
+    virtual ~TownScene() {}
 
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
     virtual bool init();  
@@ -28,5 +33,12 @@ public:
 
     // implement the "static node()" method manually
     CREATE_FUNC(TownScene);
+
+    void onTouchesMoved(const std::vector<Touch*>& touches, Event  *event);
+
+    // from BtGuiListener
+    virtual void OnMenuItem(Ref* sender);
+
+    tileMap_t* m_tileMap;
 };
 

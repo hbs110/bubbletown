@@ -8,7 +8,7 @@
 
 #pragma once
 
-const int DEFAULT_MENU_FONT_SIZE = 18;
+const int BtGui_DefaultMenuFontSize = 18;
 
 const char* MENU_Begin  = "Begin";
 const char* MENU_End    = "End";

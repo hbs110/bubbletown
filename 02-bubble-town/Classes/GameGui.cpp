@@ -10,14 +10,9 @@
 #include "GameGui.h"
 #include "GameGuiDef.h"
 
-MenuItemLabel* CreateMenuItemLabel(const char* val, GameGuiListener* listener)
-{
-    auto label = LabelTTF::create(val, "Arial", DEFAULT_MENU_FONT_SIZE);
-    auto item = MenuItemLabel::create(label, CC_CALLBACK_1(GameGuiListener::OnMenuItem, listener));
-    return item;
-}
+#include "Core/BtGuiUtil.h"
 
-bool GameGui::init(GameGuiListener* listener)
+bool GameGui::init(BtGuiListener* listener)
 {
     const char* itemTexts[] = {
         MENU_Bubble,
@@ -27,7 +22,7 @@ bool GameGui::init(GameGuiListener* listener)
     Vector<MenuItem*> items;
     for (auto it : itemTexts)
     {
-        items.pushBack(CreateMenuItemLabel(it, listener));
+        items.pushBack(BtGuiUtil::CreateMenuItem(it, listener));
     }
 
     m_menu = Menu::createWithArray(items);

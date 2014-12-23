@@ -8,13 +8,7 @@
 
 #pragma once
 
-class GameGuiListener
-{
-public:
-    virtual ~GameGuiListener() {}
-
-    virtual void OnMenuItem(Ref* sender) = 0;
-};
+class BtGuiListener;
 
 class GameGui 
 {
@@ -22,7 +16,7 @@ public:
     GameGui() : m_menu(nullptr) {}
     ~GameGui() {}
 
-    bool init(GameGuiListener* listener);  
+    bool init(BtGuiListener* listener);  
 
     Menu* getMenu() { return m_menu; }
 

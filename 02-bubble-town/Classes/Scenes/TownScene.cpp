@@ -12,6 +12,9 @@
 #include "AppMacros.h"
 #include "AppStartScene.h"
 
+#include "Core/BtCoreDef.h"
+#include "Core/BtGuiUtil.h"
+
 enum {
     kTagTileMap = 1,
 };
@@ -78,15 +81,52 @@ bool TownScene::init()
     this->addChild(label, 1);
 
 
-    auto map = cocos2d::experimental::TMXTiledMap::create("scn_town/town.tmx");
+    auto map = tileMap_t::create("scn_town/town.tmx");
     addChild(map, 0, kTagTileMap);
+    m_tileMap = map;
 
     auto s = map->getContentSize();
     CCLOG("ContentSize: %f, %f", s.width,s.height);
     map->setPosition(Vec2(-s.width/2,0));
 
+    //const Vector<TMXObjectGroup*> objectGroups = map->getObjectGroups();
+    //CCLOG("Object Group Size: %d", objectGroups.size());
+
+    auto layer = map->getLayer("trees3");
+    int tileID = layer->getTileGIDAt(Vec2(21, 28));
+    Sprite* sprite = layer->getTileAt(Vec2(21, 28));
+
+    auto listener = EventListenerTouchAllAtOnce::create();
+    listener->onTouchesMoved = CC_CALLBACK_2(TownScene::onTouchesMoved, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
+    const char* itemTexts[] = {
+        "build tree",
+        "build grass",
+    }; 
+
+    cocos2d::Menu* menuBuild = BtGuiUtil::CreateMenu(itemTexts, BT_ARRAY_SIZE(itemTexts), this);
+
+    Vec2 menuPos;
+    menuPos.x = origin.x + 50;
+    menuPos.y = origin.y + visibleSize.height - 100;
+    menuBuild->setPosition(menuPos);
+
+    addChild(menuBuild, 1);
+
     return true;
 }
+
+void TownScene::onTouchesMoved(const std::vector<Touch*>& touches, Event  *event)
+{
+    auto touch = touches[0];
+
+    auto diff = touch->getDelta();
+    auto node = getChildByTag(kTagTileMap);
+    auto currentPos = node->getPosition();
+    node->setPosition(currentPos + diff);
+}
+
 
 void TownScene::menuCloseCallback(Ref* sender)
 {
@@ -94,7 +134,25 @@ void TownScene::menuCloseCallback(Ref* sender)
     director->replaceScene(AppStartScene::scene());
 }
 
-TownScene::~TownScene()
+void TownScene::OnMenuItem(Ref* sender)
 {
+    auto mi = dynamic_cast<MenuItemLabel*>(sender);
+    if (!mi)
+        return;
+
+    auto label = dynamic_cast<LabelProtocol*>(mi->getLabel());
+    if (!label)
+        return;
+
+    CCLOG("TownScene::OnMenuItem -> %s", label->getString().c_str());
+    
+    if (label->getString() == "build tree")
+    {
+        auto layer = m_tileMap->getLayer("trees3");
+        int tileID = layer->getTileGIDAt(Vec2(21, 28));
+        layer->setTileGID(tileID, Vec2(20, 28));
+        Sprite* sprite = layer->getTileAt(Vec2(20, 28));
+    }
+    
 }
 

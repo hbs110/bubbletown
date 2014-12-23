@@ -5,6 +5,8 @@
 
 #include "GameGui.h"
 
+#include "Core/BtGuiUtil.h"
+
 enum class MoveStatus
 {
     Left    = 1,
@@ -51,7 +53,7 @@ public:
     std::function<void ()> onFinish;
 };
 
-class BulletStormScene : public cocos2d::Layer, public GameGuiListener
+class BulletStormScene : public cocos2d::Layer, public BtGuiListener
 {
 public:
     // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone

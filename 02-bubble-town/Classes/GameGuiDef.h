@@ -8,7 +8,6 @@
 
 #pragma once
 
-const int DEFAULT_MENU_FONT_SIZE = 18;
 
 const char* const MENU_Bubble  = "Bubble";
 const char* const MENU_Town    = "Town";

@@ -10,14 +10,14 @@
 #include "GameGui.h"
 #include "GameGuiDef.h"
 
-MenuItemLabel* CreateMenuItemLabel(const char* val, GameGuiListener* listener)
+MenuItemLabel* CreateMenuItemLabel(const char* val, BtGuiListener* listener)
 {
-    auto label = LabelTTF::create(val, "Arial", DEFAULT_MENU_FONT_SIZE);
-    auto item = MenuItemLabel::create(label, CC_CALLBACK_1(GameGuiListener::OnMenuItem, listener));
+    auto label = LabelTTF::create(val, "Arial", BtGui_DefaultMenuFontSize);
+    auto item = MenuItemLabel::create(label, CC_CALLBACK_1(BtGuiListener::OnMenuItem, listener));
     return item;
 }
 
-bool GameGui::init(GameGuiListener* listener)
+bool GameGui::init(BtGuiListener* listener)
 {
     const char* itemTexts[] = {
         MENU_Begin,

@@ -4,8 +4,9 @@
 #include "cocos2d.h"
 
 #include "GameGui.h"
+#include "Core/BtGuiUtil.h"
 
-class AppStartScene : public cocos2d::Layer, public GameGuiListener
+class AppStartScene : public cocos2d::Layer, public BtGuiListener
 {
 public:
     virtual ~AppStartScene();

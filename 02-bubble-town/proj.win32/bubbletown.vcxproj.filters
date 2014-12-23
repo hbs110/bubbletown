@@ -12,6 +12,9 @@
     <Filter Include="Classes\Scenes">
       <UniqueIdentifier>{a279ef03-9648-4116-86d4-35f518e0893d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\Core">
+      <UniqueIdentifier>{194f8a3b-de92-4047-80ce-35a36b9eca85}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp">
@@ -34,6 +37,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Scenes\TownScene.cpp">
       <Filter>Classes\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Core\BtGuiUtil.cpp">
+      <Filter>Classes\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +69,15 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Scenes\TownScene.h">
       <Filter>Classes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Core\BtGuiUtil.h">
+      <Filter>Classes\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Core\BtGuiDef.h">
+      <Filter>Classes\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Core\BtCoreDef.h">
+      <Filter>Classes\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
