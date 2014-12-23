@@ -34,7 +34,7 @@ public:
     // implement the "static node()" method manually
     CREATE_FUNC(TownScene);
 
-    void onTouchesMoved(const std::vector<Touch*>& touches, Event  *event);
+    void onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event  *event);
 
     // from BtGuiListener
     virtual void OnMenuItem(Ref* sender);

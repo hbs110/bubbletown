@@ -18,9 +18,9 @@ public:
 
     bool init(BtGuiListener* listener);  
 
-    Menu* getMenu() { return m_menu; }
+    cocos2d::Menu* getMenu() { return m_menu; }
 
 private:
-    Menu* m_menu;
+    cocos2d::Menu* m_menu;
 };
 

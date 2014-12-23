@@ -1,0 +1,8 @@
+# Ignore thumbnails created by windows
+Thumbs.db
+
+#   ignored-files (artifacts)
+# ===================================================
+
+/01-hold-20-sec-to-win/proj.win32/Debug.win32
+/02-bubble-town/proj.win32/Debug.win32
