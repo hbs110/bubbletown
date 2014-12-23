@@ -11,9 +11,9 @@
 
 #include "BtGuiDef.h"
 
-MenuItemLabel* BtGuiUtil::CreateMenuItem(const char* val, BtGuiListener* listener)
+cocos2d::MenuItemLabel* BtGuiUtil::CreateMenuItem(const char* val, BtGuiListener* listener)
 {
-    auto label = LabelTTF::create(val, "Arial", BtGui_DefaultMenuFontSize);
+    auto label = cocos2d::LabelTTF::create(val, "Arial", BtGui_DefaultMenuFontSize);
     auto item = cocos2d::MenuItemLabel::create(label, CC_CALLBACK_1(BtGuiListener::OnMenuItem, listener));
     return item;
 }

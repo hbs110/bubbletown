@@ -15,10 +15,10 @@ std::pair<float, int> GShootSchedule[] =
     std::make_pair(1.0f, 5),
 };
 
-Scene* BulletStormScene::scene()
+cocos2d::Scene* BulletStormScene::scene()
 {
     // 'scene' is an autorelease object
-    auto scene = Scene::create();
+    auto scene = cocos2d::Scene::create();
     
     // 'layer' is an autorelease object
     BulletStormScene *layer = BulletStormScene::create();
@@ -49,13 +49,13 @@ bool BulletStormScene::init()
         return false;
     }
 
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    auto origin = Director::getInstance()->getVisibleOrigin();
+    auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
+    auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 
     setKeyboardEnabled(true);
 
     m_movStatus = 0;
-    m_velo = Vec2(0, 0);
+    m_velo = cocos2d::Vec2(0, 0);
     m_nextRound = 0;
     m_nextShootTime = 0.0f;
 
@@ -69,16 +69,16 @@ bool BulletStormScene::init()
     //    you may modify it.
 
     // add a "close" icon to exit the progress. it's an autorelease object
-    auto closeItem = MenuItemImage::create(
+    auto closeItem = cocos2d::MenuItemImage::create(
                                         "CloseNormal.png",
                                         "CloseSelected.png",
                                         CC_CALLBACK_1(BulletStormScene::menuCloseCallback,this));
     
-    closeItem->setPosition(origin + Vec2(visibleSize) - Vec2(closeItem->getContentSize() / 2));
+    closeItem->setPosition(origin + cocos2d::Vec2(visibleSize) - cocos2d::Vec2(closeItem->getContentSize() / 2));
 
     // create menu, it's an autorelease object
-    auto menu = Menu::create(closeItem, NULL);
-    menu->setPosition(Vec2::ZERO);
+    auto menu = cocos2d::Menu::create(closeItem, NULL);
+    menu->setPosition(cocos2d::Vec2::ZERO);
     this->addChild(menu, 1);
     
     /////////////////////////////
@@ -87,10 +87,10 @@ bool BulletStormScene::init()
     // add a label shows "Hello World"
     // create and initialize a label
     
-    auto label = LabelTTF::create("Hold 20 seconds to win!", "Arial", TITLE_FONT_SIZE);
+    auto label = cocos2d::LabelTTF::create("Hold 20 seconds to win!", "Arial", TITLE_FONT_SIZE);
     
     // position the label on the center of the screen
-    label->setPosition(Vec2(origin.x + visibleSize.width/2,
+    label->setPosition(cocos2d::Vec2(origin.x + visibleSize.width/2,
                             origin.y + visibleSize.height - label->getContentSize().height));
 
     // add the label as a child to this layer
@@ -130,7 +130,7 @@ bool BulletStormScene::init()
     sprite->setScale(scale);    
 
     // position the sprite on the center of the screen
-    sprite->setPosition(Vec2(visibleSize / 2) + origin);
+    sprite->setPosition(cocos2d::Vec2(visibleSize / 2) + origin);
 
     // add the sprite as a child to this layer
     this->addChild(sprite, -1);
@@ -142,25 +142,25 @@ bool BulletStormScene::init()
 
 void BulletStormScene::menuCloseCallback(Ref* sender)
 {
-    auto director = Director::getInstance();
+    auto director = cocos2d::Director::getInstance();
     director->replaceScene(AppStartScene::scene());
 }
 
 void BulletStormScene::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
 {
-    if (keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW || keyCode == EventKeyboard::KeyCode::KEY_A)
+    if (keyCode == cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW || keyCode == cocos2d::EventKeyboard::KeyCode::KEY_A)
     {
         m_movStatus |= (unsigned int)MoveStatus::Left;
     }    
-    if (keyCode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW || keyCode == EventKeyboard::KeyCode::KEY_D)
+    if (keyCode == cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW || keyCode == cocos2d::EventKeyboard::KeyCode::KEY_D)
     {
         m_movStatus |= (unsigned int)MoveStatus::Right;
     }    
-    if (keyCode == EventKeyboard::KeyCode::KEY_UP_ARROW || keyCode == EventKeyboard::KeyCode::KEY_W)
+    if (keyCode == cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW || keyCode == cocos2d::EventKeyboard::KeyCode::KEY_W)
     {
         m_movStatus |= (unsigned int)MoveStatus::Up;
     }    
-    if (keyCode == EventKeyboard::KeyCode::KEY_DOWN_ARROW || keyCode == EventKeyboard::KeyCode::KEY_S)
+    if (keyCode == cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW || keyCode == cocos2d::EventKeyboard::KeyCode::KEY_S)
     {
         m_movStatus |= (unsigned int)MoveStatus::Down;
     }
@@ -168,19 +168,19 @@ void BulletStormScene::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, coc
 
 void BulletStormScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
 {
-    if (keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW || keyCode == EventKeyboard::KeyCode::KEY_A)
+    if (keyCode == cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW || keyCode == cocos2d::EventKeyboard::KeyCode::KEY_A)
     {
         m_movStatus &= ~(unsigned int)MoveStatus::Left;
     }    
-    if (keyCode == EventKeyboard::KeyCode::KEY_RIGHT_ARROW || keyCode == EventKeyboard::KeyCode::KEY_D)
+    if (keyCode == cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW || keyCode == cocos2d::EventKeyboard::KeyCode::KEY_D)
     {
         m_movStatus &= ~(unsigned int)MoveStatus::Right;
     }    
-    if (keyCode == EventKeyboard::KeyCode::KEY_UP_ARROW || keyCode == EventKeyboard::KeyCode::KEY_W)
+    if (keyCode == cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW || keyCode == cocos2d::EventKeyboard::KeyCode::KEY_W)
     {
         m_movStatus &= ~(unsigned int)MoveStatus::Up;
     }    
-    if (keyCode == EventKeyboard::KeyCode::KEY_DOWN_ARROW || keyCode == EventKeyboard::KeyCode::KEY_S)
+    if (keyCode == cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW || keyCode == cocos2d::EventKeyboard::KeyCode::KEY_S)
     {
         m_movStatus &= ~(unsigned int)MoveStatus::Down;
     }    
@@ -211,7 +211,7 @@ void BulletStormScene::update(float delta)
 
     if (!m_velo.isZero())
     {
-        Vec2 pos = m_plane->getPosition();
+        cocos2d::Vec2 pos = m_plane->getPosition();
         m_plane->setPosition(pos + m_velo * delta);
     }
 
@@ -222,7 +222,7 @@ void BulletStormScene::update(float delta)
 
     for (ActiveBullet& ab : m_activeBullets)
     {
-        Vec2 pos = ab.m_bullet->getPosition();
+        cocos2d::Vec2 pos = ab.m_bullet->getPosition();
         ab.m_bullet->setPosition(pos + ab.m_velo * delta);
 
         if (IsOutOfScene(ab.m_bullet))
@@ -263,41 +263,41 @@ void BulletStormScene::OnShootTriggered()
     case 0:
         for (int i = 0; i < GAME_BulletNumOnce; ++i)
         {
-            Sprite* bullet = m_bulletPool.back();
+            cocos2d::Sprite* bullet = m_bulletPool.back();
             bullet->setPosition(0.0f, 50.0f + i * 30);
             bullet->setVisible(true);
             m_bulletPool.pop_back();
-            m_activeBullets.push_back(ActiveBullet(Vec2(rand() % 60 + 60, rand() % 20 - 20), bullet));
+            m_activeBullets.push_back(ActiveBullet(cocos2d::Vec2(rand() % 60 + 60, rand() % 20 - 20), bullet));
         }
         break;
     case 1:
         for (int i = 0; i < GAME_BulletNumOnce; ++i)
         {
-            Sprite* bullet = m_bulletPool.back();
-            bullet->setPosition(Director::getInstance()->getVisibleSize().width, 50.0f + i * 30);
+            cocos2d::Sprite* bullet = m_bulletPool.back();
+            bullet->setPosition(cocos2d::Director::getInstance()->getVisibleSize().width, 50.0f + i * 30);
             bullet->setVisible(true);
             m_bulletPool.pop_back();
-            m_activeBullets.push_back(ActiveBullet(Vec2(-(rand() % 60 + 60), rand() % 20 - 20), bullet));
+            m_activeBullets.push_back(ActiveBullet(cocos2d::Vec2(-(rand() % 60 + 60), rand() % 20 - 20), bullet));
         }
         break;
     case 2:
         for (int i = 0; i < GAME_BulletNumOnce; ++i)
         {
-            Sprite* bullet = m_bulletPool.back();
+            cocos2d::Sprite* bullet = m_bulletPool.back();
             bullet->setPosition(50.0f + i * 30, 0.0f);
             bullet->setVisible(true);
             m_bulletPool.pop_back();
-            m_activeBullets.push_back(ActiveBullet(Vec2(rand() % 20 - 20, (rand() % 60 + 60)), bullet));
+            m_activeBullets.push_back(ActiveBullet(cocos2d::Vec2(rand() % 20 - 20, (rand() % 60 + 60)), bullet));
         }
         break;
     case 3:
         for (int i = 0; i < GAME_BulletNumOnce; ++i)
         {
-            Sprite* bullet = m_bulletPool.back();
-            bullet->setPosition(50.0f + i * 30, Director::getInstance()->getVisibleSize().height);
+            cocos2d::Sprite* bullet = m_bulletPool.back();
+            bullet->setPosition(50.0f + i * 30, cocos2d::Director::getInstance()->getVisibleSize().height);
             bullet->setVisible(true);
             m_bulletPool.pop_back();
-            m_activeBullets.push_back(ActiveBullet(Vec2(rand() % 20 - 20, -(rand() % 60 + 60)), bullet));
+            m_activeBullets.push_back(ActiveBullet(cocos2d::Vec2(rand() % 20 - 20, -(rand() % 60 + 60)), bullet));
         }
         break;
     }
@@ -310,20 +310,20 @@ void BulletStormScene::OnShootFinished()
 
 bool BulletStormScene::IsOutOfScene(cocos2d::Sprite* bullet)
 {
-    Vec2 pos = bullet->getPosition();
-    Rect viewport;
-    viewport.origin = Director::getInstance()->getVisibleOrigin() - Vec2(GAME_SceneBorderMargin, GAME_SceneBorderMargin);
-    viewport.size = Director::getInstance()->getVisibleSize() + Size(GAME_SceneBorderMargin, GAME_SceneBorderMargin);
+    cocos2d::Vec2 pos = bullet->getPosition();
+    cocos2d::Rect viewport;
+    viewport.origin = cocos2d::Director::getInstance()->getVisibleOrigin() - cocos2d::Vec2(GAME_SceneBorderMargin, GAME_SceneBorderMargin);
+    viewport.size = cocos2d::Director::getInstance()->getVisibleSize() + cocos2d::Size(GAME_SceneBorderMargin, GAME_SceneBorderMargin);
     return !viewport.containsPoint(pos);
 }
 
-void BulletStormScene::OnMenuItem(Ref* sender)
+void BulletStormScene::OnMenuItem(cocos2d::Ref* sender)
 {
-    auto mi = dynamic_cast<MenuItemLabel*>(sender);
+    auto mi = dynamic_cast<cocos2d::MenuItemLabel*>(sender);
     if (!mi)
         return;
 
-    auto label = dynamic_cast<LabelProtocol*>(mi->getLabel());
+    auto label = dynamic_cast<cocos2d::LabelProtocol*>(mi->getLabel());
     if (!label)
         return;
 

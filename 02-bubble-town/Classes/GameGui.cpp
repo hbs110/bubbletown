@@ -19,18 +19,18 @@ bool GameGui::init(BtGuiListener* listener)
         MENU_Town,
     }; 
 
-    Vector<MenuItem*> items;
+    cocos2d::Vector<cocos2d::MenuItem*> items;
     for (auto it : itemTexts)
     {
         items.pushBack(BtGuiUtil::CreateMenuItem(it, listener));
     }
 
-    m_menu = Menu::createWithArray(items);
+    m_menu = cocos2d::Menu::createWithArray(items);
     m_menu->alignItemsVertically();
 
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    auto origin = Director::getInstance()->getVisibleOrigin();
-    Vec2 menuPos;
+    auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
+    auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
+    cocos2d::Vec2 menuPos;
     menuPos.x = origin.x + visibleSize.width / 2;
     menuPos.y = origin.y + visibleSize.height / 4;
     m_menu->setPosition(menuPos);
