@@ -8,6 +8,11 @@
 
 #pragma once
 
+#include "BtCoreDef.h"
+
+const int   BtGui_DefaultMenuFontSize   = 18;
+BtConstStr  BtGui_DefaultMenuFont       = "Arial";
+
 class BtGuiListener
 {
 public:
@@ -15,7 +20,6 @@ public:
 
     virtual void OnMenuItem(cocos2d::Ref* sender) = 0;
 };
-
 
 class BtGuiUtil 
 {

@@ -7,7 +7,7 @@
 */
 
 #include "stdafx.h"
-#include "TownScene.h"
+#include "BtTownScene.h"
 
 #include "AppMacros.h"
 #include "AppStartScene.h"
@@ -19,13 +19,13 @@ enum {
     kTagTileMap = 1,
 };
 
-cocos2d::Scene* TownScene::scene()
+cocos2d::Scene* BtTownScene::scene()
 {
     // 'scene' is an autorelease object
     auto scene = cocos2d::Scene::create();
 
     // 'layer' is an autorelease object
-    TownScene *layer = TownScene::create();
+    BtTownScene *layer = BtTownScene::create();
 
     // add layer as a child to scene
     scene->addChild(layer);
@@ -35,7 +35,7 @@ cocos2d::Scene* TownScene::scene()
 }
 
 // on "init" you need to initialize your instance
-bool TownScene::init()
+bool BtTownScene::init()
 {
     //////////////////////////////
     // 1. super init first
@@ -56,7 +56,7 @@ bool TownScene::init()
     auto closeItem = cocos2d::MenuItemImage::create(
         "CloseNormal.png",
         "CloseSelected.png",
-        CC_CALLBACK_1(TownScene::menuCloseCallback,this));
+        CC_CALLBACK_1(BtTownScene::menuCloseCallback,this));
 
     closeItem->setPosition(origin + cocos2d::Vec2(visibleSize) - cocos2d::Vec2(closeItem->getContentSize() / 2));
 
@@ -97,7 +97,7 @@ bool TownScene::init()
     cocos2d::Sprite* sprite = layer->getTileAt(cocos2d::Vec2(21, 28));
 
     auto listener = cocos2d::EventListenerTouchAllAtOnce::create();
-    listener->onTouchesMoved = CC_CALLBACK_2(TownScene::onTouchesMoved, this);
+    listener->onTouchesMoved = CC_CALLBACK_2(BtTownScene::onTouchesMoved, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     const char* itemTexts[] = {
@@ -117,7 +117,7 @@ bool TownScene::init()
     return true;
 }
 
-void TownScene::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event  *event)
+void BtTownScene::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event  *event)
 {
     auto touch = touches[0];
 
@@ -128,13 +128,13 @@ void TownScene::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, coco
 }
 
 
-void TownScene::menuCloseCallback(Ref* sender)
+void BtTownScene::menuCloseCallback(Ref* sender)
 {
     auto director = cocos2d::Director::getInstance();
     director->replaceScene(AppStartScene::scene());
 }
 
-void TownScene::OnMenuItem(Ref* sender)
+void BtTownScene::OnMenuItem(Ref* sender)
 {
     auto mi = dynamic_cast<cocos2d::MenuItemLabel*>(sender);
     if (!mi)

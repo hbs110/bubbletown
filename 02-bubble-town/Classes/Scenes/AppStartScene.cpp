@@ -2,17 +2,16 @@
 #include "AppStartScene.h"
 #include "AppMacros.h"
 
-#include "GameGuiDef.h"
-#include "BulletStormScene.h"
-#include "Scenes/TownScene.h"
+#include "BtTestScene.h"
+#include "BtTownScene.h"
 
-USING_NS_CC;
+const char* const MENU_Bubble  = "Bubble";
+const char* const MENU_Town    = "Town";
 
-
-Scene* AppStartScene::scene()
+cocos2d::Scene* AppStartScene::scene()
 {
     // 'scene' is an autorelease object
-    auto scene = Scene::create();
+    auto scene = cocos2d::Scene::create();
     
     // 'layer' is an autorelease object
     AppStartScene *layer = AppStartScene::create();
@@ -34,16 +33,8 @@ bool AppStartScene::init()
         return false;
     }
     
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    auto origin = Director::getInstance()->getVisibleOrigin();
-
-    m_gui = new GameGui;
-    if (!m_gui->init(this))
-    {
-        return false;
-    }
-    Menu* m = m_gui->getMenu(); 
-    addChild(m, 1);
+    auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
+    auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 
 
     /////////////////////////////
@@ -51,16 +42,16 @@ bool AppStartScene::init()
     //    you may modify it.
 
     // add a "close" icon to exit the progress. it's an autorelease object
-    auto closeItem = MenuItemImage::create(
+    auto closeItem = cocos2d::MenuItemImage::create(
                                         "CloseNormal.png",
                                         "CloseSelected.png",
                                         CC_CALLBACK_1(AppStartScene::menuCloseCallback,this));
     
-    closeItem->setPosition(origin + Vec2(visibleSize) - Vec2(closeItem->getContentSize() / 2));
+    closeItem->setPosition(origin + cocos2d::Vec2(visibleSize) - cocos2d::Vec2(closeItem->getContentSize() / 2));
 
     // create menu, it's an autorelease object
-    auto menu = Menu::create(closeItem, nullptr);
-    menu->setPosition(Vec2::ZERO);
+    auto menu = cocos2d::Menu::create(closeItem, nullptr);
+    menu->setPosition(cocos2d::Vec2::ZERO);
     this->addChild(menu, 1);
     
     /////////////////////////////
@@ -69,7 +60,7 @@ bool AppStartScene::init()
     // add a label shows "Hello World"
     // create and initialize a label
     
-    auto label = LabelTTF::create("App Start Scene", "Arial", TITLE_FONT_SIZE);
+    auto label = cocos2d::LabelTTF::create("Start Scene", "Arial", TITLE_FONT_SIZE);
     
     // position the label on the center of the screen
     label->setPosition(origin.x + visibleSize.width/2,
@@ -77,6 +68,19 @@ bool AppStartScene::init()
 
     // add the label as a child to this layer
     this->addChild(label, 1);
+
+
+    const char* itemTexts[] = {
+        MENU_Bubble,
+        MENU_Town,
+    }; 
+
+    cocos2d::Menu* menuMain = BtGuiUtil::CreateMenu(itemTexts, BT_ARRAY_SIZE(itemTexts), this);
+    cocos2d::Vec2 menuPos;
+    menuPos.x = origin.x + visibleSize.width / 2;
+    menuPos.y = origin.y + visibleSize.height / 4;
+    menuMain->setPosition(menuPos);
+    addChild(menuMain, 1);
 
     return true;
 }
@@ -88,7 +92,7 @@ void AppStartScene::menuCloseCallback(Ref* sender)
     return;
 #endif
 
-    Director::getInstance()->end();
+    cocos2d::Director::getInstance()->end();
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     exit(0);
@@ -97,20 +101,15 @@ void AppStartScene::menuCloseCallback(Ref* sender)
 
 AppStartScene::~AppStartScene()
 {
-    if (m_gui)
-    {
-        delete m_gui;
-        m_gui = NULL;
-    }
 }
 
 void AppStartScene::OnMenuItem(Ref* sender)
 {
-    auto mi = dynamic_cast<MenuItemLabel*>(sender);
+    auto mi = dynamic_cast<cocos2d::MenuItemLabel*>(sender);
     if (!mi)
         return;
 
-    auto label = dynamic_cast<LabelProtocol*>(mi->getLabel());
+    auto label = dynamic_cast<cocos2d::LabelProtocol*>(mi->getLabel());
     if (!label)
         return;
 
@@ -118,12 +117,12 @@ void AppStartScene::OnMenuItem(Ref* sender)
 
     if (label->getString() == MENU_Bubble)
     {
-        auto director = Director::getInstance();
-        director->replaceScene(BulletStormScene::scene());
+        auto director = cocos2d::Director::getInstance();
+        director->replaceScene(BtTestScene::scene());
     }
     else if (label->getString() == MENU_Town)
     {
-        auto director = Director::getInstance();
-        director->replaceScene(TownScene::scene());
+        auto director = cocos2d::Director::getInstance();
+        director->replaceScene(BtTownScene::scene());
     }
 }

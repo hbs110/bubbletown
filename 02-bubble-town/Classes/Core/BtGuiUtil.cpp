@@ -9,8 +9,6 @@
 #include "stdafx.h"
 #include "BtGuiUtil.h"
 
-#include "BtGuiDef.h"
-
 cocos2d::MenuItemLabel* BtGuiUtil::CreateMenuItem(const char* val, BtGuiListener* listener)
 {
     auto label = cocos2d::LabelTTF::create(val, "Arial", BtGui_DefaultMenuFontSize);

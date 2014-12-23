@@ -1,15 +1,9 @@
 #include "stdafx.h"
 #include "AppDelegate.h"
-
-#include <vector>
-#include <string>
-
-#include "AppStartScene.h"
-#include "BulletStormScene.h"
 #include "AppMacros.h"
 
-USING_NS_CC;
-using namespace std;
+#include "Scenes/AppStartScene.h"
+#include "Scenes/BtTestScene.h"
 
 AppDelegate::AppDelegate() {
 
@@ -21,10 +15,10 @@ AppDelegate::~AppDelegate()
 
 bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director
-    auto director = Director::getInstance();
+    auto director = cocos2d::Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
-        glview = GLViewImpl::create("Cpp Empty Test");
+        glview = cocos2d::GLViewImpl::create("Cpp Empty Test");
         director->setOpenGLView(glview);
     }
 
@@ -38,9 +32,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
 #endif
 
-	Size frameSize = glview->getFrameSize();
+	cocos2d::Size frameSize = glview->getFrameSize();
     
-    vector<string> searchPath;
+    std::vector<std::string> searchPath;
 
     // In this demo, we select resource according to the frame's height.
     // If the resource size is different from design resolution size, you need to set contentScaleFactor.
@@ -70,7 +64,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
     
     // set searching path
-    FileUtils::getInstance()->setSearchPaths(searchPath);
+    cocos2d::FileUtils::getInstance()->setSearchPaths(searchPath);
 	
     // turn on display FPS
     director->setDisplayStats(true);
@@ -90,7 +84,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 // This function will be called when the app is inactive. When comes a phone call,it's be invoked too
 void AppDelegate::applicationDidEnterBackground() {
-    Director::getInstance()->stopAnimation();
+    cocos2d::Director::getInstance()->stopAnimation();
 
     // if you use SimpleAudioEngine, it must be pause
     // SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
@@ -98,7 +92,7 @@ void AppDelegate::applicationDidEnterBackground() {
 
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground() {
-    Director::getInstance()->startAnimation();
+    cocos2d::Director::getInstance()->startAnimation();
 
     // if you use SimpleAudioEngine, it must resume here
     // SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();

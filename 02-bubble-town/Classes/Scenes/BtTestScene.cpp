@@ -1,8 +1,6 @@
 #include "stdafx.h"
-#include "BulletStormScene.h"
+#include "BtTestScene.h"
 #include "AppMacros.h"
-
-#include "GameGui.h"
 #include "AppStartScene.h"
 
 std::pair<float, int> GShootSchedule[] = 
@@ -15,13 +13,13 @@ std::pair<float, int> GShootSchedule[] =
     std::make_pair(1.0f, 5),
 };
 
-cocos2d::Scene* BulletStormScene::scene()
+cocos2d::Scene* BtTestScene::scene()
 {
     // 'scene' is an autorelease object
     auto scene = cocos2d::Scene::create();
     
     // 'layer' is an autorelease object
-    BulletStormScene *layer = BulletStormScene::create();
+    BtTestScene *layer = BtTestScene::create();
 
     // add layer as a child to scene
     scene->addChild(layer);
@@ -30,7 +28,7 @@ cocos2d::Scene* BulletStormScene::scene()
     return scene;
 }
 
-BulletStormScene::~BulletStormScene()
+BtTestScene::~BtTestScene()
 {
     if (m_shootTimer)
     {
@@ -40,7 +38,7 @@ BulletStormScene::~BulletStormScene()
 }
 
 // on "init" you need to initialize your instance
-bool BulletStormScene::init()
+bool BtTestScene::init()
 {
     //////////////////////////////
     // 1. super init first
@@ -61,8 +59,8 @@ bool BulletStormScene::init()
 
     m_shootTimer = new (std::nothrow) ShootTimer;
     m_shootTimer->setupTimerWithInterval(0.5, 4, 0.0f);
-    m_shootTimer->onTrigger = std::bind(&BulletStormScene::OnShootTriggered, this);
-    m_shootTimer->onFinish = std::bind(&BulletStormScene::OnShootFinished, this);
+    m_shootTimer->onTrigger = std::bind(&BtTestScene::OnShootTriggered, this);
+    m_shootTimer->onFinish = std::bind(&BtTestScene::OnShootFinished, this);
 
     /////////////////////////////
     // 2. add a menu item with "X" image, which is clicked to quit the program
@@ -72,7 +70,7 @@ bool BulletStormScene::init()
     auto closeItem = cocos2d::MenuItemImage::create(
                                         "CloseNormal.png",
                                         "CloseSelected.png",
-                                        CC_CALLBACK_1(BulletStormScene::menuCloseCallback,this));
+                                        CC_CALLBACK_1(BtTestScene::menuCloseCallback,this));
     
     closeItem->setPosition(origin + cocos2d::Vec2(visibleSize) - cocos2d::Vec2(closeItem->getContentSize() / 2));
 
@@ -140,13 +138,13 @@ bool BulletStormScene::init()
     return true;
 }
 
-void BulletStormScene::menuCloseCallback(Ref* sender)
+void BtTestScene::menuCloseCallback(Ref* sender)
 {
     auto director = cocos2d::Director::getInstance();
     director->replaceScene(AppStartScene::scene());
 }
 
-void BulletStormScene::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
+void BtTestScene::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
 {
     if (keyCode == cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW || keyCode == cocos2d::EventKeyboard::KeyCode::KEY_A)
     {
@@ -166,7 +164,7 @@ void BulletStormScene::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, coc
     }
 }
 
-void BulletStormScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
+void BtTestScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
 {
     if (keyCode == cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW || keyCode == cocos2d::EventKeyboard::KeyCode::KEY_A)
     {
@@ -186,7 +184,7 @@ void BulletStormScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, co
     }    
 }
 
-void BulletStormScene::update(float delta)
+void BtTestScene::update(float delta)
 {
     Layer::update(delta);
 
@@ -251,7 +249,7 @@ void BulletStormScene::update(float delta)
     }
 }
 
-void BulletStormScene::OnShootTriggered()
+void BtTestScene::OnShootTriggered()
 {
     CC_ASSERT(m_bulletPool.size() >= GAME_BulletNumOnce);
     
@@ -303,12 +301,12 @@ void BulletStormScene::OnShootTriggered()
     }
 }
 
-void BulletStormScene::OnShootFinished()
+void BtTestScene::OnShootFinished()
 {
     m_shootTimer->setupTimerWithInterval(kRepeatForever, 1, 0.0f);
 }
 
-bool BulletStormScene::IsOutOfScene(cocos2d::Sprite* bullet)
+bool BtTestScene::IsOutOfScene(cocos2d::Sprite* bullet)
 {
     cocos2d::Vec2 pos = bullet->getPosition();
     cocos2d::Rect viewport;
@@ -317,7 +315,7 @@ bool BulletStormScene::IsOutOfScene(cocos2d::Sprite* bullet)
     return !viewport.containsPoint(pos);
 }
 
-void BulletStormScene::OnMenuItem(cocos2d::Ref* sender)
+void BtTestScene::OnMenuItem(cocos2d::Ref* sender)
 {
     auto mi = dynamic_cast<cocos2d::MenuItemLabel*>(sender);
     if (!mi)

@@ -3,7 +3,6 @@
 
 #include "cocos2d.h"
 
-#include "GameGui.h"
 #include "Core/BtGuiUtil.h"
 
 class AppStartScene : public cocos2d::Layer, public BtGuiListener
@@ -19,8 +18,6 @@ public:
     
     // a selector callback
     void menuCloseCallback(Ref* sender);
-
-    GameGui* m_gui;
 
     virtual void OnMenuItem(Ref* sender);
 

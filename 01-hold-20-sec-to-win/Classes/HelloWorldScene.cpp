@@ -14,13 +14,13 @@ std::pair<float, int> GShootSchedule[] =
     std::make_pair(1.0f, 5),
 };
 
-Scene* BulletStormScene::scene()
+Scene* BtTestScene::scene()
 {
     // 'scene' is an autorelease object
     auto scene = Scene::create();
     
     // 'layer' is an autorelease object
-    BulletStormScene *layer = BulletStormScene::create();
+    BtTestScene *layer = BtTestScene::create();
 
     // add layer as a child to scene
     scene->addChild(layer);
@@ -29,7 +29,7 @@ Scene* BulletStormScene::scene()
     return scene;
 }
 
-BulletStormScene::~BulletStormScene()
+BtTestScene::~BtTestScene()
 {
     if (m_shootTimer)
     {
@@ -39,7 +39,7 @@ BulletStormScene::~BulletStormScene()
 }
 
 // on "init" you need to initialize your instance
-bool BulletStormScene::init()
+bool BtTestScene::init()
 {
     //////////////////////////////
     // 1. super init first
@@ -60,8 +60,8 @@ bool BulletStormScene::init()
 
     m_shootTimer = new (std::nothrow) ShootTimer;
     m_shootTimer->setupTimerWithInterval(0.5, 4, 0.0f);
-    m_shootTimer->onTrigger = std::bind(&BulletStormScene::OnShootTriggered, this);
-    m_shootTimer->onFinish = std::bind(&BulletStormScene::OnShootFinished, this);
+    m_shootTimer->onTrigger = std::bind(&BtTestScene::OnShootTriggered, this);
+    m_shootTimer->onFinish = std::bind(&BtTestScene::OnShootFinished, this);
 
     /////////////////////////////
     // 2. add a menu item with "X" image, which is clicked to quit the program
@@ -71,7 +71,7 @@ bool BulletStormScene::init()
     auto closeItem = MenuItemImage::create(
                                         "CloseNormal.png",
                                         "CloseSelected.png",
-                                        CC_CALLBACK_1(BulletStormScene::menuCloseCallback,this));
+                                        CC_CALLBACK_1(BtTestScene::menuCloseCallback,this));
     
     closeItem->setPosition(origin + Vec2(visibleSize) - Vec2(closeItem->getContentSize() / 2));
 
@@ -139,7 +139,7 @@ bool BulletStormScene::init()
     return true;
 }
 
-void BulletStormScene::menuCloseCallback(Ref* sender)
+void BtTestScene::menuCloseCallback(Ref* sender)
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
@@ -153,7 +153,7 @@ void BulletStormScene::menuCloseCallback(Ref* sender)
 #endif
 }
 
-void BulletStormScene::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
+void BtTestScene::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
 {
     if (keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW || keyCode == EventKeyboard::KeyCode::KEY_A)
     {
@@ -173,7 +173,7 @@ void BulletStormScene::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, coc
     }
 }
 
-void BulletStormScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
+void BtTestScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
 {
     if (keyCode == EventKeyboard::KeyCode::KEY_LEFT_ARROW || keyCode == EventKeyboard::KeyCode::KEY_A)
     {
@@ -193,7 +193,7 @@ void BulletStormScene::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, co
     }    
 }
 
-void BulletStormScene::update(float delta)
+void BtTestScene::update(float delta)
 {
     Layer::update(delta);
 
@@ -258,7 +258,7 @@ void BulletStormScene::update(float delta)
     }
 }
 
-void BulletStormScene::OnShootTriggered()
+void BtTestScene::OnShootTriggered()
 {
     CC_ASSERT(m_bulletPool.size() >= GAME_BulletNumOnce);
     
@@ -310,12 +310,12 @@ void BulletStormScene::OnShootTriggered()
     }
 }
 
-void BulletStormScene::OnShootFinished()
+void BtTestScene::OnShootFinished()
 {
     m_shootTimer->setupTimerWithInterval(kRepeatForever, 1, 0.0f);
 }
 
-bool BulletStormScene::IsOutOfScene(cocos2d::Sprite* bullet)
+bool BtTestScene::IsOutOfScene(cocos2d::Sprite* bullet)
 {
     Vec2 pos = bullet->getPosition();
     Rect viewport;

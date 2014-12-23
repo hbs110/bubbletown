@@ -129,10 +129,9 @@
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\Core\BtGuiUtil.cpp" />
-    <ClCompile Include="..\Classes\GameGui.cpp" />
-    <ClCompile Include="..\Classes\BulletStormScene.cpp" />
-    <ClCompile Include="..\Classes\AppStartScene.cpp" />
-    <ClCompile Include="..\Classes\Scenes\TownScene.cpp" />
+    <ClCompile Include="..\Classes\Scenes\AppStartScene.cpp" />
+    <ClCompile Include="..\Classes\Scenes\BtTestScene.cpp" />
+    <ClCompile Include="..\Classes\Scenes\BtTownScene.cpp" />
     <ClCompile Include="..\Classes\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -143,13 +142,10 @@
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\AppMacros.h" />
     <ClInclude Include="..\Classes\Core\BtCoreDef.h" />
-    <ClInclude Include="..\Classes\Core\BtGuiDef.h" />
     <ClInclude Include="..\Classes\Core\BtGuiUtil.h" />
-    <ClInclude Include="..\Classes\GameGui.h" />
-    <ClInclude Include="..\Classes\GameGuiDef.h" />
-    <ClInclude Include="..\Classes\BulletStormScene.h" />
-    <ClInclude Include="..\Classes\AppStartScene.h" />
-    <ClInclude Include="..\Classes\Scenes\TownScene.h" />
+    <ClInclude Include="..\Classes\Scenes\AppStartScene.h" />
+    <ClInclude Include="..\Classes\Scenes\BtTestScene.h" />
+    <ClInclude Include="..\Classes\Scenes\BtTownScene.h" />
     <ClInclude Include="..\Classes\stdafx.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
