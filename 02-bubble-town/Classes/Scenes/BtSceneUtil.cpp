@@ -15,6 +15,7 @@
 #include "AppStartScene.h"
 #include "BtTestScene.h"
 #include "BtTownScene.h"
+#include "BtWorldScene.h"
 
 void BtMsgGotoScene_Emit(BtConstStr sceneName)
 {
@@ -44,6 +45,11 @@ bool BtMsgGotoScene_Handle(BtMsg& msg)
     else if (msg.m_info == BTSCN_Town)
     {
         director->replaceScene(BtTownScene::scene());
+        return true;
+    }
+    else if (msg.m_info == BTSCN_World)
+    {
+        director->replaceScene(BtWorldScene::scene());
         return true;
     }
 

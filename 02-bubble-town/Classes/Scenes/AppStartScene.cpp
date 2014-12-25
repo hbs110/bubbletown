@@ -9,6 +9,7 @@
 
 const char* const MENU_Bubble  = "Bubble";
 const char* const MENU_Town    = "Town";
+const char* const MENU_World   = "World";
 
 cocos2d::Scene* AppStartScene::scene()
 {
@@ -75,6 +76,7 @@ bool AppStartScene::init()
     const char* itemTexts[] = {
         MENU_Bubble,
         MENU_Town,
+        MENU_World,
     }; 
 
     cocos2d::Menu* menuMain = BtGuiUtil::CreateMenu(itemTexts, BT_ARRAY_SIZE(itemTexts), this);
@@ -124,5 +126,9 @@ void AppStartScene::OnMenuItem(Ref* sender)
     else if (label->getString() == MENU_Town)
     {
         BtMsgGotoScene_Emit(BTSCN_Town);
+    }
+    else if (label->getString() == MENU_World)
+    {
+        BtMsgGotoScene_Emit(BTSCN_World);
     }
 }

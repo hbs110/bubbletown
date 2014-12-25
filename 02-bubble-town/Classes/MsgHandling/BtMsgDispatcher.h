@@ -42,7 +42,6 @@ public:
 
     //===================================
     // !!!NOTE!!! the feature 'deferred' is not implemented yet, would do it on demand
-
     bool Notify(BtMsg& msg, float deferred = 0.0f);
     void ProcessedDeferred();   // msgs which are deferred will be broadcasted while ticking
 

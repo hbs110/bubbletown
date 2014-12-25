@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include "cocos2d.h"
-
 #include "Core/BtGuiUtil.h"
 
 typedef cocos2d::experimental::TMXTiledMap  tileMap_t;
