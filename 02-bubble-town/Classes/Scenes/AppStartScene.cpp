@@ -2,8 +2,10 @@
 #include "AppStartScene.h"
 #include "AppMacros.h"
 
-#include "BtTestScene.h"
-#include "BtTownScene.h"
+#include "MsgHandling/BtMsgDef.h"
+#include "MsgHandling/BtMsgDispatcher.h"
+
+#include "Scenes/BtSceneUtil.h"
 
 const char* const MENU_Bubble  = "Bubble";
 const char* const MENU_Town    = "Town";
@@ -117,12 +119,10 @@ void AppStartScene::OnMenuItem(Ref* sender)
 
     if (label->getString() == MENU_Bubble)
     {
-        auto director = cocos2d::Director::getInstance();
-        director->replaceScene(BtTestScene::scene());
+        BtMsgGotoScene_Emit(BTSCN_Test);
     }
     else if (label->getString() == MENU_Town)
     {
-        auto director = cocos2d::Director::getInstance();
-        director->replaceScene(BtTownScene::scene());
+        BtMsgGotoScene_Emit(BTSCN_Town);
     }
 }

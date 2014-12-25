@@ -10,10 +10,11 @@
 #include "BtTownScene.h"
 
 #include "AppMacros.h"
-#include "AppStartScene.h"
 
 #include "Core/BtCoreDef.h"
 #include "Core/BtGuiUtil.h"
+
+#include "Scenes/BtSceneUtil.h"
 
 enum {
     kTagTileMap = 1,
@@ -81,20 +82,17 @@ bool BtTownScene::init()
     this->addChild(label, 1);
 
 
-    auto map = tileMap_t::create("scn_town/town.tmx");
+    auto map = tileMap_t::create("scn_town02/map_tiles.tmx");
     addChild(map, 0, kTagTileMap);
     m_tileMap = map;
 
     auto s = map->getContentSize();
     CCLOG("ContentSize: %f, %f", s.width,s.height);
-    map->setPosition(cocos2d::Vec2(-s.width/2,0));
+    map->setPosition(cocos2d::Vec2(0, 0));
 
-    //const Vector<TMXObjectGroup*> objectGroups = map->getObjectGroups();
-    //CCLOG("Object Group Size: %d", objectGroups.size());
-
-    auto layer = map->getLayer("trees3");
-    int tileID = layer->getTileGIDAt(cocos2d::Vec2(21, 28));
-    cocos2d::Sprite* sprite = layer->getTileAt(cocos2d::Vec2(21, 28));
+    //auto layer = map->getLayer("trees3");
+    //int tileID = layer->getTileGIDAt(cocos2d::Vec2(21, 28));
+    //cocos2d::Sprite* sprite = layer->getTileAt(cocos2d::Vec2(21, 28));
 
     auto listener = cocos2d::EventListenerTouchAllAtOnce::create();
     listener->onTouchesMoved = CC_CALLBACK_2(BtTownScene::onTouchesMoved, this);
@@ -130,8 +128,7 @@ void BtTownScene::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, co
 
 void BtTownScene::menuCloseCallback(Ref* sender)
 {
-    auto director = cocos2d::Director::getInstance();
-    director->replaceScene(AppStartScene::scene());
+    BtMsgGotoScene_Emit(BTSCN_Start);
 }
 
 void BtTownScene::OnMenuItem(Ref* sender)

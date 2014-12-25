@@ -3,7 +3,11 @@
 #include "AppMacros.h"
 
 #include "Scenes/AppStartScene.h"
-#include "Scenes/BtTestScene.h"
+#include "Scenes/BtSceneUtil.h"
+
+#include "MsgHandling/BtMsgDef.h"
+#include "MsgHandling/BtMsgDispatcher.h"
+
 
 AppDelegate::AppDelegate() {
 
@@ -11,9 +15,15 @@ AppDelegate::AppDelegate() {
 
 AppDelegate::~AppDelegate() 
 {
+    BtMsgDispatcher::DestroyInst();
 }
 
-bool AppDelegate::applicationDidFinishLaunching() {
+bool AppDelegate::applicationDidFinishLaunching() 
+{
+    // message handling
+    BtMsgDispatcher::CreateInst();
+    BtMsgDispatcher::Get()->Subscribe(BTMSG_GotoScene, &BtMsgGotoScene_Handle);
+
     // initialize director
     auto director = cocos2d::Director::getInstance();
     auto glview = director->getOpenGLView();
@@ -78,7 +88,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // run
     director->runWithScene(scene);
-
+                            
     return true;
 }
 
