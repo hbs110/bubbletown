@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "BtTestScene.h"
 #include "AppMacros.h"
-#include "AppStartScene.h"
+#include "BtSceneUtil.h"
 
 std::pair<float, int> GShootSchedule[] = 
 {
@@ -140,8 +140,7 @@ bool BtTestScene::init()
 
 void BtTestScene::menuCloseCallback(Ref* sender)
 {
-    auto director = cocos2d::Director::getInstance();
-    director->replaceScene(AppStartScene::scene());
+    BtMsgGotoScene_Emit(BTSCN_Start);
 }
 
 void BtTestScene::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)

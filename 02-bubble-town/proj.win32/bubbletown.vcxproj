@@ -129,7 +129,9 @@
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\Core\BtGuiUtil.cpp" />
+    <ClCompile Include="..\Classes\MsgHandling\BtMsgDispatcher.cpp" />
     <ClCompile Include="..\Classes\Scenes\AppStartScene.cpp" />
+    <ClCompile Include="..\Classes\Scenes\BtSceneUtil.cpp" />
     <ClCompile Include="..\Classes\Scenes\BtTestScene.cpp" />
     <ClCompile Include="..\Classes\Scenes\BtTownScene.cpp" />
     <ClCompile Include="..\Classes\stdafx.cpp">
@@ -143,7 +145,10 @@
     <ClInclude Include="..\Classes\AppMacros.h" />
     <ClInclude Include="..\Classes\Core\BtCoreDef.h" />
     <ClInclude Include="..\Classes\Core\BtGuiUtil.h" />
+    <ClInclude Include="..\Classes\MsgHandling\BtMsgDef.h" />
+    <ClInclude Include="..\Classes\MsgHandling\BtMsgDispatcher.h" />
     <ClInclude Include="..\Classes\Scenes\AppStartScene.h" />
+    <ClInclude Include="..\Classes\Scenes\BtSceneUtil.h" />
     <ClInclude Include="..\Classes\Scenes\BtTestScene.h" />
     <ClInclude Include="..\Classes\Scenes\BtTownScene.h" />
     <ClInclude Include="..\Classes\stdafx.h" />
