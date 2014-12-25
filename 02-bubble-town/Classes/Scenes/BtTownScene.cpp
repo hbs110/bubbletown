@@ -112,6 +112,20 @@ bool BtTownScene::init()
 
     addChild(menuBuild, 1);
 
+
+    // add a "close" icon to exit the progress. it's an autorelease object
+    auto worldButton = cocos2d::MenuItemImage::create(
+        "world_button.png",
+        "world_button.png",
+        CC_CALLBACK_1(BtTownScene::OnMenuItem,this));
+
+    worldButton->setPosition(origin.x + visibleSize.width - worldButton->getContentSize().width / 2, worldButton->getContentSize().height / 2);
+
+    // create menu, it's an autorelease object
+    auto worldMenu = cocos2d::Menu::create(worldButton, nullptr);
+    worldMenu->setPosition(cocos2d::Vec2::ZERO);
+    this->addChild(worldMenu, 1);
+
     return true;
 }
 
@@ -133,6 +147,13 @@ void BtTownScene::menuCloseCallback(Ref* sender)
 
 void BtTownScene::OnMenuItem(Ref* sender)
 {
+    auto image = dynamic_cast<cocos2d::MenuItemImage*>(sender);
+    if (image)
+    {
+        BtMsgGotoScene_Emit(BTSCN_World);
+        return;
+    }
+
     auto mi = dynamic_cast<cocos2d::MenuItemLabel*>(sender);
     if (!mi)
         return;
@@ -150,6 +171,6 @@ void BtTownScene::OnMenuItem(Ref* sender)
         layer->setTileGID(tileID, cocos2d::Vec2(20, 28));
         cocos2d::Sprite* sprite = layer->getTileAt(cocos2d::Vec2(20, 28));
     }
-    
+   
 }
 

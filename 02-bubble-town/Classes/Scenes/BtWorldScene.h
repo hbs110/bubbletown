@@ -10,7 +10,7 @@
 
 #include "Core/BtGuiUtil.h"
 
-class BtWorldScene : public cocos2d::Layer
+class BtWorldScene : public cocos2d::Layer, public BtGuiListener
 {
 public:
     BtWorldScene() {}
@@ -27,5 +27,8 @@ public:
 
     // implement the "static node()" method manually
     CREATE_FUNC(BtWorldScene);
+
+    // from BtGuiListener
+    virtual void OnMenuItem(cocos2d::Ref* sender);
 };
 

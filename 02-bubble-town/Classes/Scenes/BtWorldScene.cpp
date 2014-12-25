@@ -56,6 +56,21 @@ bool BtWorldScene::init()
     menu->setPosition(cocos2d::Vec2::ZERO);
     this->addChild(menu, 1);
 
+
+    // add a "close" icon to exit the progress. it's an autorelease object
+    auto worldButton = cocos2d::MenuItemImage::create(
+        "world_button.png",
+        "world_button.png",
+        CC_CALLBACK_1(BtWorldScene::OnMenuItem,this));
+
+    worldButton->setPosition(origin.x + visibleSize.width - worldButton->getContentSize().width / 2, origin.y + worldButton->getContentSize().height / 2);
+
+    // create menu, it's an autorelease object
+    auto worldMenu = cocos2d::Menu::create(worldButton, nullptr);
+    worldMenu->setPosition(cocos2d::Vec2::ZERO);
+    this->addChild(worldMenu, 1);
+
+
     auto label = cocos2d::LabelTTF::create("World Scene", "Arial", TITLE_FONT_SIZE);
 
     // position the label on the center of the screen
@@ -94,5 +109,10 @@ bool BtWorldScene::init()
 void BtWorldScene::menuCloseCallback(Ref* sender)
 {
     BtMsgGotoScene_Emit(BTSCN_Start);
+}
+
+void BtWorldScene::OnMenuItem(cocos2d::Ref* sender)
+{
+    BtMsgGotoScene_Emit(BTSCN_Town);
 }
 
