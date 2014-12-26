@@ -24,7 +24,6 @@ public:
 class BtGuiUtil 
 {
 public: 
-    static cocos2d::MenuItemLabel* CreateMenuItem(const char* val, BtGuiListener* listener);
     static cocos2d::Menu* CreateMenu(const char* itemTexts[], int itemCnt, BtGuiListener* listener);
 };
 
