@@ -2,18 +2,25 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := cpp_empty_test_shared
+$(call import-add-path,$(LOCAL_PATH)/../../cocos2d)
+$(call import-add-path,$(LOCAL_PATH)/../../cocos2d/external)
+$(call import-add-path,$(LOCAL_PATH)/../../cocos2d/cocos)
 
-LOCAL_MODULE_FILENAME := libcpp_empty_test
+LOCAL_MODULE := cocos2dcpp_shared
 
-LOCAL_SRC_FILES := main.cpp \
-                   ../../Classes/AppDelegate.cpp \
-                   ../../Classes/HelloWorldScene.cpp
+LOCAL_MODULE_FILENAME := libcocos2dcpp
 
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes \
-                    $(LOCAL_PATH)/../../../../extensions \
-                    $(LOCAL_PATH)/../../../.. \
-                    $(LOCAL_PATH)/../../../../cocos/editor-support
+LOCAL_SRC_FILES := hellocpp/main.cpp \
+		../../Classes/AppDelegate.cpp \
+		../../Classes/Scenes/AppStartScene.cpp \
+		../../Classes/Scenes/BtSceneUtil.cpp \
+		../../Classes/Scenes/BtTestScene.cpp \
+		../../Classes/Scenes/BtWorldScene.cpp \
+		../../Classes/Scenes/BtTownScene.cpp \
+		../../Classes/MsgHandling/BtMsgDispatcher.cpp \
+		../../Classes/Core/BtGuiUtil.cpp
+
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
 
 LOCAL_STATIC_LIBRARIES := cocos2dx_static
 

@@ -1,16 +1,13 @@
 {
     "ndk_module_path" :[
-        "../../..",
-        "../../../cocos",
-        "../../../external"
+        "../cocos2d",
+        "../cocos2d/cocos",
+        "../cocos2d/external"
     ],
     "copy_resources": [
         {
             "from": "../Resources",
-            "to": "",
-            "exclude": [
-                "*.gz"
-            ]
+            "to": ""
         }
     ]
 }

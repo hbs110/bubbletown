@@ -1,89 +1,172 @@
-set(APP_NAME cpp-empty-test)
+#/****************************************************************************
+# Copyright (c) 2013-2014 cocos2d-x.org
+#
+# http://www.cocos2d-x.org
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
 
-if(ANDROID)
-  set(PLATFORM_SRC proj.android/jni/hellocpp/main.cpp)
-  set(RES_PREFIX "/Resources")
-elseif(WINDOWS)
-  set(PLATFORM_SRC proj.win32/main.cpp)
-  set(RES_PREFIX "")
-elseif(IOS)
-  set(PLATFORM_SRC
-    proj.ios/main.m
-    proj.ios/AppController.mm
-    proj.ios/RootViewController.mm
-  )
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+# ****************************************************************************/
+cmake_policy(SET CMP0017 NEW)
+
+cmake_minimum_required(VERSION 2.8)
+
+set(APP_NAME BubbleTown)
+project (${APP_NAME})
+
+set(COCOS2D_ROOT ${CMAKE_SOURCE_DIR}/cocos2d)
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${COCOS2D_ROOT}/cmake/Modules/")
+include(CocosBuildHelpers)
+
+# libcocos2d
+set(BUILD_CPP_TESTS OFF CACHE BOOL "turn off build cpp-tests")
+set(BUILD_LUA_LIBS OFF CACHE BOOL "turn off build lua-tests")
+add_subdirectory(${COCOS2D_ROOT})
+#include(ExternalProject)
+#ExternalProject_Add(cocos2dx
+#  INSTALL_COMMAND ""
+#  SOURCE_DIR ${CMAKE_SOURCE_DIR}/cocos2d)
+
+# Some macro definitions
+if(WINDOWS)
+  if(BUILD_SHARED_LIBS)
+    ADD_DEFINITIONS (-D_USRDLL -D_EXPORT_DLL_ -D_USEGUIDLL -D_USREXDLL -D_USRSTUDIODLL)
+  else()
+    ADD_DEFINITIONS (-DCC_STATIC)
+  endif()
+
+  ADD_DEFINITIONS (-DCOCOS2DXWIN32_EXPORTS -D_WINDOWS -DWIN32 -D_WIN32)
+  set(PLATFORM_FOLDER win32)
 elseif(MACOSX OR APPLE)
-  set(PLATFORM_SRC proj.mac/main.cpp)
-
-  file(GLOB_RECURSE RES_FILES Resources/*)
-  cocos_mark_resources(FILES ${RES_FILES} BASEDIR Resources)
-  list(APPEND PLATFORM_SRC ${RES_FILES})
-
+  ADD_DEFINITIONS (-DCC_TARGET_OS_MAC)
+  ADD_DEFINITIONS (-DUSE_FILE32API)
+  set(PLATFORM_FOLDER mac)
 elseif(LINUX)
-  set(PLATFORM_SRC proj.linux/main.cpp)
-  set(RES_PREFIX "/Resources")
+  ADD_DEFINITIONS(-DLINUX)
+  set(PLATFORM_FOLDER linux)
+elseif(ANDROID)
+  ADD_DEFINITIONS (-DUSE_FILE32API)
+  set(PLATFORM_FOLDER android)
 else()
   message( FATAL_ERROR "Unsupported platform, CMake will exit" )
-
 endif()
 
-set(SAMPLE_SRC
-  ${PLATFORM_SRC}
-  Classes/Core/BtGuiUtil.cpp
+
+# Compiler options
+if(MSVC)
+  ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS -D_SCL_SECURE_NO_WARNINGS
+                  -wd4251 -wd4244 -wd4334 -wd4005 -wd4820 -wd4710
+                  -wd4514 -wd4056 -wd4996 -wd4099)
+else()
+  set(CMAKE_C_FLAGS_DEBUG "-g -Wall -DCOCOS2D_DEBUG=1")
+  set(CMAKE_CXX_FLAGS_DEBUG ${CMAKE_C_FLAGS_DEBUG})
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-exceptions -std=c99")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions -std=c++11 -Wno-deprecated-declarations -Wno-reorder")
+  if(CLANG)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+  endif()
+endif(MSVC)
+
+set(PLATFORM_SPECIFIC_SRC)
+set(PLATFORM_SPECIFIC_HEADERS)
+if(MACOSX OR APPLE)
+set(PLATFORM_SPECIFIC_SRC
+  proj.ios_mac/ios/main.m
+  proj.ios_mac/ios/RootViewController.mm
+  proj.ios_mac/ios/AppController.mm
+)
+set(PLATFORM_SPECIFIC_HEADERS
+  proj.ios_mac/ios/RootViewController.h
+  proj.ios_mac/ios/AppController.h
+)
+elseif(LINUX) #assume linux
+set(PLATFORM_SPECIFIC_SRC
+  proj.linux/main.cpp
+)
+elseif ( WIN32 )
+set(PLATFORM_SPECIFIC_SRC
+  proj.win32/main.cpp
+)
+set(PLATFORM_SPECIFIC_HEADERS
+  proj.win32/main.h
+  proj.win32/resource.h
+)
+endif()
+
+include_directories(
+  /usr/local/include/GLFW
+  /usr/include/GLFW
+  ${COCOS2D_ROOT}/cocos
+  Classes
+)
+
+set(GAME_SRC
   Classes/MsgHandling/BtMsgDispatcher.cpp
   Classes/Scenes/AppStartScene.cpp
   Classes/Scenes/BtSceneUtil.cpp
   Classes/Scenes/BtTestScene.cpp
   Classes/Scenes/BtTownScene.cpp
   Classes/Scenes/BtWorldScene.cpp
-  Classes/Stdafx.cpp
   Classes/AppDelegate.cpp
+  Classes/GameGui.cpp
+  Classes/Core/BtGuiUtil.cpp
+  ${PLATFORM_SPECIFIC_SRC}
 )
 
-# add the executable
-add_executable(${APP_NAME}
-  ${SAMPLE_SRC}
+set(GAME_HEADERS
+  Classes/AppMacros.h
+  Classes/AppStartScene.h
+  Classes/BulletStormScene.h
+  Classes/GameGui.h
+  Classes/AppDelegate.h
+  Classes/GameGuiDef.h
+  Classes/Core/BtGuiDef.h
+  Classes/Core/BtCoreDef.h
+  Classes/Core/BtGuiUtil.h
+  Classes/Scenes/TownScene.h
+  ${PLATFORM_SPECIFIC_HEADERS}
 )
+
+if(GAME_HEADERS)
+add_executable(${APP_NAME} ${GAME_SRC} ${GAME_HEADERS})
+else()
+add_executable(${APP_NAME} ${GAME_SRC})
+endif()
 
 target_link_libraries(${APP_NAME} cocos2d)
 
-if(MSVC)
+set(APP_BIN_DIR "${CMAKE_BINARY_DIR}/bin")
 
-  #get our resources
-  add_custom_command(TARGET ${APP_NAME} PRE_BUILD
-                     COMMAND ${CMAKE_COMMAND} -E copy_directory
-                         ${CMAKE_CURRENT_SOURCE_DIR}/Resources ${CMAKE_CURRENT_BINARY_DIR})
-  #get our dlls
-  add_custom_command(TARGET ${APP_NAME} PRE_BUILD
-                     COMMAND ${CMAKE_COMMAND} -E copy
-                     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/win32-specific/gles/prebuilt/glew32.dll 
-					 ${CMAKE_CURRENT_BINARY_DIR})
+set_target_properties(${APP_NAME} PROPERTIES
+     RUNTIME_OUTPUT_DIRECTORY  "${APP_BIN_DIR}")
 
-  add_custom_command(TARGET ${APP_NAME} PRE_BUILD
-                     COMMAND ${CMAKE_COMMAND} -E copy
-                     ${CMAKE_CURRENT_SOURCE_DIR}/../../external/win32-specific/zlib/prebuilt/zlib1.dll 
-					 ${CMAKE_CURRENT_BINARY_DIR}/Debug)
-
-  #Visual Studio Defaults to wrong type
-  set_target_properties(${APP_NAME} PROPERTIES LINK_FLAGS_DEBUG "/SUBSYSTEM:WINDOWS")
-  set_target_properties(${APP_NAME} PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
-
-elseif(MACOSX OR APPLE)
-  set_target_properties(${APP_NAME} PROPERTIES
-      MACOSX_BUNDLE 1
-      RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
-      )
-
+if ( WIN32 )
+  #also copying dlls to binary directory for the executable to run
+  pre_build(${APP_NAME}
+    COMMAND ${CMAKE_COMMAND} -E remove_directory ${APP_BIN_DIR}/Resources
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Resources ${APP_BIN_DIR}/Resources
+    COMMAND ${CMAKE_COMMAND} -E copy ${COCOS2D_ROOT}/external/win32-specific/gles/prebuilt/glew32.dll ${APP_BIN_DIR}/${CMAKE_BUILD_TYPE}
+	COMMAND ${CMAKE_COMMAND} -E copy ${COCOS2D_ROOT}/external/win32-specific/zlib/prebuilt/zlib1.dll ${APP_BIN_DIR}/${CMAKE_BUILD_TYPE}
+	)
 else()
-
-  set(APP_BIN_DIR "${CMAKE_BINARY_DIR}/bin/${APP_NAME}")
-
-  set_target_properties(${APP_NAME} PROPERTIES
-       RUNTIME_OUTPUT_DIRECTORY  "${APP_BIN_DIR}")
-  add_custom_command(TARGET ${APP_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Resources $<TARGET_FILE_DIR:${APP_NAME}>${RES_PREFIX}
+  pre_build(${APP_NAME}
+    COMMAND ${CMAKE_COMMAND} -E remove_directory ${APP_BIN_DIR}/Resources
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Resources ${APP_BIN_DIR}/Resources
     )
 
 endif()
-
