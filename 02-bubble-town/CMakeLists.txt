@@ -30,8 +30,15 @@ endif()
 
 set(SAMPLE_SRC
   ${PLATFORM_SRC}
+  Classes/Core/BtGuiUtil.cpp
+  Classes/MsgHandling/BtMsgDispatcher.cpp
+  Classes/Scenes/AppStartScene.cpp
+  Classes/Scenes/BtSceneUtil.cpp
+  Classes/Scenes/BtTestScene.cpp
+  Classes/Scenes/BtTownScene.cpp
+  Classes/Scenes/BtWorldScene.cpp
+  Classes/Stdafx.cpp
   Classes/AppDelegate.cpp
-  Classes/HelloWorldScene.cpp
 )
 
 # add the executable
