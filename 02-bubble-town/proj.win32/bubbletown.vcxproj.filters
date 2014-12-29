@@ -18,6 +18,9 @@
     <Filter Include="Classes\MsgHandling">
       <UniqueIdentifier>{3d0b5d32-41a4-47e8-bdd4-bda44a3c1b16}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\TexturePool">
+      <UniqueIdentifier>{35af7dda-dca8-470f-8754-96f7475abe2f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp">
@@ -49,6 +52,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Scenes\BtWorldScene.cpp">
       <Filter>Classes\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TexturePool\TexturePool.cpp">
+      <Filter>Classes\TexturePool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +96,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Scenes\BtWorldScene.h">
       <Filter>Classes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TexturePool\TexturePool.h">
+      <Filter>Classes\TexturePool</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
