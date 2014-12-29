@@ -9,7 +9,19 @@
 #include "stdafx.h"
 #include "TexturePoolTestScene.h"
 
+#include "Core/BtGuiUtil.h"
 #include "Scenes/BtSceneUtil.h"
+
+BtConstStr MI_RenderImages      = "render images";
+BtConstStr MI_RenderPooled      = "render images (pooled)";
+BtConstStr MI_RenderDefragged   = "render images (defragged)";
+
+static BtConstStr s_menuItems[] =   
+{                           // (每一次绘制，都注明关键 drawcall 的次数)
+    MI_RenderImages,        //  生成 9 个精灵，依次画在屏幕上
+    MI_RenderPooled,        //  生成 9 个精灵，放到 pool 里，画在屏幕上
+    MI_RenderDefragged,     //  生成 9 个精灵，放到 pool 里，整理一下纹理池，画在屏幕上
+};                         
 
 bool TexturePoolTestScene::init()
 {
@@ -32,8 +44,22 @@ bool TexturePoolTestScene::init()
     menu->setPosition(cocos2d::Vec2::ZERO);
     this->addChild(menu, 1);
 
+    BtMenuBuilder mb;
+    mb.AddItems(s_menuItems, BT_ARRAY_SIZE(s_menuItems));
+    mb.SetItemAlign(BtMenuBuilder::Left);
+    mb.SetHandler(std::bind(&TexturePoolTestScene::OnMenuItem, this, std::placeholders::_1));
+    cocos2d::Menu* menuBuild = mb.Build();
+    if (menuBuild)
+    {
+        cocos2d::Vec2 menuPos;
+        menuPos.x = origin.x + 20;
+        menuPos.y = origin.y + visibleSize.height - 150;
+        menuBuild->setPosition(menuPos);
+        addChild(menuBuild, 1);
+    }
 
-    auto sprite = cocos2d::Sprite::create("__test_texture_pool__/bang.png");
+
+    auto sprite = cocos2d::Sprite::create("__test_texture_pool__/1419872836_balloons.png");
     sprite->setPosition(cocos2d::Vec2(200, 200));
     addChild(sprite, -1);
 
@@ -58,4 +84,9 @@ cocos2d::Scene* TexturePoolTestScene::scene()
 void TexturePoolTestScene::menuCloseCallback(Ref* sender)
 {
     BtMsgGotoScene_Emit(BTSCN_Start);
+}
+
+void TexturePoolTestScene::OnMenuItem(Ref* sender)
+{
+
 }

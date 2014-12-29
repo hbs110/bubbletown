@@ -2,6 +2,8 @@
 #include "AppStartScene.h"
 #include "AppMacros.h"
 
+#include "Core/BtGuiUtil.h"
+
 #include "MsgHandling/BtMsgDef.h"
 #include "MsgHandling/BtMsgDispatcher.h"
 
@@ -74,19 +76,21 @@ bool AppStartScene::init()
     this->addChild(label, 1);
 
 
-    const char* itemTexts[] = {
-        MENU_Bubble,
-        MENU_Town,
-        MENU_World,
-        MENU_TexturePool,
-    }; 
-
-    cocos2d::Menu* menuMain = BtGuiUtil::CreateMenu(itemTexts, BT_ARRAY_SIZE(itemTexts), this);
-    cocos2d::Vec2 menuPos;
-    menuPos.x = origin.x + visibleSize.width / 2;
-    menuPos.y = origin.y + visibleSize.height / 4;
-    menuMain->setPosition(menuPos);
-    addChild(menuMain, 1);
+    BtMenuBuilder mb;
+    mb.AddItem(MENU_Bubble);
+    mb.AddItem(MENU_Town);
+    mb.AddItem(MENU_World);
+    mb.AddItem(MENU_TexturePool);
+    mb.SetHandler(std::bind(&AppStartScene::OnMenuItem, this, std::placeholders::_1));
+    cocos2d::Menu* menuMain = mb.Build();
+    if (menuMain)
+    {
+        cocos2d::Vec2 menuPos;
+        menuPos.x = origin.x + visibleSize.width / 2;
+        menuPos.y = origin.y + visibleSize.height / 4;
+        menuMain->setPosition(menuPos);
+        addChild(menuMain, 1);
+    }
 
     return true;
 }

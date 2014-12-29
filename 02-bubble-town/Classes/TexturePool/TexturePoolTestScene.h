@@ -23,5 +23,6 @@ public:
 private:
     void menuCloseCallback(Ref* sender);
 
+    void OnMenuItem(Ref* sender);
 };
 

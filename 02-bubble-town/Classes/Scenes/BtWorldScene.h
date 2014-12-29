@@ -10,7 +10,7 @@
 
 #include "Core/BtGuiUtil.h"
 
-class BtWorldScene : public cocos2d::Layer, public BtGuiListener
+class BtWorldScene : public cocos2d::Layer
 {
 public:
     BtWorldScene() {}
