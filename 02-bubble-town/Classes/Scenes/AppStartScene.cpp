@@ -10,6 +10,7 @@
 const char* const MENU_Bubble  = "Bubble";
 const char* const MENU_Town    = "Town";
 const char* const MENU_World   = "World";
+const char* const MENU_TexturePool = "TexturePool(Temp)";
 
 cocos2d::Scene* AppStartScene::scene()
 {
@@ -77,6 +78,7 @@ bool AppStartScene::init()
         MENU_Bubble,
         MENU_Town,
         MENU_World,
+        MENU_TexturePool,
     }; 
 
     cocos2d::Menu* menuMain = BtGuiUtil::CreateMenu(itemTexts, BT_ARRAY_SIZE(itemTexts), this);
@@ -130,5 +132,9 @@ void AppStartScene::OnMenuItem(Ref* sender)
     else if (label->getString() == MENU_World)
     {
         BtMsgGotoScene_Emit(BTSCN_World);
+    }
+    else if (label->getString() == MENU_TexturePool)
+    {
+        BtMsgGotoScene_Emit(BTSCN_TexturePool);
     }
 }

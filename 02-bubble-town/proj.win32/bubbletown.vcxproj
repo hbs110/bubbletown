@@ -140,6 +140,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\Classes\TexturePool\TexturePool.cpp" />
+    <ClCompile Include="..\Classes\TexturePool\TexturePoolTestScene.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +157,7 @@
     <ClInclude Include="..\Classes\Scenes\BtWorldScene.h" />
     <ClInclude Include="..\Classes\stdafx.h" />
     <ClInclude Include="..\Classes\TexturePool\TexturePool.h" />
+    <ClInclude Include="..\Classes\TexturePool\TexturePoolTestScene.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

@@ -56,6 +56,9 @@
     <ClCompile Include="..\Classes\TexturePool\TexturePool.cpp">
       <Filter>Classes\TexturePool</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\TexturePool\TexturePoolTestScene.cpp">
+      <Filter>Classes\TexturePool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h">
@@ -98,6 +101,9 @@
       <Filter>Classes\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\TexturePool\TexturePool.h">
+      <Filter>Classes\TexturePool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TexturePool\TexturePoolTestScene.h">
       <Filter>Classes\TexturePool</Filter>
     </ClInclude>
   </ItemGroup>

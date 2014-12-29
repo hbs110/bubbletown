@@ -32,9 +32,7 @@ cocos2d::Scene* BtWorldScene::scene()
 bool BtWorldScene::init()
 {
     if ( !Layer::init() )
-    {
         return false;
-    }
 
     auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
