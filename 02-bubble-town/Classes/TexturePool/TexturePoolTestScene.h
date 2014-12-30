@@ -11,8 +11,8 @@
 class TexturePoolTestScene : public cocos2d::Layer
 {
 public: 
-    TexturePoolTestScene() {}
-    virtual ~TexturePoolTestScene() {}
+    TexturePoolTestScene() : m_texturePool(nullptr) {}
+    virtual ~TexturePoolTestScene();
 
     virtual bool init();  
 
@@ -21,8 +21,10 @@ public:
     CREATE_FUNC(TexturePoolTestScene);
 
 private:
-    void menuCloseCallback(Ref* sender);
-
     void OnMenuItem(Ref* sender);
+
+    cocos2d::RenderTexture *_target;
+
+    TexturePool* m_texturePool;
 };
 

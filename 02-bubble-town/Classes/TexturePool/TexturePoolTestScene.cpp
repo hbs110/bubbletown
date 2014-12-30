@@ -12,9 +12,13 @@
 #include "Core/BtGuiUtil.h"
 #include "Scenes/BtSceneUtil.h"
 
-BtConstStr MI_RenderImages      = "render images";
-BtConstStr MI_RenderPooled      = "render images (pooled)";
-BtConstStr MI_RenderDefragged   = "render images (defragged)";
+#include "TexturePool/TexturePool.h"
+
+static BtConstStr MI_Close      = "bt_close";
+
+static BtConstStr MI_RenderImages      = "render images";
+static BtConstStr MI_RenderPooled      = "render images (pooled)";
+static BtConstStr MI_RenderDefragged   = "render images (defragged)";
 
 static BtConstStr s_menuItems[] =   
 {                           // (每一次绘制，都注明关键 drawcall 的次数)
@@ -35,8 +39,8 @@ bool TexturePoolTestScene::init()
     auto closeItem = cocos2d::MenuItemImage::create(
         "CloseNormal.png",
         "CloseSelected.png",
-        CC_CALLBACK_1(TexturePoolTestScene::menuCloseCallback,this));
-
+        CC_CALLBACK_1(TexturePoolTestScene::OnMenuItem,this));
+    closeItem->setName(MI_Close);
     closeItem->setPosition(origin + cocos2d::Vec2(visibleSize) - cocos2d::Vec2(closeItem->getContentSize() / 2));
 
     // create menu, it's an autorelease object
@@ -58,10 +62,21 @@ bool TexturePoolTestScene::init()
         addChild(menuBuild, 1);
     }
 
-
     auto sprite = cocos2d::Sprite::create("__test_texture_pool__/1419872836_balloons.png");
-    sprite->setPosition(cocos2d::Vec2(200, 200));
+    sprite->setPosition(cocos2d::Vec2(50, 50));
     addChild(sprite, -1);
+
+    _target = cocos2d::RenderTexture::create(100, 100, cocos2d::Texture2D::PixelFormat::RGBA8888);
+    _target->retain();
+    _target->setPosition(cocos2d::Vec2(250, 100));
+    _target->clear(0.0f, 0.0f, 0.0f, 0.0f);
+    addChild(_target, -1);
+
+    _target->begin();
+    sprite->visit();
+    _target->end();
+
+    m_texturePool = new TexturePool;
 
     return true;
 }
@@ -81,12 +96,23 @@ cocos2d::Scene* TexturePoolTestScene::scene()
     return scene;
 }
 
-void TexturePoolTestScene::menuCloseCallback(Ref* sender)
-{
-    BtMsgGotoScene_Emit(BTSCN_Start);
-}
-
 void TexturePoolTestScene::OnMenuItem(Ref* sender)
 {
+    auto image = dynamic_cast<cocos2d::MenuItemImage*>(sender);
+    if (image && image->getName() == MI_Close)
+    {
+        BtMsgGotoScene_Emit(BTSCN_Start);
+        return;
+    }
+}
 
+TexturePoolTestScene::~TexturePoolTestScene()
+{
+    if (_target)
+    {
+        _target->release();
+        cocos2d::Director::getInstance()->getTextureCache()->removeUnusedTextures();
+    }
+
+    BtDeletePointer(m_texturePool);
 }
