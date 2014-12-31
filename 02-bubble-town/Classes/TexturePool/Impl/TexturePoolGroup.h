@@ -36,19 +36,19 @@ public:
 
     bool Init(const std::string& name, int textureSize);
 
-    void AppendCell(const TexturePoolCell& cell, bool flushImmediately = false);
+    bool AppendCell(const TexturePoolCell& cell);
     bool RemoveCell(cocos2d::Sprite* sprite);
 
-    void Flush();
+    bool Flush();
     void Defrag();
 
     std::string GetName() const { return m_name; }
 
 private:
     std::string m_name;
+    int m_textureSize;
 
     BinPack2D::ContentAccumulator<TexturePoolCell> m_contentList;
-    BinPack2D::Canvas<TexturePoolCell>* m_contentCanvas;
 
     cocos2d::RenderTexture* m_renderTargetTexture;
 };

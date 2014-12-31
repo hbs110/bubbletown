@@ -52,11 +52,10 @@ void TexturePool::Destroy()
 bool TexturePool::PushSprite(cocos2d::Sprite* sprite,
                              const std::string& groupName /*= ""*/, 
                              const std::string& originalResourcePath /*= ""*/,
-                             bool manualReleaseRequired /*= true*/,
-                             bool flushImmediately /*= false*/)
+                             bool manualReleaseRequired /*= true*/)
 {
     if (!IsValid())
-        return;
+        return false;
 
     if (!sprite || !sprite->getTexture())
         return false;
@@ -69,9 +68,8 @@ bool TexturePool::PushSprite(cocos2d::Sprite* sprite,
     cell.m_sprite = sprite;
     cell.m_originalRes = originalResourcePath;
     cell.m_couldBeRecycled = !manualReleaseRequired;
-    targetGroup->AppendCell(cell, flushImmediately);
 
-    return true;
+    return targetGroup->AppendCell(cell);
 }
 
 void TexturePool::ReleaseSprite(cocos2d::Sprite* sprite, const std::string& groupName /*= ""*/)

@@ -13,7 +13,7 @@
 const int   TexPool_MaxGroupCount = 3;
 
 BtConstStr  TexPool_DefaulGroupName = "__default__";
-const int   TexPool_DefaulTextureSize = 1024;
+const int   TexPool_DefaulTextureSize = 256;
 
 BtConstStr  TexPool_Group_Character     = "characters";
 BtConstStr  TexPool_Group_Effect        = "effects";
@@ -59,12 +59,11 @@ public:
             groupName - 如果指定这个参数，将会被放入对应的贴图组；未指定或名称不存在则放入默认组
             originalResourcePath - 如果指定这个参数，那么显式地调用 ReleaseSprite 或自动整理移除精灵时，会尝试从这个路径恢复该精灵对原始图片资源的引用
             manualReleaseRequired - 如果为 true 则必须手动释放，如果为 false 则会在纹理池已满或手动整理时被释放
-            flushImmediately - 添加这个 sprite 后立即刷新纹理池。默认为 false 的意思是鼓励批量刷新（也就是 Push 一批之后统一 Flush）
 
         实现细节：
             该 sprite 指向的原贴图将被复制入纹理池，操作成功后 sprite 将指向池内的对应位置
      */
-    bool PushSprite(cocos2d::Sprite* sprite, const std::string& groupName = "", const std::string& originalResourcePath = "", bool manualReleaseRequired = false, bool flushImmediately = false);
+    bool PushSprite(cocos2d::Sprite* sprite, const std::string& groupName = "", const std::string& originalResourcePath = "", bool manualReleaseRequired = false);
 
     /* 
         从纹理池中移除该精灵

@@ -8,6 +8,8 @@
 
 #pragma once
 
+class TexturePool;
+
 class TexturePoolTestScene : public cocos2d::Layer
 {
 public: 

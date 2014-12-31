@@ -48,35 +48,57 @@ bool TexturePoolTestScene::init()
     menu->setPosition(cocos2d::Vec2::ZERO);
     this->addChild(menu, 1);
 
-    BtMenuBuilder mb;
-    mb.AddItems(s_menuItems, BT_ARRAY_SIZE(s_menuItems));
-    mb.SetItemAlign(BtMenuBuilder::Left);
-    mb.SetHandler(std::bind(&TexturePoolTestScene::OnMenuItem, this, std::placeholders::_1));
-    cocos2d::Menu* menuBuild = mb.Build();
-    if (menuBuild)
-    {
-        cocos2d::Vec2 menuPos;
-        menuPos.x = origin.x + 20;
-        menuPos.y = origin.y + visibleSize.height - 150;
-        menuBuild->setPosition(menuPos);
-        addChild(menuBuild, 1);
-    }
+    //BtMenuBuilder mb;
+    //mb.AddItems(s_menuItems, BT_ARRAY_SIZE(s_menuItems));
+    //mb.SetItemAlign(BtMenuBuilder::Left);
+    //mb.SetHandler(std::bind(&TexturePoolTestScene::OnMenuItem, this, std::placeholders::_1));
+    //cocos2d::Menu* menuBuild = mb.Build();
+    //if (menuBuild)
+    //{
+    //    cocos2d::Vec2 menuPos;
+    //    menuPos.x = origin.x + 20;
+    //    menuPos.y = origin.y + visibleSize.height - 150;
+    //    menuBuild->setPosition(menuPos);
+    //    addChild(menuBuild, 1);
+    //}
 
-    auto sprite = cocos2d::Sprite::create("__test_texture_pool__/1419872836_balloons.png");
-    sprite->setPosition(cocos2d::Vec2(50, 50));
-    addChild(sprite, -1);
+    //_target = cocos2d::RenderTexture::create(100, 100, cocos2d::Texture2D::PixelFormat::RGBA8888);
+    //_target->retain();
+    //_target->setPosition(cocos2d::Vec2(250, 100));
+    //_target->clear(0.0f, 0.0f, 0.0f, 0.0f);
+    //addChild(_target, -1);
 
-    _target = cocos2d::RenderTexture::create(100, 100, cocos2d::Texture2D::PixelFormat::RGBA8888);
-    _target->retain();
-    _target->setPosition(cocos2d::Vec2(250, 100));
-    _target->clear(0.0f, 0.0f, 0.0f, 0.0f);
-    addChild(_target, -1);
-
-    _target->begin();
-    sprite->visit();
-    _target->end();
+    //_target->begin();
+    //sprite->visit();
+    //_target->end();
 
     m_texturePool = new TexturePool;
+    m_texturePool->Init(GDefaultTexturePoolInitParams, TexPool_MaxGroupCount);
+    if (!m_texturePool)
+        return false;
+
+    BtConstStr resources[] = {
+        "__test_texture_pool__/1419872819_box1.png",
+        "__test_texture_pool__/1419872828_box3.png",
+        "__test_texture_pool__/1419872831_box2.png",
+        "__test_texture_pool__/1419872836_balloons.png",
+        "__test_texture_pool__/1419872854_dog.png",
+        "__test_texture_pool__/1419872856_rings.png",
+        "__test_texture_pool__/1419872859_bouquet.png",
+        "__test_texture_pool__/1419872860_rose.png",
+        "__test_texture_pool__/1419872876_cake.png",
+    }; 
+
+    for (int i = 0; i < BT_ARRAY_SIZE(resources); ++i)
+    {
+        BtConstStr res = resources[i];
+        auto sprite = cocos2d::Sprite::create(res);
+        sprite->setPosition(cocos2d::Vec2(50 + 80 * (i % 5), 100 + 80 * (i / 5)));
+        addChild(sprite, -1);
+        m_texturePool->PushSprite(sprite, "", res);
+    }
+
+    m_texturePool->Flush();
 
     return true;
 }
@@ -108,11 +130,11 @@ void TexturePoolTestScene::OnMenuItem(Ref* sender)
 
 TexturePoolTestScene::~TexturePoolTestScene()
 {
-    if (_target)
-    {
-        _target->release();
-        cocos2d::Director::getInstance()->getTextureCache()->removeUnusedTextures();
-    }
+    //if (_target)
+    //{
+    //    _target->release();
+    //    cocos2d::Director::getInstance()->getTextureCache()->removeUnusedTextures();
+    //}
 
     BtDeletePointer(m_texturePool);
 }
