@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <cocostudio/CocoStudio.h>
+
 class TexturePool;
 
 class TexturePoolTestScene_Anim : public cocos2d::Layer
@@ -26,5 +28,10 @@ private:
     void OnMenuItem(cocos2d::Ref* sender);
 
     TexturePool* m_texturePool;
+
+    void initArmatrueName();
+
+    std::vector<std::string> m_vArmatrueName;
+    std::vector<cocostudio::Armature *>m_vArmature;
 };
 
