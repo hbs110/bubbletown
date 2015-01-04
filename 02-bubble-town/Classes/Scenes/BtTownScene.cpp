@@ -98,10 +98,10 @@ bool BtTownScene::init()
     listener->onTouchesMoved = CC_CALLBACK_2(BtTownScene::onTouchesMoved, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
-    BtMenuBuilder mb;
+    BtTextMenuBuilder mb;
     mb.AddItem("build tree");
     mb.AddItem("build grass");
-    mb.SetItemAlign(BtMenuBuilder::Left);
+    mb.SetItemAlign(BtTextMenuBuilder::Left);
     mb.SetHandler(std::bind(&BtTownScene::OnMenuItem, this, std::placeholders::_1));
     cocos2d::Menu* menuBuild = mb.Build();
     if (menuBuild)

@@ -13,6 +13,7 @@ const char* const MENU_Bubble  = "Bubble";
 const char* const MENU_Town    = "Town";
 const char* const MENU_World   = "World";
 const char* const MENU_TexturePool = "TexturePool(Temp)";
+const char* const MENU_TexturePool_Anim = "TexturePool(Anim)";
 
 cocos2d::Scene* AppStartScene::scene()
 {
@@ -76,11 +77,12 @@ bool AppStartScene::init()
     this->addChild(label, 1);
 
 
-    BtMenuBuilder mb;
+    BtTextMenuBuilder mb;
     mb.AddItem(MENU_Bubble);
     mb.AddItem(MENU_Town);
     mb.AddItem(MENU_World);
     mb.AddItem(MENU_TexturePool);
+    mb.AddItem(MENU_TexturePool_Anim);
     mb.SetHandler(std::bind(&AppStartScene::OnMenuItem, this, std::placeholders::_1));
     cocos2d::Menu* menuMain = mb.Build();
     if (menuMain)
@@ -140,5 +142,9 @@ void AppStartScene::OnMenuItem(Ref* sender)
     else if (label->getString() == MENU_TexturePool)
     {
         BtMsgGotoScene_Emit(BTSCN_TexturePool);
+    }
+    else if (label->getString() == MENU_TexturePool_Anim)
+    {
+        BtMsgGotoScene_Emit(BTSCN_TexturePool_Anim);
     }
 }

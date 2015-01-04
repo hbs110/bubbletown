@@ -13,6 +13,9 @@
 
 #include "BtSceneUtil.h"
 
+BtConstStr Bt_CloseButton = "close";
+BtConstStr Bt_SwitchButton = "switch";
+
 cocos2d::Scene* BtWorldScene::scene()
 {
     // 'scene' is an autorelease object
@@ -46,27 +49,20 @@ bool BtWorldScene::init()
         "CloseNormal.png",
         "CloseSelected.png",
         CC_CALLBACK_1(BtWorldScene::menuCloseCallback,this));
-
+    closeItem->setName(Bt_CloseButton);
     closeItem->setPosition(origin + cocos2d::Vec2(visibleSize) - cocos2d::Vec2(closeItem->getContentSize() / 2));
 
-    // create menu, it's an autorelease object
-    auto menu = cocos2d::Menu::create(closeItem, nullptr);
-    menu->setPosition(cocos2d::Vec2::ZERO);
-    this->addChild(menu, 1);
-
-
-    // add a "close" icon to exit the progress. it's an autorelease object
     auto worldButton = cocos2d::MenuItemImage::create(
         "world_button.png",
         "world_button.png",
         CC_CALLBACK_1(BtWorldScene::OnMenuItem,this));
-
+    worldButton->setName(Bt_SwitchButton);
     worldButton->setPosition(origin.x + visibleSize.width - worldButton->getContentSize().width / 2, origin.y + worldButton->getContentSize().height / 2);
 
     // create menu, it's an autorelease object
-    auto worldMenu = cocos2d::Menu::create(worldButton, nullptr);
-    worldMenu->setPosition(cocos2d::Vec2::ZERO);
-    this->addChild(worldMenu, 1);
+    auto menu = cocos2d::Menu::create(closeItem, worldButton, nullptr);
+    menu->setPosition(cocos2d::Vec2::ZERO);
+    this->addChild(menu, 1);
 
 
     auto label = cocos2d::LabelTTF::create("World Scene", "Arial", TITLE_FONT_SIZE);
@@ -99,6 +95,7 @@ bool BtWorldScene::init()
 
     // add the sprite as a child to this layer
     this->addChild(sprite, -1);
+
 
 
     return true;

@@ -65,6 +65,9 @@
     <ClCompile Include="..\Classes\TexturePool\Impl\TexturePoolGroup.cpp">
       <Filter>Classes\TexturePool\Impl</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\TexturePool\TexturePoolTestScene_Anim.cpp">
+      <Filter>Classes\TexturePool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h">
@@ -117,6 +120,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\TexturePool\Impl\binpack2d.hpp">
       <Filter>Classes\TexturePool\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TexturePool\TexturePoolTestScene_Anim.h">
+      <Filter>Classes\TexturePool</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

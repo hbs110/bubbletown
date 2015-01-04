@@ -9,13 +9,13 @@
 #include "stdafx.h"
 #include "BtGuiUtil.h"
 
-BtMenuBuilder::BtMenuBuilder()
+BtTextMenuBuilder::BtTextMenuBuilder()
 {
     m_itemAlignment = eItemAlign::Center;
     m_menuAlignment = eMenuAlign::Vertically;
 }
 
-void BtMenuBuilder::AddItems(BtConstStr items[], int itemCnt)
+void BtTextMenuBuilder::AddItems(BtConstStr items[], int itemCnt)
 {
     if (!items)
         return;
@@ -26,7 +26,7 @@ void BtMenuBuilder::AddItems(BtConstStr items[], int itemCnt)
     }
 }
 
-cocos2d::Menu* BtMenuBuilder::Build()
+cocos2d::Menu* BtTextMenuBuilder::Build()
 {
     if (m_itemTexts.empty())
         return nullptr;
@@ -44,13 +44,13 @@ cocos2d::Menu* BtMenuBuilder::Build()
 
         switch (m_itemAlignment)
         {
-        case BtMenuBuilder::Left:
+        case BtTextMenuBuilder::Left:
             item->setAnchorPoint(cocos2d::Vec2(0, 0.5f));
             break;
-        case BtMenuBuilder::Center:
+        case BtTextMenuBuilder::Center:
             item->setAnchorPoint(cocos2d::Vec2(0.5f, 0.5f));
             break;
-        case BtMenuBuilder::Right:
+        case BtTextMenuBuilder::Right:
             item->setAnchorPoint(cocos2d::Vec2(1.0f, 0.5f));
             break;
         default:
@@ -63,10 +63,10 @@ cocos2d::Menu* BtMenuBuilder::Build()
 
     switch (m_menuAlignment)
     {
-    case BtMenuBuilder::Horizontally:
+    case BtTextMenuBuilder::Horizontally:
         menu->alignItemsHorizontally();
         break;
-    case BtMenuBuilder::Vertically:
+    case BtTextMenuBuilder::Vertically:
         menu->alignItemsVertically();
         break;
     default:

@@ -15,7 +15,8 @@ BtConstStr BTSCN_Start  = "StartScene";
 BtConstStr BTSCN_Test   = "TestScene";
 BtConstStr BTSCN_Town   = "TownScene";
 BtConstStr BTSCN_World  = "WorldScene";
-BtConstStr BTSCN_TexturePool  = "TexturePoolScene";
+BtConstStr BTSCN_TexturePool        = "TexturePoolScene";
+BtConstStr BTSCN_TexturePool_Anim   = "TexturePoolScene_Anim";
 
 // emit the 'GotoScene' message
 void BtMsgGotoScene_Emit(BtConstStr sceneName);

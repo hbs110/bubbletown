@@ -13,7 +13,7 @@
 const int   BtGui_DefaultMenuFontSize   = 18;
 BtConstStr  BtGui_DefaultMenuFont       = "Arial";
 
-class BtMenuBuilder
+class BtTextMenuBuilder
 {
 public:
     enum eItemAlign
@@ -29,7 +29,7 @@ public:
         Vertically,
     };
 
-    BtMenuBuilder();
+    BtTextMenuBuilder();
 
     void AddItem(const std::string& itemText) { m_itemTexts.push_back(itemText); }
     void AddItems(BtConstStr items[], int itemCnt);

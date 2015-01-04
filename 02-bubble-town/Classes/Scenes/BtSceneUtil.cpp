@@ -18,6 +18,7 @@
 #include "BtWorldScene.h"
 
 #include "TexturePool/TexturePoolTestScene.h"
+#include "TexturePool/TexturePoolTestScene_Anim.h"
 
 void BtMsgGotoScene_Emit(BtConstStr sceneName)
 {
@@ -57,6 +58,11 @@ bool BtMsgGotoScene_Handle(BtMsg& msg)
     else if (msg.m_info == BTSCN_TexturePool)
     {
         director->replaceScene(TexturePoolTestScene::scene());
+        return true;
+    }
+    else if (msg.m_info == BTSCN_TexturePool_Anim)
+    {
+        director->replaceScene(TexturePoolTestScene_Anim::scene());
         return true;
     }
 
