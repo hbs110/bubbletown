@@ -3,9 +3,7 @@
 
 #include "cocos2d.h"
 
-#include "Core/BtGuiUtil.h"
-
-class AppStartScene : public cocos2d::Layer, public BtGuiListener
+class AppStartScene : public cocos2d::Layer
 {
 public:
     virtual ~AppStartScene();
@@ -19,8 +17,7 @@ public:
     // a selector callback
     void menuCloseCallback(Ref* sender);
 
-    virtual void OnMenuItem(Ref* sender);
-
+    void OnMenuItem(Ref* sender);
     
     // implement the "static node()" method manually
     CREATE_FUNC(AppStartScene);

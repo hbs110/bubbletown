@@ -8,11 +8,9 @@
 
 #pragma once
 
-#include "Core/BtGuiUtil.h"
-
 typedef cocos2d::experimental::TMXTiledMap  tileMap_t;
 
-class BtTownScene : public cocos2d::Layer, public BtGuiListener
+class BtTownScene : public cocos2d::Layer
 {
 public:
     BtTownScene() : m_tileMap(nullptr) {}
@@ -32,8 +30,7 @@ public:
 
     void onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event  *event);
 
-    // from BtGuiListener
-    virtual void OnMenuItem(Ref* sender);
+    void OnMenuItem(Ref* sender);
 
     tileMap_t* m_tileMap;
 };

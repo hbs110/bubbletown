@@ -2,6 +2,8 @@
 #include "AppStartScene.h"
 #include "AppMacros.h"
 
+#include "Core/BtGuiUtil.h"
+
 #include "MsgHandling/BtMsgDef.h"
 #include "MsgHandling/BtMsgDispatcher.h"
 
@@ -10,6 +12,8 @@
 const char* const MENU_Bubble  = "Bubble";
 const char* const MENU_Town    = "Town";
 const char* const MENU_World   = "World";
+const char* const MENU_TexturePool = "TexturePool(Temp)";
+const char* const MENU_TexturePool_Anim = "TexturePool(Anim)";
 
 cocos2d::Scene* AppStartScene::scene()
 {
@@ -73,18 +77,22 @@ bool AppStartScene::init()
     this->addChild(label, 1);
 
 
-    const char* itemTexts[] = {
-        MENU_Bubble,
-        MENU_Town,
-        MENU_World,
-    }; 
-
-    cocos2d::Menu* menuMain = BtGuiUtil::CreateMenu(itemTexts, BT_ARRAY_SIZE(itemTexts), this);
-    cocos2d::Vec2 menuPos;
-    menuPos.x = origin.x + visibleSize.width / 2;
-    menuPos.y = origin.y + visibleSize.height / 4;
-    menuMain->setPosition(menuPos);
-    addChild(menuMain, 1);
+    BtTextMenuBuilder mb;
+    mb.AddItem(MENU_Bubble);
+    mb.AddItem(MENU_Town);
+    mb.AddItem(MENU_World);
+    mb.AddItem(MENU_TexturePool);
+    mb.AddItem(MENU_TexturePool_Anim);
+    mb.SetHandler(std::bind(&AppStartScene::OnMenuItem, this, std::placeholders::_1));
+    cocos2d::Menu* menuMain = mb.Build();
+    if (menuMain)
+    {
+        cocos2d::Vec2 menuPos;
+        menuPos.x = origin.x + visibleSize.width / 2;
+        menuPos.y = origin.y + visibleSize.height / 4;
+        menuMain->setPosition(menuPos);
+        addChild(menuMain, 1);
+    }
 
     return true;
 }
@@ -130,5 +138,13 @@ void AppStartScene::OnMenuItem(Ref* sender)
     else if (label->getString() == MENU_World)
     {
         BtMsgGotoScene_Emit(BTSCN_World);
+    }
+    else if (label->getString() == MENU_TexturePool)
+    {
+        BtMsgGotoScene_Emit(BTSCN_TexturePool);
+    }
+    else if (label->getString() == MENU_TexturePool_Anim)
+    {
+        BtMsgGotoScene_Emit(BTSCN_TexturePool_Anim);
     }
 }

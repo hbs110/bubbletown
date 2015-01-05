@@ -5,4 +5,7 @@ Thumbs.db
 # ===================================================
 
 /01-hold-20-sec-to-win/proj.win32/Debug.win32
+/01-hold-20-sec-to-win/proj.win32/Release.win32
 /02-bubble-town/proj.win32/Debug.win32
+/02-bubble-town/proj.win32/Release.win32
+/02-bubble-town/Resources/test_texture_pool/map

@@ -98,20 +98,21 @@ bool BtTownScene::init()
     listener->onTouchesMoved = CC_CALLBACK_2(BtTownScene::onTouchesMoved, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
-    const char* itemTexts[] = {
-        "build tree",
-        "build grass",
-    }; 
+    BtTextMenuBuilder mb;
+    mb.AddItem("build tree");
+    mb.AddItem("build grass");
+    mb.SetItemAlign(BtTextMenuBuilder::Left);
+    mb.SetHandler(std::bind(&BtTownScene::OnMenuItem, this, std::placeholders::_1));
+    cocos2d::Menu* menuBuild = mb.Build();
+    if (menuBuild)
+    {
+        cocos2d::Vec2 menuPos;
+        menuPos.x = origin.x + 50;
+        menuPos.y = origin.y + visibleSize.height - 100;
+        menuBuild->setPosition(menuPos);
 
-    cocos2d::Menu* menuBuild = BtGuiUtil::CreateMenu(itemTexts, BT_ARRAY_SIZE(itemTexts), this);
-
-    cocos2d::Vec2 menuPos;
-    menuPos.x = origin.x + 50;
-    menuPos.y = origin.y + visibleSize.height - 100;
-    menuBuild->setPosition(menuPos);
-
-    addChild(menuBuild, 1);
-
+        addChild(menuBuild, 1);
+    }
 
     // add a "close" icon to exit the progress. it's an autorelease object
     auto worldButton = cocos2d::MenuItemImage::create(
