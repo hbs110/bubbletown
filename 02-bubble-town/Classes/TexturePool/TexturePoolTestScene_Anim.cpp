@@ -18,7 +18,7 @@
 
 static BtConstStr MI_Close      = "bt_close";
 
-static BtConstStr BtRes_TestImagePath = "__test_texture_pool__/map/";
+static BtConstStr BtRes_TestImagePath = "test_texture_pool/map/";
 
 TexturePoolTestScene_Anim::~TexturePoolTestScene_Anim()
 {
@@ -145,77 +145,85 @@ void TexturePoolTestScene_Anim::OnMenuItem(cocos2d::Ref* sender)
 
 void TexturePoolTestScene_Anim::initArmatrueName()
 {
-    m_vArmatrueName.push_back("DefenderN");
-    m_vArmatrueName.push_back("SpearmenN");
-    m_vArmatrueName.push_back("ArcherN");
-    m_vArmatrueName.push_back("ShieldMaster");
-    m_vArmatrueName.push_back("Defender");
-    m_vArmatrueName.push_back("Archer");
-    m_vArmatrueName.push_back("Spearmen");
-    m_vArmatrueName.push_back("Witch");
-    m_vArmatrueName.push_back("Catapult");
-    m_vArmatrueName.push_back("Artillery");
-    m_vArmatrueName.push_back("Cavalry");
-    m_vArmatrueName.push_back("ElephantSoldier");
-    m_vArmatrueName.push_back("Hoplite");
-    m_vArmatrueName.push_back("Priest");
-    m_vArmatrueName.push_back("ArmorCavalry");
-    m_vArmatrueName.push_back("Assasin");
-    m_vArmatrueName.push_back("Berserker");
-    m_vArmatrueName.push_back("IceWitch");
-    m_vArmatrueName.push_back("Pastor");
-    m_vArmatrueName.push_back("WitchDoctor");
-    m_vArmatrueName.push_back("CaoZhi");
-    m_vArmatrueName.push_back("DiaoChan");
-    m_vArmatrueName.push_back("DongZhuo");
-    m_vArmatrueName.push_back("DongZhuoEvil");
-    m_vArmatrueName.push_back("FaZheng");
-    m_vArmatrueName.push_back("GongSunZan");
-    m_vArmatrueName.push_back("GuYong");
-    m_vArmatrueName.push_back("GuanYu");
-    m_vArmatrueName.push_back("HuaXiong");
-    m_vArmatrueName.push_back("HuangYueYing");
-    m_vArmatrueName.push_back("JiangWei");
-    m_vArmatrueName.push_back("LingTong");
-    m_vArmatrueName.push_back("LiuBei");
-    m_vArmatrueName.push_back("LuSu");
-    m_vArmatrueName.push_back("LuXun");
-    m_vArmatrueName.push_back("LvBu");
-    m_vArmatrueName.push_back("LvBuEvil");
-    m_vArmatrueName.push_back("MaDai");
-    m_vArmatrueName.push_back("PanFeng");
-    m_vArmatrueName.push_back("PoJun");
-    m_vArmatrueName.push_back("SunCe");
-    m_vArmatrueName.push_back("SunJian");
-    m_vArmatrueName.push_back("SunLuBan");
-    m_vArmatrueName.push_back("XiaoQiao");
-    m_vArmatrueName.push_back("XinXianYing");
-    m_vArmatrueName.push_back("XuHuang");
-    m_vArmatrueName.push_back("XuShu");
-    m_vArmatrueName.push_back("XuHuang");
-    m_vArmatrueName.push_back("YanLiangWenChou");
-    m_vArmatrueName.push_back("YuJin");
-    m_vArmatrueName.push_back("YuanShao");
-    m_vArmatrueName.push_back("YuanShu");
-    m_vArmatrueName.push_back("ZhangFei");
-    m_vArmatrueName.push_back("ZhangJiao");
-    m_vArmatrueName.push_back("ZhangJiaoEvil");
-    m_vArmatrueName.push_back("PangDe");
-    m_vArmatrueName.push_back("ZhaoYun");
-    m_vArmatrueName.push_back("ZhouCang");
-    m_vArmatrueName.push_back("ZuoCi");
-    m_vArmatrueName.push_back("HellDog");
-    m_vArmatrueName.push_back("MaYuanYi");
-    m_vArmatrueName.push_back("PengTuo");
-    m_vArmatrueName.push_back("Ooze");
-    m_vArmatrueName.push_back("TenAttendants");
-    m_vArmatrueName.push_back("Ghoul");
-    m_vArmatrueName.push_back("Butcher");
-    m_vArmatrueName.push_back("ZhangLiangEvil");
-    m_vArmatrueName.push_back("ZhangLiangBao");
-    m_vArmatrueName.push_back("ZhangManCheng");
-    m_vArmatrueName.push_back("ThunderDragon");
-    m_vArmatrueName.push_back("TaoTie");
+    //for (int i = 0; i < 800; ++i)
+    //{
+    //    m_vArmatrueName.push_back("DefenderN");
+    //}
+
+    for (int i = 0; i < 10; ++i)
+    {
+        m_vArmatrueName.push_back("DefenderN");
+        m_vArmatrueName.push_back("SpearmenN");
+        m_vArmatrueName.push_back("ArcherN");
+        m_vArmatrueName.push_back("ShieldMaster");
+        m_vArmatrueName.push_back("Defender");
+        m_vArmatrueName.push_back("Archer");
+        m_vArmatrueName.push_back("Spearmen");
+        m_vArmatrueName.push_back("Witch");
+        m_vArmatrueName.push_back("Catapult");
+        m_vArmatrueName.push_back("Artillery");
+        m_vArmatrueName.push_back("Cavalry");
+        m_vArmatrueName.push_back("ElephantSoldier");
+        m_vArmatrueName.push_back("Hoplite");
+        m_vArmatrueName.push_back("Priest");
+        m_vArmatrueName.push_back("ArmorCavalry");
+        m_vArmatrueName.push_back("Assasin");
+        m_vArmatrueName.push_back("Berserker");
+        m_vArmatrueName.push_back("IceWitch");
+        m_vArmatrueName.push_back("Pastor");
+        m_vArmatrueName.push_back("WitchDoctor");
+        m_vArmatrueName.push_back("CaoZhi");
+        m_vArmatrueName.push_back("DiaoChan");
+        m_vArmatrueName.push_back("DongZhuo");
+        m_vArmatrueName.push_back("DongZhuoEvil");
+        m_vArmatrueName.push_back("FaZheng");
+        m_vArmatrueName.push_back("GongSunZan");
+        m_vArmatrueName.push_back("GuYong");
+        m_vArmatrueName.push_back("GuanYu");
+        m_vArmatrueName.push_back("HuaXiong");
+        m_vArmatrueName.push_back("HuangYueYing");
+        m_vArmatrueName.push_back("JiangWei");
+        m_vArmatrueName.push_back("LingTong");
+        m_vArmatrueName.push_back("LiuBei");
+        m_vArmatrueName.push_back("LuSu");
+        m_vArmatrueName.push_back("LuXun");
+        m_vArmatrueName.push_back("LvBu");
+        m_vArmatrueName.push_back("LvBuEvil");
+        m_vArmatrueName.push_back("MaDai");
+        m_vArmatrueName.push_back("PanFeng");
+        m_vArmatrueName.push_back("PoJun");
+        m_vArmatrueName.push_back("SunCe");
+        m_vArmatrueName.push_back("SunJian");
+        m_vArmatrueName.push_back("SunLuBan");
+        m_vArmatrueName.push_back("XiaoQiao");
+        m_vArmatrueName.push_back("XinXianYing");
+        m_vArmatrueName.push_back("XuHuang");
+        m_vArmatrueName.push_back("XuShu");
+        m_vArmatrueName.push_back("XuHuang");
+        m_vArmatrueName.push_back("YanLiangWenChou");
+        m_vArmatrueName.push_back("YuJin");
+        m_vArmatrueName.push_back("YuanShao");
+        m_vArmatrueName.push_back("YuanShu");
+        m_vArmatrueName.push_back("ZhangFei");
+        m_vArmatrueName.push_back("ZhangJiao");
+        m_vArmatrueName.push_back("ZhangJiaoEvil");
+        m_vArmatrueName.push_back("PangDe");
+        m_vArmatrueName.push_back("ZhaoYun");
+        m_vArmatrueName.push_back("ZhouCang");
+        m_vArmatrueName.push_back("ZuoCi");
+        m_vArmatrueName.push_back("HellDog");
+        m_vArmatrueName.push_back("MaYuanYi");
+        m_vArmatrueName.push_back("PengTuo");
+        m_vArmatrueName.push_back("Ooze");
+        m_vArmatrueName.push_back("TenAttendants");
+        m_vArmatrueName.push_back("Ghoul");
+        m_vArmatrueName.push_back("Butcher");
+        m_vArmatrueName.push_back("ZhangLiangEvil");
+        m_vArmatrueName.push_back("ZhangLiangBao");
+        m_vArmatrueName.push_back("ZhangManCheng");
+        m_vArmatrueName.push_back("ThunderDragon");
+        m_vArmatrueName.push_back("TaoTie");
+    }
 
     for (auto strArmatrueName : m_vArmatrueName)
     {
