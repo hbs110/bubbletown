@@ -78,15 +78,15 @@ bool TexturePoolTestScene::init()
         return false;
 
     BtConstStr resources[] = {
-        "__test_texture_pool__/1419872819_box1.png",
-        "__test_texture_pool__/1419872828_box3.png",
-        "__test_texture_pool__/1419872831_box2.png",
-        "__test_texture_pool__/1419872836_balloons.png",
-        "__test_texture_pool__/1419872854_dog.png",
-        "__test_texture_pool__/1419872856_rings.png",
-        "__test_texture_pool__/1419872859_bouquet.png",
-        "__test_texture_pool__/1419872860_rose.png",
-        "__test_texture_pool__/1419872876_cake.png",
+        "test_texture_pool/1419872819_box1.png",
+        "test_texture_pool/1419872828_box3.png",
+        "test_texture_pool/1419872831_box2.png",
+        "test_texture_pool/1419872836_balloons.png",
+        "test_texture_pool/1419872854_dog.png",
+        "test_texture_pool/1419872856_rings.png",
+        "test_texture_pool/1419872859_bouquet.png",
+        "test_texture_pool/1419872860_rose.png",
+        "test_texture_pool/1419872876_cake.png",
     }; 
 
     for (int i = 0; i < BT_ARRAY_SIZE(resources); ++i)

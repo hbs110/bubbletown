@@ -29,9 +29,13 @@ private:
 
     TexturePool* m_texturePool;
 
-    void initArmatrueName();
-
     std::vector<std::string> m_vArmatrueName;
     std::vector<cocostudio::Armature *>m_vArmature;
+
+    void addArmatures_Single();
+    void addArmatures_Uniform();
+    void addArmatures_Different();
+    void flushArmatures();
+    void clearArmatures();
 };
 
