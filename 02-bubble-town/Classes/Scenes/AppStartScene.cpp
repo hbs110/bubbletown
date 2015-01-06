@@ -15,21 +15,6 @@ const char* const MENU_World   = "World";
 const char* const MENU_TexturePool = "TexturePool(Temp)";
 const char* const MENU_TexturePool_Anim = "TexturePool(Anim)";
 
-cocos2d::Scene* AppStartScene::scene()
-{
-    // 'scene' is an autorelease object
-    auto scene = cocos2d::Scene::create();
-    
-    // 'layer' is an autorelease object
-    AppStartScene *layer = AppStartScene::create();
-
-    // add layer as a child to scene
-    scene->addChild(layer);
-
-    // return the scene
-    return scene;
-}
-
 // on "init" you need to initialize your instance
 bool AppStartScene::init()
 {

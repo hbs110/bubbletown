@@ -74,21 +74,6 @@ bool TexturePoolTestScene_Anim::init()
     return true;
 }
 
-cocos2d::Scene* TexturePoolTestScene_Anim::scene()
-{
-    // 'scene' is an autorelease object
-    auto scene = cocos2d::Scene::create();
-
-    // 'layer' is an autorelease object
-    cocos2d::Layer *layer = TexturePoolTestScene_Anim::create();
-
-    // add layer as a child to scene
-    scene->addChild(layer);
-
-    // return the scene                                           
-    return scene;
-}
-
 void TexturePoolTestScene_Anim::OnMenuItem(cocos2d::Ref* sender)
 {
     auto image = dynamic_cast<cocos2d::MenuItemImage*>(sender);

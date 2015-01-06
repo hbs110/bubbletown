@@ -20,21 +20,6 @@ enum {
     kTagTileMap = 1,
 };
 
-cocos2d::Scene* BtTownScene::scene()
-{
-    // 'scene' is an autorelease object
-    auto scene = cocos2d::Scene::create();
-
-    // 'layer' is an autorelease object
-    BtTownScene *layer = BtTownScene::create();
-
-    // add layer as a child to scene
-    scene->addChild(layer);
-
-    // return the scene                                           
-    return scene;
-}
-
 // on "init" you need to initialize your instance
 bool BtTownScene::init()
 {

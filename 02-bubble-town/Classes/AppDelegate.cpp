@@ -84,7 +84,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 
     // create a scene. it's an autorelease object
     //auto scene = BulletStormScene::scene();
-    auto scene = AppStartScene::scene();
+    auto scene = BtCreateScene<AppStartScene>();
 
     // run
     director->runWithScene(scene);

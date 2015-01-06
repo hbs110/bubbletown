@@ -20,6 +20,30 @@
 #include "TexturePool/TexturePoolTestScene.h"
 #include "TexturePool/TexturePoolTestScene_Anim.h"
 
+namespace 
+{
+    typedef std::function<cocos2d::Scene* ()> sceneCreator_t;
+    static std::map<std::string, sceneCreator_t> s_sceneCreatorLut;
+    static void BtInitSceneCreation()
+    {
+        s_sceneCreatorLut[BTSCN_Start] = &BtCreateScene<AppStartScene>;
+        s_sceneCreatorLut[BTSCN_Test] = &BtCreateScene<BtTestScene>;
+        s_sceneCreatorLut[BTSCN_Town] = &BtCreateScene<BtTownScene>;
+        s_sceneCreatorLut[BTSCN_World] = &BtCreateScene<BtWorldScene>;
+        s_sceneCreatorLut[BTSCN_TexturePool] = &BtCreateScene<TexturePoolTestScene>;
+        s_sceneCreatorLut[BTSCN_TexturePool_Anim] = &BtCreateScene<TexturePoolTestScene_Anim>;
+    }
+
+    static cocos2d::Scene* BtCreateSceneByName(const std::string& sceneName)
+    {
+        auto it = s_sceneCreatorLut.find(sceneName);
+        if (it == s_sceneCreatorLut.end())
+            return nullptr;
+
+        return it->second();
+    }
+}
+
 void BtMsgGotoScene_Emit(BtConstStr sceneName)
 {
     if (!BtMsgDispatcher::Get())
@@ -29,43 +53,24 @@ void BtMsgGotoScene_Emit(BtConstStr sceneName)
     BtMsgDispatcher::Get()->Notify(msg);
 }
 
+
 bool BtMsgGotoScene_Handle(BtMsg& msg)
 {
     auto director = cocos2d::Director::getInstance();
     if (!director)
         return false;
 
-    if (msg.m_info == BTSCN_Start)
+    if (s_sceneCreatorLut.empty())
+        BtInitSceneCreation();
+
+    cocos2d::Scene* scene = BtCreateSceneByName(msg.m_info);
+    if (!scene)
     {
-        director->replaceScene(AppStartScene::scene());
-        return true;
-    }
-    else if (msg.m_info == BTSCN_Test)
-    {
-        director->replaceScene(BtTestScene::scene());
-        return true;
-    }
-    else if (msg.m_info == BTSCN_Town)
-    {
-        director->replaceScene(BtTownScene::scene());
-        return true;
-    }
-    else if (msg.m_info == BTSCN_World)
-    {
-        director->replaceScene(BtWorldScene::scene());
-        return true;
-    }
-    else if (msg.m_info == BTSCN_TexturePool)
-    {
-        director->replaceScene(TexturePoolTestScene::scene());
-        return true;
-    }
-    else if (msg.m_info == BTSCN_TexturePool_Anim)
-    {
-        director->replaceScene(TexturePoolTestScene_Anim::scene());
-        return true;
+        CCLOGERROR("The creator of scene ('%s') not found, scene creation failed.", msg.m_info.c_str());
+        return false;
     }
 
-    return false;
+    director->replaceScene(scene);
+    return true;
 }
 

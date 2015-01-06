@@ -16,21 +16,6 @@
 BtConstStr Bt_CloseButton = "close";
 BtConstStr Bt_SwitchButton = "switch";
 
-cocos2d::Scene* BtWorldScene::scene()
-{
-    // 'scene' is an autorelease object
-    auto scene = cocos2d::Scene::create();
-
-    // 'layer' is an autorelease object
-    BtWorldScene *layer = BtWorldScene::create();
-
-    // add layer as a child to scene
-    scene->addChild(layer);
-
-    // return the scene                                           
-    return scene;
-}
-
 
 bool BtWorldScene::init()
 {

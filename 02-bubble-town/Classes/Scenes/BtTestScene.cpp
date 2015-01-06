@@ -13,21 +13,6 @@ std::pair<float, int> GShootSchedule[] =
     std::make_pair(1.0f, 5),
 };
 
-cocos2d::Scene* BtTestScene::scene()
-{
-    // 'scene' is an autorelease object
-    auto scene = cocos2d::Scene::create();
-    
-    // 'layer' is an autorelease object
-    BtTestScene *layer = BtTestScene::create();
-
-    // add layer as a child to scene
-    scene->addChild(layer);
-
-    // return the scene
-    return scene;
-}
-
 BtTestScene::~BtTestScene()
 {
     if (m_shootTimer)

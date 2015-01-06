@@ -18,8 +18,6 @@ public:
 
     virtual bool init();  
 
-    static cocos2d::Scene* scene();
-
     CREATE_FUNC(TexturePoolTestScene);
 
 private:
