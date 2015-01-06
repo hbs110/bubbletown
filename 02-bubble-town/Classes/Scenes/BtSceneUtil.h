@@ -18,7 +18,6 @@ BtConstStr BTSCN_World  = "WorldScene";
 BtConstStr BTSCN_TexturePool        = "TexturePoolScene";
 BtConstStr BTSCN_TexturePool_Anim   = "TexturePoolScene_Anim";
 
-
 // the default scene creation process
 template <typename T>
 cocos2d::Scene* BtCreateScene()
@@ -40,5 +39,12 @@ void BtMsgGotoScene_Emit(BtConstStr sceneName);
 
 // handler of the 'GotoScene' message, should be subscribed at the beginning of the game
 bool BtMsgGotoScene_Handle(BtMsg& msg);
+
+// reusable helper funcion (close button)
+cocos2d::Menu* BtCreateDefaultUIElements(const cocos2d::ccMenuCallback& closeButtonHandler, const std::string& title = "");
+
+// reusable std buttun handlers
+void BtStdHandler_QuitGame(cocos2d::Ref* sender);
+void BtStdHandler_BackToMainMenu(cocos2d::Ref* sender);
 
 

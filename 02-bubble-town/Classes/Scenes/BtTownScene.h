@@ -15,19 +15,13 @@ class BtTownScene : public cocos2d::Layer
 public:
     BtTownScene() : m_tileMap(nullptr) {}
     virtual ~BtTownScene() {}
-
-    // Here's a difference. Method 'init' in cocos2d-x returns bool, instead of returning 'id' in cocos2d-iphone
-    virtual bool init();  
-
-    // a selector callback
-    void menuCloseCallback(Ref* sender);
-
-    // implement the "static node()" method manually
     CREATE_FUNC(BtTownScene);
+
+    virtual bool init();  
 
     void onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event  *event);
 
-    void OnMenuItem(Ref* sender);
+    void onMenuItem(Ref* sender);
 
     tileMap_t* m_tileMap;
 };

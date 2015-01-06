@@ -32,21 +32,12 @@ bool TexturePoolTestScene::init()
     if ( !Layer::init() )
         return false;
 
+    auto menuDefault = BtCreateDefaultUIElements(std::bind(&BtStdHandler_BackToMainMenu, std::placeholders::_1), BTSCN_TexturePool);
+    if (menuDefault)
+        addChild(menuDefault, 1);
+
     auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
-
-    // add a "close" icon to exit the progress. it's an autorelease object
-    auto closeItem = cocos2d::MenuItemImage::create(
-        "CloseNormal.png",
-        "CloseSelected.png",
-        CC_CALLBACK_1(TexturePoolTestScene::OnMenuItem,this));
-    closeItem->setName(MI_Close);
-    closeItem->setPosition(origin + cocos2d::Vec2(visibleSize) - cocos2d::Vec2(closeItem->getContentSize() / 2));
-
-    // create menu, it's an autorelease object
-    auto menu = cocos2d::Menu::create(closeItem, nullptr);
-    menu->setPosition(cocos2d::Vec2::ZERO);
-    this->addChild(menu, 1);
 
     //BtMenuBuilder mb;
     //mb.AddItems(s_menuItems, BT_ARRAY_SIZE(s_menuItems));
@@ -105,12 +96,6 @@ bool TexturePoolTestScene::init()
 
 void TexturePoolTestScene::OnMenuItem(Ref* sender)
 {
-    auto image = dynamic_cast<cocos2d::MenuItemImage*>(sender);
-    if (image && image->getName() == MI_Close)
-    {
-        BtMsgGotoScene_Emit(BTSCN_Start);
-        return;
-    }
 }
 
 TexturePoolTestScene::~TexturePoolTestScene()

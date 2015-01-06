@@ -22,30 +22,23 @@ bool BtWorldScene::init()
     if ( !Layer::init() )
         return false;
 
+    auto menuDefault = BtCreateDefaultUIElements(std::bind(&BtStdHandler_BackToMainMenu, std::placeholders::_1), BTSCN_World);
+    if (menuDefault)
+        addChild(menuDefault, 1);
+
     auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
-
-    // add a "close" icon to exit the progress. it's an autorelease object
-    auto closeItem = cocos2d::MenuItemImage::create(
-        "CloseNormal.png",
-        "CloseSelected.png",
-        CC_CALLBACK_1(BtWorldScene::menuCloseCallback,this));
-    closeItem->setName(Bt_CloseButton);
-    closeItem->setPosition(origin + cocos2d::Vec2(visibleSize) - cocos2d::Vec2(closeItem->getContentSize() / 2));
 
     auto worldButton = cocos2d::MenuItemImage::create(
         "world_button.png",
         "world_button.png",
-        CC_CALLBACK_1(BtWorldScene::OnMenuItem,this));
+        CC_CALLBACK_1(BtWorldScene::onMenuItem,this));
     worldButton->setName(Bt_SwitchButton);
     worldButton->setPosition(origin.x + visibleSize.width - worldButton->getContentSize().width / 2, origin.y + worldButton->getContentSize().height / 2);
 
     // create menu, it's an autorelease object
-    auto menu = cocos2d::Menu::create(closeItem, worldButton, nullptr);
+    auto menu = cocos2d::Menu::create(worldButton, nullptr);
     menu->setPosition(cocos2d::Vec2::ZERO);
     this->addChild(menu, 1);
 
@@ -86,12 +79,7 @@ bool BtWorldScene::init()
     return true;
 }
 
-void BtWorldScene::menuCloseCallback(Ref* sender)
-{
-    BtMsgGotoScene_Emit(BTSCN_Start);
-}
-
-void BtWorldScene::OnMenuItem(cocos2d::Ref* sender)
+void BtWorldScene::onMenuItem(cocos2d::Ref* sender)
 {
     BtMsgGotoScene_Emit(BTSCN_Town);
 }

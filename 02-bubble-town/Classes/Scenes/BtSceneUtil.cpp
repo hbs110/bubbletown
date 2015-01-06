@@ -20,6 +20,8 @@
 #include "TexturePool/TexturePoolTestScene.h"
 #include "TexturePool/TexturePoolTestScene_Anim.h"
 
+#include "AppMacros.h"
+
 namespace 
 {
     typedef std::function<cocos2d::Scene* ()> sceneCreator_t;
@@ -72,5 +74,51 @@ bool BtMsgGotoScene_Handle(BtMsg& msg)
 
     director->replaceScene(scene);
     return true;
+}
+
+void BtStdHandler_BackToMainMenu(cocos2d::Ref* sender)
+{
+    BtMsgGotoScene_Emit(BTSCN_Start);
+}
+
+void BtStdHandler_QuitGame(cocos2d::Ref* sender)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+    MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
+    return;
+#endif
+
+    cocos2d::Director::getInstance()->end();
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    exit(0);
+#endif
+}
+
+cocos2d::Menu* BtCreateDefaultUIElements(const cocos2d::ccMenuCallback& closeButtonHandler, const std::string& title)
+{
+    auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
+    auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
+
+    auto closeItem = cocos2d::MenuItemImage::create("CloseNormal.png", "CloseSelected.png", closeButtonHandler);
+    if (!closeItem)
+        return nullptr;
+
+    auto menu = cocos2d::Menu::create(closeItem, nullptr);
+    if (!menu)
+        return nullptr;
+
+    closeItem->setPosition(origin + cocos2d::Vec2(visibleSize) - cocos2d::Vec2(closeItem->getContentSize() / 2));
+    menu->setPosition(cocos2d::Vec2::ZERO);
+
+    // only create title label when it's specified
+    if (title.length())
+    {
+        auto label = cocos2d::LabelTTF::create(title, "Arial", TITLE_FONT_SIZE);
+        label->setPosition(origin.x + visibleSize.width/2, origin.y + visibleSize.height - label->getContentSize().height);
+        menu->addChild(label);
+    }
+
+    return menu;
 }
 

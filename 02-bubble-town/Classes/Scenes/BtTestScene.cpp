@@ -25,12 +25,13 @@ BtTestScene::~BtTestScene()
 // on "init" you need to initialize your instance
 bool BtTestScene::init()
 {
-    //////////////////////////////
-    // 1. super init first
     if ( !Layer::init() )
-    {
         return false;
-    }
+
+    auto menuDefault = BtCreateDefaultUIElements(std::bind(&BtStdHandler_QuitGame, std::placeholders::_1), "Hold 20 seconds to win!");
+    if (menuDefault)
+        addChild(menuDefault, 1);
+
 
     auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
@@ -46,39 +47,6 @@ bool BtTestScene::init()
     m_shootTimer->setupTimerWithInterval(0.5, 4, 0.0f);
     m_shootTimer->onTrigger = std::bind(&BtTestScene::OnShootTriggered, this);
     m_shootTimer->onFinish = std::bind(&BtTestScene::OnShootFinished, this);
-
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
-
-    // add a "close" icon to exit the progress. it's an autorelease object
-    auto closeItem = cocos2d::MenuItemImage::create(
-                                        "CloseNormal.png",
-                                        "CloseSelected.png",
-                                        CC_CALLBACK_1(BtTestScene::menuCloseCallback,this));
-    
-    closeItem->setPosition(origin + cocos2d::Vec2(visibleSize) - cocos2d::Vec2(closeItem->getContentSize() / 2));
-
-    // create menu, it's an autorelease object
-    auto menu = cocos2d::Menu::create(closeItem, NULL);
-    menu->setPosition(cocos2d::Vec2::ZERO);
-    this->addChild(menu, 1);
-    
-    /////////////////////////////
-    // 3. add your codes below...
-
-    // add a label shows "Hello World"
-    // create and initialize a label
-    
-    auto label = cocos2d::LabelTTF::create("Hold 20 seconds to win!", "Arial", TITLE_FONT_SIZE);
-    
-    // position the label on the center of the screen
-    label->setPosition(cocos2d::Vec2(origin.x + visibleSize.width/2,
-                            origin.y + visibleSize.height - label->getContentSize().height));
-
-    // add the label as a child to this layer
-    this->addChild(label, 1);
-
 
     // add the plane
     m_plane = cocos2d::Sprite::create("plane.png");
@@ -121,11 +89,6 @@ bool BtTestScene::init()
     scheduleUpdate();
 
     return true;
-}
-
-void BtTestScene::menuCloseCallback(Ref* sender)
-{
-    BtMsgGotoScene_Emit(BTSCN_Start);
 }
 
 void BtTestScene::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
