@@ -32,9 +32,9 @@ bool TexturePoolTestScene::init()
     if ( !Layer::init() )
         return false;
 
-    auto menuDefault = BtCreateDefaultUIElements(std::bind(&BtStdHandler_BackToMainMenu, std::placeholders::_1), BTSCN_TexturePool);
-    if (menuDefault)
-        addChild(menuDefault, 1);
+    auto root = BtCreateDefaultUIElements(std::bind(&BtStdHandler_BackToMainMenu, std::placeholders::_1), BTSCN_TexturePool);
+    if (root)
+        addChild(root, 1);
 
     auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();

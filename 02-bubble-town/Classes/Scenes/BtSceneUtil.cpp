@@ -95,30 +95,34 @@ void BtStdHandler_QuitGame(cocos2d::Ref* sender)
 #endif
 }
 
-cocos2d::Menu* BtCreateDefaultUIElements(const cocos2d::ccMenuCallback& closeButtonHandler, const std::string& title)
+cocos2d::Node* BtCreateDefaultUIElements(const cocos2d::ccMenuCallback& closeButtonHandler, const std::string& title)
 {
+    auto root = cocos2d::Node::create();
+    if (!root)
+        return nullptr;
+
     auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 
     auto closeItem = cocos2d::MenuItemImage::create("CloseNormal.png", "CloseSelected.png", closeButtonHandler);
     if (!closeItem)
         return nullptr;
+    closeItem->setPosition(origin + cocos2d::Vec2(visibleSize) - cocos2d::Vec2(closeItem->getContentSize() / 2));
 
     auto menu = cocos2d::Menu::create(closeItem, nullptr);
     if (!menu)
         return nullptr;
-
-    closeItem->setPosition(origin + cocos2d::Vec2(visibleSize) - cocos2d::Vec2(closeItem->getContentSize() / 2));
     menu->setPosition(cocos2d::Vec2::ZERO);
+    root->addChild(menu, 1);
 
     // only create title label when it's specified
     if (title.length())
     {
         auto label = cocos2d::LabelTTF::create(title, "Arial", TITLE_FONT_SIZE);
         label->setPosition(origin.x + visibleSize.width/2, origin.y + visibleSize.height - label->getContentSize().height);
-        menu->addChild(label);
+        root->addChild(label, 1);
     }
 
-    return menu;
+    return root;
 }
 

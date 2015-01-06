@@ -16,6 +16,8 @@
 
 #include "TexturePool/TexturePool.h"
 
+#include <cocostudio/CocoStudio.h>
+
 static BtConstStr MI_Close      = "bt_close";
 
 static BtConstStr BtRes_TestImagePath = "test_texture_pool/map/";
@@ -30,9 +32,9 @@ bool TexturePoolTestScene_Anim::init()
     if ( !Layer::init() )
         return false;
 
-    auto menuDefault = BtCreateDefaultUIElements(std::bind(&BtStdHandler_BackToMainMenu, std::placeholders::_1), BTSCN_TexturePool_Anim);
-    if (menuDefault)
-        addChild(menuDefault, 1);
+    auto root = BtCreateDefaultUIElements(std::bind(&BtStdHandler_BackToMainMenu, std::placeholders::_1), BTSCN_TexturePool_Anim);
+    if (root)
+        addChild(root, 1);
 
     auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
@@ -72,19 +74,18 @@ void TexturePoolTestScene_Anim::OnMenuItem(cocos2d::Ref* sender)
         auto label = dynamic_cast<cocos2d::LabelProtocol*>(text->getLabel());
         if (label)
         {
+            clearArmatures();
+
             if (label->getString() == "single")
             {
-                clearArmatures();
                 addArmatures_Single();
             }
             else if (label->getString() == "uniform")
             {
-                clearArmatures();
                 addArmatures_Uniform();
             }
             else if (label->getString() == "different")
             {
-                clearArmatures();
                 addArmatures_Different();
             }
         }
@@ -94,6 +95,7 @@ void TexturePoolTestScene_Anim::OnMenuItem(cocos2d::Ref* sender)
 void TexturePoolTestScene_Anim::addArmatures_Single()
 {
     m_vArmatrueName.push_back("DefenderN");
+    flushArmatures();
 }
 
 void TexturePoolTestScene_Anim::addArmatures_Uniform()

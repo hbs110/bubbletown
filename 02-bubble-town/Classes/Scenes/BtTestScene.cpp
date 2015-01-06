@@ -28,9 +28,9 @@ bool BtTestScene::init()
     if ( !Layer::init() )
         return false;
 
-    auto menuDefault = BtCreateDefaultUIElements(std::bind(&BtStdHandler_QuitGame, std::placeholders::_1), "Hold 20 seconds to win!");
-    if (menuDefault)
-        addChild(menuDefault, 1);
+    auto root = BtCreateDefaultUIElements(std::bind(&BtStdHandler_QuitGame, std::placeholders::_1), "Hold 20 seconds to win!");
+    if (root)
+        addChild(root, 1);
 
 
     auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();

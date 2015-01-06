@@ -11,6 +11,8 @@
 
 #include "Impl/TexturePoolGroup.h"
 
+#include <cocostudio/CocoStudio.h>
+
 TexturePool::TexturePool()
 {
     memset(m_groups, 0, sizeof(m_groups));
@@ -70,6 +72,27 @@ bool TexturePool::PushSprite(cocos2d::Sprite* sprite,
     cell.m_couldBeRecycled = !manualReleaseRequired;
 
     return targetGroup->AppendCell(cell);
+}
+
+bool TexturePool::PushArmature(cocostudio::Armature* armature, const std::string& groupName /*= ""*/, const std::string& originalResourcePath /*= ""*/, bool manualReleaseRequired /*= false*/)
+{
+    if (!IsValid())
+        return false;
+
+    //if (!armature || !armature->getsp ->getTexture())
+    //    return false;
+
+    //TexturePoolGroup* targetGroup = FindGroup(groupName);
+    //if (!targetGroup)
+    //    return false;
+
+    //TexturePoolCell cell;
+    //cell.m_sprite = sprite;
+    //cell.m_originalRes = originalResourcePath;
+    //cell.m_couldBeRecycled = !manualReleaseRequired;
+
+    //return targetGroup->AppendCell(cell);
+    return true;
 }
 
 void TexturePool::ReleaseSprite(cocos2d::Sprite* sprite, const std::string& groupName /*= ""*/)

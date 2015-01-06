@@ -8,7 +8,10 @@
 
 #pragma once
 
-#include <cocostudio/CocoStudio.h>
+namespace cocostudio
+{
+    class Armature;
+}
 
 class TexturePool;
 

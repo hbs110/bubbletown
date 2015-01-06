@@ -41,7 +41,7 @@ void BtMsgGotoScene_Emit(BtConstStr sceneName);
 bool BtMsgGotoScene_Handle(BtMsg& msg);
 
 // reusable helper funcion (close button)
-cocos2d::Menu* BtCreateDefaultUIElements(const cocos2d::ccMenuCallback& closeButtonHandler, const std::string& title = "");
+cocos2d::Node* BtCreateDefaultUIElements(const cocos2d::ccMenuCallback& closeButtonHandler, const std::string& title = "");
 
 // reusable std buttun handlers
 void BtStdHandler_QuitGame(cocos2d::Ref* sender);

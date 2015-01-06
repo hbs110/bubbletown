@@ -21,9 +21,9 @@ bool AppStartScene::init()
     if ( !Layer::init() )
         return false;
     
-    auto menuDefault = BtCreateDefaultUIElements(std::bind(&BtStdHandler_QuitGame, std::placeholders::_1), BTSCN_Start);
-    if (menuDefault)
-        addChild(menuDefault, 1);
+    auto root = BtCreateDefaultUIElements(std::bind(&BtStdHandler_QuitGame, std::placeholders::_1), BTSCN_Start);
+    if (root)
+        addChild(root, 1);
     
     BtTextMenuBuilder mb;
     mb.AddItem(MENU_Bubble);

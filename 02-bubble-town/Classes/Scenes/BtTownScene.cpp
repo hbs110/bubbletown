@@ -26,9 +26,9 @@ bool BtTownScene::init()
     if ( !Layer::init() )
         return false;
 
-    auto menuDefault = BtCreateDefaultUIElements(std::bind(&BtStdHandler_BackToMainMenu, std::placeholders::_1), BTSCN_Town);
-    if (menuDefault)
-        addChild(menuDefault, 1);
+    auto root = BtCreateDefaultUIElements(std::bind(&BtStdHandler_BackToMainMenu, std::placeholders::_1), BTSCN_Town);
+    if (root)
+        addChild(root, 1);
 
     auto map = tileMap_t::create("scn_town02/map_tiles.tmx");
     addChild(map, 0, kTagTileMap);
