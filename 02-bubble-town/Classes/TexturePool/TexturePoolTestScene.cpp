@@ -111,7 +111,6 @@ bool TexturePoolTestScene::init()
                     resGroupB[i], rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 
                 auto sprite = cocos2d::Sprite::createWithTexture(texture, rect);
-                sprite->setFlippedY(true);
                 sprite->setPosition(cocos2d::Vec2(50 + 80 * (i % 5), 200 + 80 * (i / 5)));
                 addChild(sprite, -1);
             }

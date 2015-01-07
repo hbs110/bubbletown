@@ -10,10 +10,10 @@
 
 #include "Core/BtCoreDef.h"
 
-const int   TexPool_MaxGroupCount = 3;
+const int   TexPool_MaxGroupCount = 1;
 
 BtConstStr  TexPool_DefaulGroupName = "__default__";
-const int   TexPool_DefaulTextureSize = 256;
+const int   TexPool_DefaulTextureSize = 2048;
 
 BtConstStr  TexPool_Group_Character     = "characters";
 BtConstStr  TexPool_Group_Effect        = "effects";
@@ -29,8 +29,8 @@ public:
 const TexPoolGroupInitParam GDefaultTexturePoolInitParams[TexPool_MaxGroupCount] = 
 {
     { TexPool_DefaulGroupName,  TexPool_DefaulTextureSize },
-    { TexPool_Group_Character,  TexPool_DefaulTextureSize },
-    { TexPool_Group_Effect,     TexPool_DefaulTextureSize },
+    //{ TexPool_Group_Character,  TexPool_DefaulTextureSize },
+    //{ TexPool_Group_Effect,     TexPool_DefaulTextureSize },
 };
 
 class TexturePoolGroup;

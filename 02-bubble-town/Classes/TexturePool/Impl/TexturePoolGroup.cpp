@@ -159,12 +159,11 @@ bool TexturePoolGroup::Flush()
             auto tempSprite = cocos2d::Sprite::createWithTexture(sprite->getTexture());
             tempSprite->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
             tempSprite->setPosition(cell.coord.x, cell.coord.y);
+            tempSprite->setFlippedY(true);
             tempSprite->visit();
 
             if (sprite->getTexture() != m_renderTargetTexture->getSprite()->getTexture())
                 sprite->setTexture(m_renderTargetTexture->getSprite()->getTexture());
-
-            sprite->setFlippedY(true);
 
             sprite->setTextureRect(cocos2d::Rect(cell.coord.x, cell.coord.y, cell.size.w, cell.size.h), cell.rotated, cocos2d::Size(cell.size.w, cell.size.h));
         }

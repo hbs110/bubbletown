@@ -18,6 +18,10 @@
 
 #include <cocostudio/CocoStudio.h>
 
+#include <chrono>
+
+#include "AppMacros.h"
+
 static BtConstStr MI_Close      = "bt_close";
 
 static BtConstStr BtRes_TestImagePath = "test_texture_pool/map/";
@@ -26,6 +30,8 @@ TexturePoolTestScene_Anim::~TexturePoolTestScene_Anim()
 {
     BtDeletePointer(m_texturePool);
 }
+
+cocos2d::LabelTTF* timingLabel = nullptr;
 
 bool TexturePoolTestScene_Anim::init()
 {
@@ -39,10 +45,15 @@ bool TexturePoolTestScene_Anim::init()
     auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 
+    timingLabel = cocos2d::LabelTTF::create("timing", "Arial", TITLE_FONT_SIZE / 2);
+    timingLabel->setPosition(origin.x + visibleSize.width/2, origin.y + 100);
+    root->addChild(timingLabel, 1);
+
     BtTextMenuBuilder mb;
     mb.AddItem("single");
     mb.AddItem("uniform");
     mb.AddItem("different");
+    mb.AddItem("different_pooled");
     mb.SetItemAlign(BtTextMenuBuilder::Left);
     mb.SetHandler(std::bind(&TexturePoolTestScene_Anim::OnMenuItem, this, std::placeholders::_1));
     cocos2d::Menu* menuBuild = mb.Build();
@@ -60,8 +71,6 @@ bool TexturePoolTestScene_Anim::init()
     m_texturePool->Init(GDefaultTexturePoolInitParams, TexPool_MaxGroupCount);
     if (!m_texturePool)
         return false;
-
-    m_texturePool->Flush();
 
     return true;
 }
@@ -86,7 +95,11 @@ void TexturePoolTestScene_Anim::OnMenuItem(cocos2d::Ref* sender)
             }
             else if (label->getString() == "different")
             {
-                addArmatures_Different();
+                addArmatures_Different(false);
+            }
+            else if (label->getString() == "different_pooled")
+            {
+                addArmatures_Different(true);
             }
         }
     }
@@ -94,7 +107,7 @@ void TexturePoolTestScene_Anim::OnMenuItem(cocos2d::Ref* sender)
 
 void TexturePoolTestScene_Anim::addArmatures_Single()
 {
-    m_vArmatrueName.push_back("DefenderN");
+    m_vArmatrueName.push_back("SpearmenN");
     flushArmatures();
 }
 
@@ -108,7 +121,7 @@ void TexturePoolTestScene_Anim::addArmatures_Uniform()
     flushArmatures();
 }
 
-void TexturePoolTestScene_Anim::addArmatures_Different()
+void TexturePoolTestScene_Anim::addArmatures_Different(bool pooled)
 {
     m_vArmatrueName.push_back("DefenderN");
     m_vArmatrueName.push_back("SpearmenN");
@@ -136,20 +149,20 @@ void TexturePoolTestScene_Anim::addArmatures_Different()
     m_vArmatrueName.push_back("DongZhuoEvil");
     m_vArmatrueName.push_back("FaZheng");
     m_vArmatrueName.push_back("GongSunZan");
-    m_vArmatrueName.push_back("GuYong");
-    m_vArmatrueName.push_back("GuanYu");
-    m_vArmatrueName.push_back("HuaXiong");
-    m_vArmatrueName.push_back("HuangYueYing");
-    m_vArmatrueName.push_back("JiangWei");
-    m_vArmatrueName.push_back("LingTong");
-    m_vArmatrueName.push_back("LiuBei");
-    m_vArmatrueName.push_back("LuSu");
-    m_vArmatrueName.push_back("LuXun");
-    m_vArmatrueName.push_back("LvBu");
-    m_vArmatrueName.push_back("LvBuEvil");
-    m_vArmatrueName.push_back("MaDai");
-    m_vArmatrueName.push_back("PanFeng");
-    m_vArmatrueName.push_back("PoJun");
+    //m_vArmatrueName.push_back("GuYong");
+    //m_vArmatrueName.push_back("GuanYu");
+    //m_vArmatrueName.push_back("HuaXiong");
+    //m_vArmatrueName.push_back("HuangYueYing");
+    //m_vArmatrueName.push_back("JiangWei");
+    //m_vArmatrueName.push_back("LingTong");
+    //m_vArmatrueName.push_back("LiuBei");
+    //m_vArmatrueName.push_back("LuSu");
+    //m_vArmatrueName.push_back("LuXun");
+    //m_vArmatrueName.push_back("LvBu");
+    //m_vArmatrueName.push_back("LvBuEvil");
+    //m_vArmatrueName.push_back("MaDai");
+    //m_vArmatrueName.push_back("PanFeng");
+    //m_vArmatrueName.push_back("PoJun");
     //m_vArmatrueName.push_back("SunCe");
     //m_vArmatrueName.push_back("SunJian");
     //m_vArmatrueName.push_back("SunLuBan");
@@ -182,11 +195,13 @@ void TexturePoolTestScene_Anim::addArmatures_Different()
     //m_vArmatrueName.push_back("ThunderDragon");
     //m_vArmatrueName.push_back("TaoTie");
 
-    flushArmatures();
+    flushArmatures(pooled);
 }
 
-void TexturePoolTestScene_Anim::flushArmatures()
+void TexturePoolTestScene_Anim::flushArmatures(bool pooled)
 {
+    m_cachedNames.clear();
+
     for (auto strArmatrueName : m_vArmatrueName)
     {
         std::string sPng = BtRes_TestImagePath + strArmatrueName + ".png";
@@ -196,20 +211,89 @@ void TexturePoolTestScene_Anim::flushArmatures()
         cocostudio::DataReaderHelper::setPositionReadScale(0.25f);
         cocostudio::ArmatureDataManager::sharedArmatureDataManager()->addArmatureFileInfo( sPng.c_str(), sPlist.c_str(), sXml.c_str() );
 
+        if (pooled)
+        {
+            m_texturePool->PushImage(sPng);
+
+            std::string fullPath = cocos2d::FileUtils::getInstance()->fullPathForFilename(sPlist);
+            cocos2d::ValueMap dict = cocos2d::FileUtils::getInstance()->getValueMapFromFile(fullPath);
+            cocos2d::ValueMap& framesDict = dict["frames"].asValueMap();
+            for (auto iter = framesDict.begin(); iter != framesDict.end(); ++iter)
+            {
+                m_cachedNames[strArmatrueName].push_back(iter->first);
+            }
+        }
+
         cocostudio::Armature *pArmature = cocostudio::Armature::create();
         pArmature->init(strArmatrueName.c_str());
         pArmature->setScale(2.0f);
         pArmature->getAnimation()->setAnimationScale(0.2f);
         pArmature->getAnimation()->playByIndex(1, -1, -1/*, 1, 10000*/);
-        pArmature->setPosition(rand() % 300, rand() % 300);
+        pArmature->setPosition((pooled ? 200 : 100) + rand() % 100, 100 + rand() % 100);
         this->addChild(pArmature);
 
         m_vArmature.push_back(pArmature);
+    }
+
+    if (pooled)
+    {
+        {
+            std::chrono::high_resolution_clock::time_point _startTime = std::chrono::high_resolution_clock::now();
+            
+            m_texturePool->Flush();
+
+            std::chrono::high_resolution_clock::time_point _stopTime = std::chrono::high_resolution_clock::now();
+            m_generateTime = static_cast<long>(std::chrono::duration_cast<std::chrono::microseconds>(_stopTime - _startTime).count());
+        }
+
+        {
+            std::chrono::high_resolution_clock::time_point _startTime = std::chrono::high_resolution_clock::now();
+
+            for (auto strArmatrueName : m_vArmatrueName)
+            {
+                std::string sPng = BtRes_TestImagePath + strArmatrueName + ".png";
+
+                cocos2d::Texture2D* texture = nullptr;
+                cocos2d::Rect rect;
+                if (m_texturePool->GetImageRect(sPng, &texture, &rect))
+                {
+                    auto& names = m_cachedNames[strArmatrueName];
+                    for (auto spriteFrameName : names)
+                    {
+                        cocos2d::SpriteFrame* sf = cocos2d::SpriteFrameCache::getInstance()->getSpriteFrameByName(spriteFrameName); 
+                        if (sf && texture)
+                        {
+                            cocos2d::Rect newRect = sf->getRect();
+                            newRect.origin += rect.origin;
+                            if (sf->getTexture() != texture)
+                            {
+                                sf->setTexture(texture);
+                            }
+                            sf->setRect(newRect);
+                        }
+                    }
+                }
+            }
+
+            std::chrono::high_resolution_clock::time_point _stopTime = std::chrono::high_resolution_clock::now();
+            m_parsingTime = static_cast<long>(std::chrono::duration_cast<std::chrono::microseconds>(_stopTime - _startTime).count());
+        }
+
+        if (timingLabel)
+        {
+            char test[256];
+            sprintf(test, "generate: %d microseconds, parsing: %d microseconds", m_generateTime, m_parsingTime);
+            timingLabel->setString(test);
+        }
+
+        cocos2d::Director::getInstance()->getTextureCache()->removeUnusedTextures();
     }
 }
 
 void TexturePoolTestScene_Anim::clearArmatures()
 {
+    m_texturePool->Defrag();
+
     m_vArmatrueName.clear();
 
     while( !m_vArmature.empty() ) 
