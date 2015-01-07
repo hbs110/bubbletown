@@ -3,23 +3,21 @@ Thumbs.db
 
 
 # 测试用的资源文件
-/02-bubble-town/Resources/test_texture_pool/map
+/**/Resources/test_texture_pool/map
 
 # 本地的配置文件
-/02-bubble-town/proj.android/local.properties
-/02-bubble-town/proj.android/ant.properties
+/**/proj.android/local.properties
+/**/proj.android/ant.properties
 
 # 生成时的临时文件
-/01-hold-20-sec-to-win/proj.win32/Debug.win32
-/01-hold-20-sec-to-win/proj.win32/Release.win32
-/02-bubble-town/proj.win32/Debug.win32
-/02-bubble-town/proj.win32/Release.win32
-/02-bubble-town/proj.android/assets
-/02-bubble-town/proj.android/bin
-/02-bubble-town/proj.android/gen
-/02-bubble-town/proj.android/obj
-/02-bubble-town/proj.android/libs
-/02-bubble-town/proj.android/.settings
+/**/proj.win32/Debug.win32
+/**/proj.win32/Release.win32
+/**/proj.android/assets
+/**/proj.android/bin
+/**/proj.android/gen
+/**/proj.android/obj
+/**/proj.android/libs
+/**/proj.android/.settings
 
 # 生成的包
-/02-bubble-town/bin/**/*.apk
+/**/bin/**/*.apk
