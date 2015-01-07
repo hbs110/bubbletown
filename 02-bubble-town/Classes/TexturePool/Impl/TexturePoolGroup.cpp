@@ -18,16 +18,40 @@ TexturePoolCell::TexturePoolCell()
 
 void TexturePoolCell::Clear()
 {
+    if (m_imagePath.size())
+    {
+        m_sprite->release();
+        m_imagePath.clear();
+    }
+
+    m_recyclable = true;
     m_sprite = nullptr;
-    m_originalRes = "";
-    m_couldBeRecycled = true;
 }
 
-void TexturePoolCell::TryToResetSpriteToOriginal()
+bool TexturePoolCell::Assign(cocos2d::Sprite* sprite, bool recyclable)
 {
-    Clear();
+    if (!sprite)
+        return false;
 
-    // !! not implemented yet !!    - would write the actual recovery logic on demand
+    m_sprite = sprite;
+    m_recyclable = recyclable;
+    return true;
+}
+
+bool TexturePoolCell::Assign(const std::string& imagePath, bool recyclable)
+{
+    if (imagePath.empty())
+        return false;
+
+    m_sprite = cocos2d::Sprite::create(imagePath);
+    if (!m_sprite)
+        return false;
+
+    m_sprite->retain();
+
+    m_imagePath = imagePath;
+    m_recyclable = recyclable;
+    return true;
 }
 
 TexturePoolGroup::TexturePoolGroup() 
@@ -39,6 +63,12 @@ TexturePoolGroup::TexturePoolGroup()
 
 TexturePoolGroup::~TexturePoolGroup()
 {
+    for (auto it = m_contentList.Get().begin(); it != m_contentList.Get().end(); ++it)
+    {
+        ClearCell(it->content);
+    }
+    m_contentList.Get().clear();
+
     if (m_renderTargetTexture)
     {
         m_renderTargetTexture->release();
@@ -60,10 +90,10 @@ bool TexturePoolGroup::Init(const std::string& name, int textureSize)
 
 bool TexturePoolGroup::AppendCell(const TexturePoolCell& cell)
 {
-    if (!cell.m_sprite || !cell.m_sprite->getTexture())
+    if (!cell.GetSprite() || !cell.GetSprite()->getTexture())
         return false;
 
-    BinPack2D::Size size = BinPack2D::Size(cell.m_sprite->getContentSize().width, cell.m_sprite->getContentSize().height);
+    BinPack2D::Size size = BinPack2D::Size(cell.GetSprite()->getContentSize().width, cell.GetSprite()->getContentSize().height);
     m_contentList += BinPack2D::Content<TexturePoolCell>(cell, BinPack2D::Coord(), size, false);
     return true;
 }
@@ -72,9 +102,25 @@ bool TexturePoolGroup::RemoveCell(cocos2d::Sprite* sprite)
 {
     for (auto it = m_contentList.Get().begin(); it != m_contentList.Get().end(); ++it)
     {
-        if (it->content.m_sprite == sprite)
+        if (it->content.GetSprite() == sprite)
         {
-            it->content.TryToResetSpriteToOriginal();
+            ClearCell(it->content);
+            m_contentList.Get().erase(it);
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool TexturePoolGroup::RemoveCell(const std::string& imagePath)
+{
+    for (auto it = m_contentList.Get().begin(); it != m_contentList.Get().end(); ++it)
+    {
+        if (it->content.ContainsImage(imagePath))
+        {
+            ClearCell(it->content);
+            m_contentList.Get().erase(it);
             return true;
         }
     }
@@ -107,10 +153,10 @@ bool TexturePoolGroup::Flush()
     m_renderTargetTexture->begin();
     for( BinPack2D::Content<TexturePoolCell>& cell : m_contentList.Get() ) 
     {
-        cocos2d::Sprite* sprite = cell.content.m_sprite;
+        cocos2d::Sprite* sprite = cell.content.GetSprite();
         if (sprite)
         {
-            auto tempSprite = cocos2d::Sprite::create(cell.content.m_originalRes);
+            auto tempSprite = cocos2d::Sprite::createWithTexture(sprite->getTexture());
             tempSprite->setAnchorPoint(cocos2d::Vec2(0.0f, 0.0f));
             tempSprite->setPosition(cell.coord.x, cell.coord.y);
             tempSprite->visit();
@@ -136,7 +182,7 @@ void TexturePoolGroup::Defrag()
     {
         if (it->content.IsRecyclable())
         {
-            it->content.TryToResetSpriteToOriginal();
+            ClearCell(it->content);
         }
         else
         {
@@ -152,5 +198,35 @@ void TexturePoolGroup::Defrag()
     }
 
     Flush();
+}
+
+void TexturePoolGroup::ClearCell(TexturePoolCell& cell)
+{
+    if (cell.GetSprite() && m_renderTargetTexture)
+    {
+        if (cell.GetSprite()->getTexture() == m_renderTargetTexture->getSprite()->getTexture())
+        {
+            cell.GetSprite()->setTexture(nullptr);
+        }
+    }
+
+    cell.Clear();
+}
+
+bool TexturePoolGroup::GetCellRect(const std::string& imagePath, cocos2d::Texture2D** outTexture, cocos2d::Rect* outRect)
+{
+    for (auto it = m_contentList.Get().begin(); it != m_contentList.Get().end(); ++it)
+    {
+        if (it->content.ContainsImage(imagePath) && m_renderTargetTexture)
+        {
+            *outTexture = m_renderTargetTexture->getSprite()->getTexture();
+
+            BinPack2D::Content<TexturePoolCell>& cell = *it;
+            *outRect = cocos2d::Rect(cell.coord.x, cell.coord.y, cell.size.w, cell.size.h);
+            return true;
+        }
+    }
+
+    return false;
 }
 

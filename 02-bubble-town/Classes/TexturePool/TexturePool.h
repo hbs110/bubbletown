@@ -35,11 +35,6 @@ const TexPoolGroupInitParam GDefaultTexturePoolInitParams[TexPool_MaxGroupCount]
 
 class TexturePoolGroup;
 
-namespace cocostudio
-{
-    class Armature;
-}
-
 class TexturePool 
 {
 public: 
@@ -60,32 +55,37 @@ public:
 
 
     /*
-        把 sprite/armature 放入池中
-            groupName - 如果指定这个参数，将会被放入对应的贴图组；未指定或名称不存在则放入默认组
-            originalResourcePath - 如果指定这个参数，那么显式地调用 ReleaseSprite 或自动整理移除精灵时，会尝试从这个路径恢复该精灵对原始图片资源的引用
+        把精灵放入池中
+            groupName - 指定这个参数，将会被放入对应的贴图组；未指定或名称不存在则放入默认组
             manualReleaseRequired - 如果为 true 则必须手动释放，如果为 false 则会在纹理池已满或手动整理时被释放
 
         实现细节：
-            该 sprite/armature 指向的原贴图将被复制入纹理池，操作成功后 sprite 将指向池内的对应位置
+            该 sprite 指向的原贴图将被复制入纹理池，操作成功后 sprite 将指向池内的对应位置
      */
-    bool PushSprite(cocos2d::Sprite* sprite, const std::string& groupName = "", const std::string& originalResourcePath = "", bool manualReleaseRequired = false);
-    bool PushArmature(cocostudio::Armature* armature, const std::string& groupName = "", const std::string& originalResourcePath = "", bool manualReleaseRequired = false);
+    bool PushSprite(cocos2d::Sprite* sprite, const std::string& groupName = "", bool manualReleaseRequired = false);
+    /* 
+        从纹理池中移除该精灵
+    */
+    void ReleaseSprite(cocos2d::Sprite* sprite);
 
 
     /* 
-        从纹理池中移除该精灵
-            groupName - 如果指定这个参数，将会在对应的贴图组内查找；未指定或名称不存在则全局查找
-
-        注意：
-            该精灵将会恢复对原始贴图的引用（如果有的话），如果该操作成功，仍可用于后续绘制
+        直接以 Image 为单位操作，参数含义大致同 PushSprite / ReleaseSprite，不再赘述
     */
-    void ReleaseSprite(cocos2d::Sprite* sprite, const std::string& groupName = "");
+    bool PushImage(const std::string& imagePath, const std::string& groupName = "", bool manualReleaseRequired = false);
+    void ReleaseImage(const std::string& imagePath);
+    /*
+        获取已经在池中的 Image 信息
+            - outTexture 该图档所在的贴图
+            - outRect 该图档所在的位置
+    */
+    bool GetImageRect(const std::string& imagePath, cocos2d::Texture2D** outTexture, cocos2d::Rect* outRect);
+
 
     /* 
         刷新纹理池中指定的 group，如果未指定则全局刷新。
     */
     void Flush(const std::string& groupName = "");
-
     /*
         整理纹理池的使用情况
 

@@ -53,7 +53,6 @@ void TexturePool::Destroy()
 
 bool TexturePool::PushSprite(cocos2d::Sprite* sprite,
                              const std::string& groupName /*= ""*/, 
-                             const std::string& originalResourcePath /*= ""*/,
                              bool manualReleaseRequired /*= true*/)
 {
     if (!IsValid())
@@ -67,35 +66,13 @@ bool TexturePool::PushSprite(cocos2d::Sprite* sprite,
         return false;
 
     TexturePoolCell cell;
-    cell.m_sprite = sprite;
-    cell.m_originalRes = originalResourcePath;
-    cell.m_couldBeRecycled = !manualReleaseRequired;
+    if (!cell.Assign(sprite, !manualReleaseRequired))
+        return false;
 
     return targetGroup->AppendCell(cell);
 }
 
-bool TexturePool::PushArmature(cocostudio::Armature* armature, const std::string& groupName /*= ""*/, const std::string& originalResourcePath /*= ""*/, bool manualReleaseRequired /*= false*/)
-{
-    if (!IsValid())
-        return false;
-
-    //if (!armature || !armature->getsp ->getTexture())
-    //    return false;
-
-    //TexturePoolGroup* targetGroup = FindGroup(groupName);
-    //if (!targetGroup)
-    //    return false;
-
-    //TexturePoolCell cell;
-    //cell.m_sprite = sprite;
-    //cell.m_originalRes = originalResourcePath;
-    //cell.m_couldBeRecycled = !manualReleaseRequired;
-
-    //return targetGroup->AppendCell(cell);
-    return true;
-}
-
-void TexturePool::ReleaseSprite(cocos2d::Sprite* sprite, const std::string& groupName /*= ""*/)
+void TexturePool::ReleaseSprite(cocos2d::Sprite* sprite)
 {
     if (!IsValid())
         return;
@@ -103,17 +80,9 @@ void TexturePool::ReleaseSprite(cocos2d::Sprite* sprite, const std::string& grou
     if (!sprite || !sprite->getTexture())
         return;
 
-    TexturePoolGroup* targetGroup = FindGroup(groupName);
-    if (targetGroup)
-    {
-        targetGroup->RemoveCell(sprite);
-    }
-    else
-    {
-        for (int i = 0; i < TexPool_MaxGroupCount; ++i)
-            if (m_groups[i]->RemoveCell(sprite))
-                break;
-    }
+    for (int i = 0; i < TexPool_MaxGroupCount; ++i)
+        if (m_groups[i]->RemoveCell(sprite))
+            break;
 }
 
 void TexturePool::Flush(const std::string& groupName /*= ""*/)
@@ -165,4 +134,42 @@ bool TexturePool::IsValid()
             return false;
 
     return true;
+}
+
+bool TexturePool::PushImage(const std::string& imagePath, const std::string& groupName /*= ""*/, bool manualReleaseRequired /*= false*/)
+{
+    if (!IsValid())
+        return false;
+
+    TexturePoolGroup* targetGroup = FindGroup(groupName);
+    if (!targetGroup)
+        return false;
+
+    TexturePoolCell cell;
+    if (!cell.Assign(imagePath, !manualReleaseRequired))
+        return false;
+
+    return targetGroup->AppendCell(cell);
+}
+
+void TexturePool::ReleaseImage(const std::string& imagePath)
+{
+    if (!IsValid())
+        return;
+
+    for (int i = 0; i < TexPool_MaxGroupCount; ++i)
+        if (m_groups[i]->RemoveCell(imagePath))
+            break;
+}
+
+bool TexturePool::GetImageRect(const std::string& imagePath, cocos2d::Texture2D** outTexture, cocos2d::Rect* outRect)
+{
+    if (!IsValid())
+        return false;
+
+    for (int i = 0; i < TexPool_MaxGroupCount; ++i)
+        if (m_groups[i]->GetCellRect(imagePath, outTexture, outRect))
+            return true;
+
+    return false;
 }

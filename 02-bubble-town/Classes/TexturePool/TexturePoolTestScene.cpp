@@ -68,28 +68,55 @@ bool TexturePoolTestScene::init()
     if (!m_texturePool)
         return false;
 
-    BtConstStr resources[] = {
-        "test_texture_pool/1419872819_box1.png",
-        "test_texture_pool/1419872828_box3.png",
-        "test_texture_pool/1419872831_box2.png",
-        "test_texture_pool/1419872836_balloons.png",
-        "test_texture_pool/1419872854_dog.png",
-        "test_texture_pool/1419872856_rings.png",
-        "test_texture_pool/1419872859_bouquet.png",
-        "test_texture_pool/1419872860_rose.png",
-        "test_texture_pool/1419872876_cake.png",
-    }; 
-
-    for (int i = 0; i < BT_ARRAY_SIZE(resources); ++i)
     {
-        BtConstStr res = resources[i];
-        auto sprite = cocos2d::Sprite::create(res);
-        sprite->setPosition(cocos2d::Vec2(50 + 80 * (i % 5), 100 + 80 * (i / 5)));
-        addChild(sprite, -1);
-        m_texturePool->PushSprite(sprite, "", res);
+        BtConstStr resGroupA[] = {
+            "test_texture_pool/1419872819_box1.png",
+            "test_texture_pool/1419872828_box3.png",
+            "test_texture_pool/1419872831_box2.png",
+            "test_texture_pool/1419872836_balloons.png",
+        }; 
+
+        for (int i = 0; i < BT_ARRAY_SIZE(resGroupA); ++i)
+        {
+            BtConstStr res = resGroupA[i];
+            auto sprite = cocos2d::Sprite::create(res);
+            sprite->setPosition(cocos2d::Vec2(50 + 30 * (i % 5), 50 + 80 * (i / 5)));
+            addChild(sprite, -1);
+            m_texturePool->PushSprite(sprite);
+        }
     }
 
-    m_texturePool->Flush();
+    {
+        BtConstStr resGroupB[] = {
+            "test_texture_pool/1419872856_rings.png",
+            "test_texture_pool/1419872859_bouquet.png",
+            "test_texture_pool/1419872860_rose.png",
+            "test_texture_pool/1419872876_cake.png",
+        }; 
+
+        for (int i = 0; i < BT_ARRAY_SIZE(resGroupB); ++i)
+        {
+            m_texturePool->PushImage(resGroupB[i]);
+        }
+
+        m_texturePool->Flush();
+
+        for (int i = 0; i < BT_ARRAY_SIZE(resGroupB); ++i)
+        {
+            cocos2d::Texture2D* texture = nullptr;
+            cocos2d::Rect rect;
+            if (m_texturePool->GetImageRect(resGroupB[i], &texture, &rect))
+            {
+                CCLOG("res '%s' is located at: %.2f %.2f, size: %.2f %.2f", 
+                    resGroupB[i], rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+
+                auto sprite = cocos2d::Sprite::createWithTexture(texture, rect);
+                sprite->setFlippedY(true);
+                sprite->setPosition(cocos2d::Vec2(50 + 80 * (i % 5), 200 + 80 * (i / 5)));
+                addChild(sprite, -1);
+            }
+        }
+    }
 
     return true;
 }
