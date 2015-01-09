@@ -1,0 +1,6 @@
+#Do now ignore  Marmalade icf files
+!*.icf
+
+
+# 暂时先不上传 texture pool 的资源
+Resources/**/*.*

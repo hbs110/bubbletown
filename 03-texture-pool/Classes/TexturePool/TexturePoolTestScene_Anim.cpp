@@ -54,6 +54,8 @@ bool TexturePoolTestScene_Anim::init()
     mb.AddItem("uniform");
     mb.AddItem("different");
     mb.AddItem("different_pooled");
+    mb.AddItem("ui_sim");
+    mb.AddItem("ui_sim_pooled");
     mb.SetItemAlign(BtTextMenuBuilder::Left);
     mb.SetHandler(std::bind(&TexturePoolTestScene_Anim::OnMenuItem, this, std::placeholders::_1));
     cocos2d::Menu* menuBuild = mb.Build();
@@ -67,6 +69,12 @@ bool TexturePoolTestScene_Anim::init()
         addChild(menuBuild, 1);
     }
 
+    m_rootUI = cocos2d::Node::create();
+    if (!m_rootUI)
+        return false;
+
+    addChild(m_rootUI, 1);
+
     m_texturePool = new TexturePool;
     m_texturePool->Init(GDefaultTexturePoolInitParams, TexPool_MaxGroupCount);
     if (!m_texturePool)
@@ -74,6 +82,14 @@ bool TexturePoolTestScene_Anim::init()
 
     return true;
 }
+
+BtConstStr UIResources[] = {
+    "test_texture_pool/1419872819_box1.png",
+    "test_texture_pool/1419872828_box3.png",
+    "test_texture_pool/1419872831_box2.png",
+    "test_texture_pool/1419872836_balloons.png",
+}; 
+
 
 void TexturePoolTestScene_Anim::OnMenuItem(cocos2d::Ref* sender)
 {
@@ -100,6 +116,31 @@ void TexturePoolTestScene_Anim::OnMenuItem(cocos2d::Ref* sender)
             else if (label->getString() == "different_pooled")
             {
                 addArmatures_Different(true);
+            }
+            else if (label->getString() == "ui_sim")
+            {
+                m_rootUI->removeAllChildren();
+                for (int i = 0; i < BT_ARRAY_SIZE(UIResources); ++i)
+                {
+                    BtConstStr res = UIResources[i];
+                    auto sprite = cocos2d::Sprite::create(res);
+                    sprite->setPosition(cocos2d::Vec2(50 + 30 * (i % 5), 50 + 80 * (i / 5)));
+                    m_rootUI->addChild(sprite, -1);
+                }
+            }
+            else if (label->getString() == "ui_sim_pooled")
+            {
+                m_rootUI->removeAllChildren();
+
+                for (int i = 0; i < BT_ARRAY_SIZE(UIResources); ++i)
+                {
+                    BtConstStr res = UIResources[i];
+                    auto sprite = cocos2d::Sprite::create(res);
+                    sprite->setPosition(cocos2d::Vec2(50 + 30 * (i % 5), 50 + 80 * (i / 5)));
+                    m_rootUI->addChild(sprite, -1);
+                    m_texturePool->PushSprite(sprite, TexPool_Group_UI);
+                }
+                m_texturePool->Flush(TexPool_Group_UI);
             }
         }
     }

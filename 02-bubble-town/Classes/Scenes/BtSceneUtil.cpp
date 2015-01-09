@@ -17,9 +17,6 @@
 #include "BtTownScene.h"
 #include "BtWorldScene.h"
 
-#include "TexturePool/TexturePoolTestScene.h"
-#include "TexturePool/TexturePoolTestScene_Anim.h"
-
 #include "AppMacros.h"
 
 namespace 
@@ -32,8 +29,6 @@ namespace
         s_sceneCreatorLut[BTSCN_Test] = &BtCreateScene<BtTestScene>;
         s_sceneCreatorLut[BTSCN_Town] = &BtCreateScene<BtTownScene>;
         s_sceneCreatorLut[BTSCN_World] = &BtCreateScene<BtWorldScene>;
-        s_sceneCreatorLut[BTSCN_TexturePool] = &BtCreateScene<TexturePoolTestScene>;
-        s_sceneCreatorLut[BTSCN_TexturePool_Anim] = &BtCreateScene<TexturePoolTestScene_Anim>;
     }
 
     static cocos2d::Scene* BtCreateSceneByName(const std::string& sceneName)

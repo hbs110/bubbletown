@@ -18,10 +18,6 @@ LOCAL_SRC_FILES := ../main.cpp \
 		../../Classes/Scenes/BtWorldScene.cpp \
 		../../Classes/Scenes/BtTownScene.cpp \
         ../../Classes/MsgHandling/BtMsgDispatcher.cpp \
-        ../../Classes/TexturePool/Impl/TexturePoolGroup.cpp \
-        ../../Classes/TexturePool/TexturePool.cpp \
-        ../../Classes/TexturePool/TexturePoolTestScene.cpp \
-		../../Classes/TexturePool/TexturePoolTestScene_Anim.cpp \
 		../../Classes/Core/BtGuiUtil.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes

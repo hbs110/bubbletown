@@ -15,8 +15,6 @@ BtConstStr BTSCN_Start  = "StartScene";
 BtConstStr BTSCN_Test   = "TestScene";
 BtConstStr BTSCN_Town   = "TownScene";
 BtConstStr BTSCN_World  = "WorldScene";
-BtConstStr BTSCN_TexturePool        = "TexturePoolScene";
-BtConstStr BTSCN_TexturePool_Anim   = "TexturePoolScene_Anim";
 
 // the default scene creation process
 template <typename T>
