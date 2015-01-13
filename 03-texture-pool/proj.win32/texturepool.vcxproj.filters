@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Classes">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="win32">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Classes\Scenes">
+      <UniqueIdentifier>{a279ef03-9648-4116-86d4-35f518e0893d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Core">
+      <UniqueIdentifier>{194f8a3b-de92-4047-80ce-35a36b9eca85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\MsgHandling">
+      <UniqueIdentifier>{3d0b5d32-41a4-47e8-bdd4-bda44a3c1b16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\TexturePool">
+      <UniqueIdentifier>{35af7dda-dca8-470f-8754-96f7475abe2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\TexturePool\Impl">
+      <UniqueIdentifier>{bd9df8d1-85d8-468c-8d4b-d8e22b57e597}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Classes\AppDelegate.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\stdafx.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Core\BtGuiUtil.cpp">
+      <Filter>Classes\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scenes\AppStartScene.cpp">
+      <Filter>Classes\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MsgHandling\BtMsgDispatcher.cpp">
+      <Filter>Classes\MsgHandling</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scenes\BtSceneUtil.cpp">
+      <Filter>Classes\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TexturePool\TexturePool.cpp">
+      <Filter>Classes\TexturePool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TexturePool\TexturePoolTestScene.cpp">
+      <Filter>Classes\TexturePool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TexturePool\Impl\TexturePoolGroup.cpp">
+      <Filter>Classes\TexturePool\Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TexturePool\TexturePoolTestScene_Anim.cpp">
+      <Filter>Classes\TexturePool</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Classes\AppDelegate.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppMacros.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\stdafx.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Core\BtGuiUtil.h">
+      <Filter>Classes\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Core\BtCoreDef.h">
+      <Filter>Classes\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scenes\AppStartScene.h">
+      <Filter>Classes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MsgHandling\BtMsgDef.h">
+      <Filter>Classes\MsgHandling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MsgHandling\BtMsgDispatcher.h">
+      <Filter>Classes\MsgHandling</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scenes\BtSceneUtil.h">
+      <Filter>Classes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TexturePool\TexturePool.h">
+      <Filter>Classes\TexturePool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TexturePool\TexturePoolTestScene.h">
+      <Filter>Classes\TexturePool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TexturePool\Impl\TexturePoolGroup.h">
+      <Filter>Classes\TexturePool\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TexturePool\Impl\binpack2d.hpp">
+      <Filter>Classes\TexturePool\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TexturePool\TexturePoolTestScene_Anim.h">
+      <Filter>Classes\TexturePool</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
