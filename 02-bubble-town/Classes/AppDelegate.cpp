@@ -22,7 +22,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 {
     // message handling
     BtMsgDispatcher::CreateInst();
-    BtMsgDispatcher::Get()->Subscribe(BTMSG_GotoScene, &BtMsgGotoScene_Handle);
+    BtMsgDispatcher::Get()->Subscribe(BTMSG_GotoScene, &BtHandleMsg_GotoScene);
 
     // initialize director
     auto director = cocos2d::Director::getInstance();

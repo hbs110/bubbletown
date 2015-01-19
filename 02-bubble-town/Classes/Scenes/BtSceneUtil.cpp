@@ -41,17 +41,7 @@ namespace
     }
 }
 
-void BtMsgGotoScene_Emit(BtConstStr sceneName)
-{
-    if (!BtMsgDispatcher::Get())
-        return;
-
-    BtMsg msg(BTMSG_GotoScene, sceneName);
-    BtMsgDispatcher::Get()->Notify(msg);
-}
-
-
-bool BtMsgGotoScene_Handle(BtMsg& msg)
+bool BtHandleMsg_GotoScene(BtMsg& msg)
 {
     auto director = cocos2d::Director::getInstance();
     if (!director)
@@ -73,7 +63,7 @@ bool BtMsgGotoScene_Handle(BtMsg& msg)
 
 void BtStdHandler_BackToMainMenu(cocos2d::Ref* sender)
 {
-    BtMsgGotoScene_Emit(BTSCN_Start);
+    BtEmitMessage(BTMSG_GotoScene, BTSCN_Start);
 }
 
 void BtStdHandler_QuitGame(cocos2d::Ref* sender)

@@ -15,10 +15,45 @@
 #include "Core/BtGuiUtil.h"
 
 #include "Scenes/BtSceneUtil.h"
+#include "MsgHandling/BtMsgDef.h"
 
 enum {
     kTagTileMap = 1,
 };
+
+BtConstStr MI_Pick = "Pick";
+BtConstStr MI_Build = "Build";
+
+
+template <typename T>
+T BtRound(T value)
+{
+    T base = floor(value);
+    if (value < base + T(0.5f))
+    {
+        return base;
+    } 
+    else
+    {
+        return base + T(1.0f);
+    }
+}
+
+cocos2d::Vec2 BtGetTouchedTile(cocos2d::Touch* touch, cocos2d::experimental::TMXLayer* layer)
+{
+    if (!touch || !layer)
+        return BT_INVALID_VEC2;
+
+    cocos2d::Mat4 n2t = layer->tileToNodeTransform().getInversed();
+
+    auto lLoc = layer->convertTouchToNodeSpace(touch);
+    auto tLoc = PointApplyTransform(lLoc, n2t);
+    tLoc = cocos2d::Vec2(BtRound(tLoc.x), BtRound(tLoc.y) + 1);
+    //CCLOG("lLoc -> %.2f, %.2f", lLoc.x, lLoc.y);
+    //CCLOG("tLoc -> %.2f, %.2f", tLoc.x, tLoc.y);
+    return tLoc;
+}
+
 
 // on "init" you need to initialize your instance
 bool BtTownScene::init()
@@ -38,19 +73,15 @@ bool BtTownScene::init()
     CCLOG("ContentSize: %f, %f", s.width,s.height);
     map->setPosition(cocos2d::Vec2(0, 0));
 
-    //auto layer = map->getLayer("trees3");
-    //int tileID = layer->getTileGIDAt(cocos2d::Vec2(21, 28));
-    //cocos2d::Sprite* sprite = layer->getTileAt(cocos2d::Vec2(21, 28));
-
     auto listener = cocos2d::EventListenerTouchAllAtOnce::create();
+    listener->onTouchesEnded = CC_CALLBACK_2(BtTownScene::onTouchesEnded, this);
     listener->onTouchesMoved = CC_CALLBACK_2(BtTownScene::onTouchesMoved, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     BtTextMenuBuilder mb;
-    mb.AddItem("build tree");
-    mb.AddItem("build grass");
+    mb.AddItem(MI_Pick, std::bind(&BtTownScene::onMenu_Pick, this, std::placeholders::_1));
+    mb.AddItem(MI_Build, std::bind(&BtTownScene::onMenu_Build, this, std::placeholders::_1));
     mb.SetItemAlign(BtTextMenuBuilder::Left);
-    mb.SetHandler(std::bind(&BtTownScene::onMenuItem, this, std::placeholders::_1));
     cocos2d::Menu* menuBuild = mb.Build();
     if (menuBuild)
     {
@@ -83,6 +114,24 @@ bool BtTownScene::init()
     return true;
 }
 
+void BtTownScene::onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event *event)
+{
+    if (!m_isPicking)
+        return;
+
+    // support one touch only (ignore additional touches)
+    auto touch = touches[0];
+    if (touch->getStartLocation() != touch->getLocation())
+        return; // return if onTouchesMoved() is called
+
+    auto layer = m_tileMap->getLayer("layer_background");
+    auto tile = BtGetTouchedTile(touch, layer);
+    if (tile == BT_INVALID_VEC2)
+        return;
+
+    CCLOG("tile -> %.2f, %.2f", tile.x, tile.y);
+}
+
 void BtTownScene::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event  *event)
 {
     auto touch = touches[0];
@@ -98,7 +147,7 @@ void BtTownScene::onMenuItem(Ref* sender)
     auto image = dynamic_cast<cocos2d::MenuItemImage*>(sender);
     if (image)
     {
-        BtMsgGotoScene_Emit(BTSCN_World);
+        BtEmitMessage(BTMSG_GotoScene, BTSCN_World);
         return;
     }
 
@@ -112,13 +161,27 @@ void BtTownScene::onMenuItem(Ref* sender)
 
     CCLOG("TownScene::OnMenuItem -> %s", label->getString().c_str());
     
-    if (label->getString() == "build tree")
+    if (label->getString() == MI_Pick)
     {
         auto layer = m_tileMap->getLayer("trees3");
         int tileID = layer->getTileGIDAt(cocos2d::Vec2(21, 28));
         layer->setTileGID(tileID, cocos2d::Vec2(20, 28));
         cocos2d::Sprite* sprite = layer->getTileAt(cocos2d::Vec2(20, 28));
+        int z = layer->getLocalZOrder();
+        CCLOG("local z -> %d", z);
+        //m_tileMap->reorderChild(_tamara, newZ);    
     }
    
+}
+
+void BtTownScene::onMenu_Pick(Ref* sender)
+{
+    m_isPicking = !m_isPicking;
+    CCLOG("m_isPicking -> %d", m_isPicking);
+}
+
+void BtTownScene::onMenu_Build(Ref* sender)
+{
+    CCLOG("Build touched.");
 }
 

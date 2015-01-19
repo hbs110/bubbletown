@@ -32,11 +32,8 @@ cocos2d::Scene* BtCreateScene()
     return scene;
 }
 
-// emit the 'GotoScene' message
-void BtMsgGotoScene_Emit(BtConstStr sceneName);
-
 // handler of the 'GotoScene' message, should be subscribed at the beginning of the game
-bool BtMsgGotoScene_Handle(BtMsg& msg);
+bool BtHandleMsg_GotoScene(BtMsg& msg);
 
 // reusable helper funcion (close button)
 cocos2d::Node* BtCreateDefaultUIElements(const cocos2d::ccMenuCallback& closeButtonHandler, const std::string& title = "");

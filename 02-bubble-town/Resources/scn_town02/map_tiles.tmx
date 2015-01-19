@@ -3,9 +3,25 @@
  <tileset firstgid="1" name="map_tiles" tilewidth="100" tileheight="50" margin="2">
   <image source="map_tiles.png" width="1024" height="1024"/>
  </tileset>
- <layer name="块层 1" width="20" height="20">
+ <tileset firstgid="201" name="markers" tilewidth="64" tileheight="64">
+  <tile id="0">
+   <image width="64" height="64" source="markers/marker-green.png"/>
+  </tile>
+  <tile id="1">
+   <image width="64" height="64" source="markers/marker-pink.png"/>
+  </tile>
+ </tileset>
+ <layer name="layer_background" width="20" height="20">
   <data encoding="base64" compression="zlib">
-   eJyTZ2BgkCcBG0AxKXpGzRuc5nEBMTsQK1DJPEaoedyD1Dx+qHlyNIyPUTyKRxIGAIdKMNw=
+   eJyTZ2BgkB/Fo3gUj+JRPIpJxADN+TBx
   </data>
  </layer>
+ <layer name="layer_sockets" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBiaQAcJU9MsaphJbfOoAYhxB7FuxeYvYsWGonnIailVQw8wFNLzYMobo4B8AAAz6gp9
+  </data>
+ </layer>
+ <objectgroup name="layer_markers">
+  <object name="pt_spawn" gid="202" x="375.5" y="426.5"/>
+ </objectgroup>
 </map>

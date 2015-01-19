@@ -62,14 +62,14 @@ void AppStartScene::onMenuItem(Ref* sender)
 
     if (label->getString() == MENU_Bubble)
     {
-        BtMsgGotoScene_Emit(BTSCN_Test);
+        BtEmitMessage(BTMSG_GotoScene, BTSCN_Test);
     }
     else if (label->getString() == MENU_Town)
     {
-        BtMsgGotoScene_Emit(BTSCN_Town);
+        BtEmitMessage(BTMSG_GotoScene, BTSCN_Town);
     }
     else if (label->getString() == MENU_World)
     {
-        BtMsgGotoScene_Emit(BTSCN_World);
+        BtEmitMessage(BTMSG_GotoScene, BTSCN_World);
     }
 }

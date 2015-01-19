@@ -15,7 +15,10 @@ typedef const char* const   BtConstStr;
 #define BT_ARRAY_SIZE(arr)  ( sizeof(arr) / sizeof(arr[0]) )
 
 // invalid id
-const int BT_INVALID_ID = -1;   
+const int BT_INVALID_ID = -1;
+
+// invalid id
+const cocos2d::Vec2 BT_INVALID_VEC2 = cocos2d::Vec2(-1000123.0f, -1000123.0f);
 
 
 template <typename T> void BtDeletePointer(T& ptr)  {if (ptr)    { delete ptr; ptr = NULL; } }

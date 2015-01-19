@@ -86,3 +86,12 @@ void BtMsgDispatcher::ProcessedDeferred()
 {
 
 }
+
+void BtEmitMessage(int msgId, const std::string& msgInfo /*= ""*/, float deferred /*= 0.0f*/)
+{
+    if (!BtMsgDispatcher::Get())
+        return;
+
+    BtMsg msg(msgId, msgInfo);
+    BtMsgDispatcher::Get()->Notify(msg, deferred);
+}

@@ -50,3 +50,4 @@ private:
     std::vector<BtMsg> m_deferredMsgs;
 };
 
+void BtEmitMessage(int msgId, const std::string& msgInfo = "", float deferred = 0.0f);

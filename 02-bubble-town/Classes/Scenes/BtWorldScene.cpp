@@ -12,6 +12,7 @@
 #include "AppMacros.h"
 
 #include "BtSceneUtil.h"
+#include "MsgHandling/BtMsgDef.h"
 
 BtConstStr Bt_CloseButton = "close";
 BtConstStr Bt_SwitchButton = "switch";
@@ -81,6 +82,6 @@ bool BtWorldScene::init()
 
 void BtWorldScene::onMenuItem(cocos2d::Ref* sender)
 {
-    BtMsgGotoScene_Emit(BTSCN_Town);
+    BtEmitMessage(BTMSG_GotoScene, BTSCN_Town);
 }
 
