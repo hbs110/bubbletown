@@ -1,14 +1,90 @@
 #include "BubbleScene.h"
 
-class BubbleGrid {
- public:
-  void Init(float screen_width, float screen_height,
-            float buble_width, float bubble_height);
+using cocos2d::Vec2;
+using cocos2d::Touch;
+using cocos2d::Event;
+using cocos2d::Director;
+using cocos2d::Sprite;
 
-  Vec2 GetNearestGrid(Vec2 loc);
-  void SetGrid(Vec2 dest);
-  void ClearGrid(Vec2 dest);
+class GridLayer : public cocos2d::Layer {
+ public:
+  CREATE_FUNC(GridLayer);
+
+  bool init();
+  void onEnter();
+  void update(float dt);
+
+  void GridInit(float screen_width, float screen_height,
+                float bubble_width, float bubble_height);
+
+  //Vec2 GetNearestGrid(Vec2 loc);
+  //void SetGrid(Vec2 dest);
+  //void ClearGrid(Vec2 dest);
+
+  Vec2 Grid2Pos(int m, int n);
+  Vec2 Pos2Grid();
+
+ private:
+  int grid_x_ = 0;
+  int grid_y_ = 0;
+
+  float bubble_width_;
+  float bubble_height_;
+  float pos_height_;
 };
+
+bool GridLayer::init() {
+  return Layer::init();
+}
+
+void GridLayer::onEnter() {
+  Layer::onEnter();
+  scheduleUpdate();
+
+  auto sprite = Sprite::create("bubble.png");
+  // addChild(sprite);
+  auto size = sprite->getContentSize();
+  auto s = Director::getInstance()->getWinSize();
+  GridInit(s.width, s.height, size.width, size.height);
+  // sprite->release();
+}
+
+void GridLayer::update(float dt) {
+}
+
+Vec2 GridLayer::Grid2Pos(int m, int n) {
+  float offset = bubble_width_ / 2;
+  if (n & 0x01) {
+    offset += bubble_width_ / 2;
+  }
+
+  auto v = Vec2(m * bubble_width_ + offset,
+                n * pos_height_ + pos_height_ / 2);
+  return v;
+}
+
+void GridLayer::GridInit(float screen_width, float screen_height,
+                         float bubble_width, float bubble_height) {
+  bubble_width_ = bubble_width;
+  bubble_height_ = bubble_height;
+  pos_height_ = bubble_height * 0.866;
+
+  grid_x_ = screen_width / bubble_width;
+  grid_y_ = screen_height / pos_height_;
+
+  cocos2d::log("grid x, y %d %d\n", grid_x_, grid_y_);
+
+  // test
+  for (int m = 0; m < grid_x_; m++) {
+    for (int n = 0; n < grid_y_; n++) {
+      auto v = Grid2Pos(m, n);
+      cocos2d::log("grid ps %f, %f", v.x, v.y);
+      auto sprite = Sprite::create("bubble.png");
+      sprite->setPosition(v);
+      addChild(sprite);
+    }
+  }
+}
 
 class BubbleLayer : public cocos2d::Layer {
  public:
@@ -31,8 +107,6 @@ class BubbleLayer : public cocos2d::Layer {
   void onTouchCancelled(Touch *touch, Event* event);
 
  private:
-  BGLayer *bg_ = NULL;
-  NPCLayer *npc_ = NULL;
   Sprite *sprite_ = NULL;
   float sin_a_ = 0.0;
   float cos_a_ = 0.0;
@@ -49,7 +123,7 @@ void BubbleLayer::addNewSpriteWithCoords(Vec2 dest) {
   auto s = Director::getInstance()->getWinSize();
   sprite->setPosition(Vec2(s.width/2, 0));
 
-  auto action = MoveTo::create(2, dest);
+  auto action = cocos2d::MoveTo::create(2, dest);
   sprite->runAction(action);
 #if 0    
     ActionInterval* action;
@@ -85,7 +159,7 @@ bool BubbleLayer::onTouchBegan(Touch *touch, Event* event) {
 }
 
 void BubbleLayer::onTouchMoved(Touch *touch, Event* event) {
-  log("%s\n", __func__);
+  cocos2d::log("%s\n", __func__);
 }
 
 void BubbleLayer::onTouchEnded(Touch *touch, Event* event) {
@@ -112,7 +186,7 @@ void BubbleLayer::onTouchEnded(Touch *touch, Event* event) {
 
   sprite_ = Sprite::create("bubble.png");
   if (sprite_ == NULL) {
-    log("create sprite faile\n");
+    cocos2d::log("create sprite faile\n");
     return;
   }
   addChild(sprite_);
@@ -121,7 +195,7 @@ void BubbleLayer::onTouchEnded(Touch *touch, Event* event) {
 }
 
 void BubbleLayer::onTouchCancelled(Touch *touch, Event* event) {
-  log("%s\n", __FUNCTION__);
+  cocos2d::log("%s\n", __FUNCTION__);
 }
 
 void BubbleLayer::onEnter() {
@@ -131,7 +205,7 @@ void BubbleLayer::onEnter() {
   schedule(schedule_selector(BubbleLayer::TimeCallback), 0.05, -1, 0);
 
   // Register Touch Event
-  auto listener = EventListenerTouchOneByOne::create();
+  auto listener = cocos2d::EventListenerTouchOneByOne::create();
   listener->setSwallowTouches(true);
     
   listener->onTouchBegan = CC_CALLBACK_2(BubbleLayer::onTouchBegan, this);
@@ -161,14 +235,14 @@ void BubbleLayer::CheckEdge() {
 
   auto x = curr.x - (size.width / 2);
   if (x < 0) {
-    // log("left edge!");
+    // cocos2d::log("left edge!");
     cos_a_ = -cos_a_;
     return;
   }
 
   x = curr.x + (size.width / 2);
   if (x > s.width) {
-    // log("right edge!");
+    // cocos2d::log("right edge!");
     cos_a_ = -cos_a_;
     return;
   }
@@ -204,6 +278,8 @@ void BubbleScene::onEnter() {
 
   BubbleLayer *layer = BubbleLayer::create();
   assert(layer != NULL);
-
   addChild(layer);
+
+  GridLayer *gridlayer = GridLayer::create();
+  addChild(gridlayer);
 }
