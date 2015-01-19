@@ -1,14 +1,7 @@
 /****************************************************************************
-<<<<<<< HEAD
-Copyright (c) 2008-2010 Ricardo Quesada
-Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2011      Zynga Inc.
-Copyright (c) 2013-2014 Chukong Technologies Inc.
- 
-=======
-Copyright (c) 2010-2012 cocos2d-x.org
+Copyright (c) 2013 cocos2d-x.org
+Copyright (c) Microsoft Open Technologies, Inc.
 
->>>>>>> 08aed3d7d3c61d37c474d6b2c99d63977dc79b7e
 http://www.cocos2d-x.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,9 +22,26 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-package org.cocos2dx.cpp;
 
-import org.cocos2dx.lib.Cocos2dxActivity;
+//// THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
+//// ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+//// THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+//// PARTICULAR PURPOSE.
+////
+//// Copyright (c) Microsoft Corporation. All rights reserved
 
-public class AppActivity extends Cocos2dxActivity {
+#pragma once
+
+
+// This header defines helper utilities to make DirectX APIs work with exceptions.
+namespace DX
+{
+    inline void ThrowIfFailed(HRESULT hr)
+    {
+        if (FAILED(hr))
+        {
+            // Set a breakpoint on this line to catch DX API errors.
+            throw Platform::Exception::CreateException(hr);
+        }
+    }
 }

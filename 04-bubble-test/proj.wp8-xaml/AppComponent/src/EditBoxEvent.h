@@ -1,14 +1,6 @@
 /****************************************************************************
-<<<<<<< HEAD
-Copyright (c) 2008-2010 Ricardo Quesada
-Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2011      Zynga Inc.
-Copyright (c) 2013-2014 Chukong Technologies Inc.
- 
-=======
-Copyright (c) 2010-2012 cocos2d-x.org
+Copyright (c) 2014 cocos2d-x.org
 
->>>>>>> 08aed3d7d3c61d37c474d6b2c99d63977dc79b7e
 http://www.cocos2d-x.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,9 +21,28 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-package org.cocos2dx.cpp;
 
-import org.cocos2dx.lib.Cocos2dxActivity;
+#ifndef __EditBoxEVENT_H__
+#define __EditBoxEVENT_H__
 
-public class AppActivity extends Cocos2dxActivity {
+#include "InputEvent.h"
+#include <agile.h>
+
+
+namespace cocos2d
+{
+	class EditBoxEvent : public cocos2d::InputEvent
+	{
+	public:
+		EditBoxEvent(Platform::Object^ sender, Platform::String^ arg, Windows::Foundation::EventHandler<Platform::String^>^ handle);
+
+		virtual void execute();
+
+	private:
+		Platform::Agile<Platform::Object^> m_sender;
+		Platform::Agile<Platform::String^> m_args;
+		Platform::Agile<Windows::Foundation::EventHandler<Platform::String^>^> m_handler;
+	};
 }
+
+#endif

@@ -1,14 +1,9 @@
 /****************************************************************************
-<<<<<<< HEAD
 Copyright (c) 2008-2010 Ricardo Quesada
 Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2011      Zynga Inc.
 Copyright (c) 2013-2014 Chukong Technologies Inc.
  
-=======
-Copyright (c) 2010-2012 cocos2d-x.org
-
->>>>>>> 08aed3d7d3c61d37c474d6b2c99d63977dc79b7e
 http://www.cocos2d-x.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

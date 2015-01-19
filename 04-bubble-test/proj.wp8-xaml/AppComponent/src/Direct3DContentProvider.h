@@ -1,14 +1,7 @@
 /****************************************************************************
-<<<<<<< HEAD
-Copyright (c) 2008-2010 Ricardo Quesada
-Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2011      Zynga Inc.
-Copyright (c) 2013-2014 Chukong Technologies Inc.
- 
-=======
-Copyright (c) 2010-2012 cocos2d-x.org
+Copyright (c) 2013 cocos2d-x.org
+Copyright (c) Microsoft Open Technologies, Inc.
 
->>>>>>> 08aed3d7d3c61d37c474d6b2c99d63977dc79b7e
 http://www.cocos2d-x.org
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,9 +22,31 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-package org.cocos2dx.cpp;
 
-import org.cocos2dx.lib.Cocos2dxActivity;
+#pragma once
 
-public class AppActivity extends Cocos2dxActivity {
-}
+#include <wrl/module.h>
+#include <Windows.Phone.Graphics.Interop.h>
+#include <DrawingSurfaceNative.h>
+
+#include "Direct3DInterop.h"
+
+class Direct3DContentProvider : public Microsoft::WRL::RuntimeClass<
+		Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::WinRtClassicComMix>,
+		ABI::Windows::Phone::Graphics::Interop::IDrawingSurfaceBackgroundContentProvider,
+		IDrawingSurfaceBackgroundContentProviderNative>
+{
+public:
+	Direct3DContentProvider(cocos2d::Direct3DInterop^ controller);
+
+	// IDrawingSurfaceContentProviderNative
+	HRESULT STDMETHODCALLTYPE Connect(_In_ IDrawingSurfaceRuntimeHostNative* host, _In_ ID3D11Device1* device);
+	void STDMETHODCALLTYPE Disconnect();
+
+	HRESULT STDMETHODCALLTYPE PrepareResources(_In_ const LARGE_INTEGER* presentTargetTime, _Inout_ DrawingSurfaceSizeF* desiredRenderTargetSize);
+	HRESULT STDMETHODCALLTYPE Draw(_In_ ID3D11Device1* device, _In_ ID3D11DeviceContext1* context, _In_ ID3D11RenderTargetView* renderTargetView);
+
+private:
+	cocos2d::Direct3DInterop^ m_controller;
+	Microsoft::WRL::ComPtr<IDrawingSurfaceRuntimeHostNative> m_host;
+};
