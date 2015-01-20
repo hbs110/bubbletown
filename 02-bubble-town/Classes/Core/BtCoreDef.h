@@ -97,3 +97,9 @@ T BtRound(T value)
     }
 }
 
+const float BT_EPSILON = 0.00001f;
+template <typename T>
+T BtIsZero(T value)
+{
+    return value < (T)BT_EPSILON && value > - (T)BT_EPSILON;
+}

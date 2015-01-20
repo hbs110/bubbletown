@@ -21,8 +21,17 @@ enum {
     kTagTileMap = 1,
 };
 
-BtConstStr MI_Pick = "Pick";
 BtConstStr MI_Build = "Build";
+BtConstStr MI_Clear = "Clear";
+
+BtConstStr s_buildings[] = 
+{
+    "deco",
+    "hall",
+    "house",
+    "shop",
+    "workshop",
+};
 
 const int BT_TilemapFileMaxZ = 10;
 const int BT_TilemapLogicalZ = BT_TilemapFileMaxZ + 10;
@@ -89,8 +98,13 @@ bool BtTownScene::init()
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     BtTextMenuBuilder mb;
-    mb.AddItem(MI_Pick, std::bind(&BtTownScene::onMenu_Pick, this, std::placeholders::_1));
-    mb.AddItem(MI_Build, std::bind(&BtTownScene::onMenu_Build, this, std::placeholders::_1));
+
+    for (auto building : s_buildings)
+    {
+        mb.AddItem(std::string(MI_Build) + " " + building, std::bind(&BtTownScene::onMenu_Build, this, std::placeholders::_1, building));
+    }
+    mb.AddItem(MI_Clear, std::bind(&BtTownScene::onMenu_Clear, this, std::placeholders::_1));
+
     mb.SetItemAlign(BtTextMenuBuilder::Left);
     cocos2d::Menu* menuBuild = mb.Build();
     if (menuBuild)
@@ -133,6 +147,8 @@ bool BtTownScene::init()
     m_root = cocos2d::Node::create();
     m_tileMap->addChild(m_root, BT_TilemapLogicalZ);
 
+    scheduleUpdate();
+
     return true;
 }
 
@@ -154,9 +170,16 @@ void BtTownScene::onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, co
     CCLOG("tile -> %.2f, %.2f", tile.x, tile.y);
     auto pos = layer->getPositionAt(tile);
 
-    cocos2d::Sprite* hall = BtCreateIsoSprite("elements/hall.png", 2);
-    hall->setPosition(pos);
-    m_root->addChild(hall);
+    m_townCenter = BtCreateIsoSprite(std::string("elements/") + m_currentBuildingName + ".png", 2);
+    m_townCenter->setPosition(pos);
+
+    m_townCenterLabel = cocos2d::LabelTTF::create("0%", "Arial", TITLE_FONT_SIZE);
+    m_townCenterLabel->setPosition(m_townCenter->getContentSize().width / 2, 0.0f);
+    m_townCenter->addChild(m_townCenterLabel, 1);
+    m_townCenter->setOpacity(0);
+    m_countdown = 2.0f;
+
+    m_root->addChild(m_townCenter);
 }
 
 void BtTownScene::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event  *event)
@@ -188,7 +211,7 @@ void BtTownScene::onMenuItem(Ref* sender)
 
     CCLOG("TownScene::OnMenuItem -> %s", label->getString().c_str());
     
-    if (label->getString() == MI_Pick)
+    if (label->getString() == MI_Clear)
     {
         auto layer = m_tileMap->getLayer("trees3");
         int tileID = layer->getTileGIDAt(cocos2d::Vec2(21, 28));
@@ -201,14 +224,40 @@ void BtTownScene::onMenuItem(Ref* sender)
    
 }
 
-void BtTownScene::onMenu_Pick(Ref* sender)
+void BtTownScene::onMenu_Clear(Ref* sender)
 {
-    m_isPicking = !m_isPicking;
+    m_isPicking = false;
     CCLOG("m_isPicking -> %d", m_isPicking);
 }
 
-void BtTownScene::onMenu_Build(Ref* sender)
+void BtTownScene::onMenu_Build(Ref* sender, const std::string& buildingName)
 {
     CCLOG("Build touched.");
+    m_currentBuildingName = buildingName;
+    m_isPicking = true;
+}
+
+void BtTownScene::update(float delta)
+{
+    Layer::update(delta);
+
+    if (m_townCenter && m_countdown > 0.0f)
+    {
+        m_countdown = std::max(0.0f, m_countdown - delta);
+
+        float percent = (2.0f - m_countdown) / 2.0f;
+        m_townCenter->setOpacity((int)(255.0f * percent));
+
+        if (m_townCenterLabel)
+        {
+            m_townCenterLabel->setString(std::to_string((int)(100.0f * percent)) + "%");
+
+            if (BtIsZero(m_countdown))
+            {
+                m_townCenter->removeChild(m_townCenterLabel, true);
+                m_townCenterLabel = nullptr;
+            }
+        }
+    }
 }
 
