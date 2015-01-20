@@ -79,3 +79,21 @@ bool BtIsInContainer(ELEM e, CONT c)
  *	Singleton Object 
  */
 #define BT_SGT_INST(className)  s_##className
+
+/* 
+    Round to the nearest integer
+*/
+template <typename T>
+T BtRound(T value)
+{
+    T base = floor(value);
+    if (value < base + T(0.5f))
+    {
+        return base;
+    } 
+    else
+    {
+        return base + T(1.0f);
+    }
+}
+

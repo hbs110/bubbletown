@@ -29,5 +29,7 @@ public:
     tileMap_t* m_tileMap;
 
     bool m_isPicking;
+
+    cocos2d::Node* m_root;
 };
 

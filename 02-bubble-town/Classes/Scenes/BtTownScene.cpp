@@ -24,20 +24,9 @@ enum {
 BtConstStr MI_Pick = "Pick";
 BtConstStr MI_Build = "Build";
 
+const int BT_TilemapFileMaxZ = 10;
+const int BT_TilemapLogicalZ = BT_TilemapFileMaxZ + 10;
 
-template <typename T>
-T BtRound(T value)
-{
-    T base = floor(value);
-    if (value < base + T(0.5f))
-    {
-        return base;
-    } 
-    else
-    {
-        return base + T(1.0f);
-    }
-}
 
 cocos2d::Vec2 BtGetTouchedTile(cocos2d::Touch* touch, cocos2d::experimental::TMXLayer* layer)
 {
@@ -48,12 +37,33 @@ cocos2d::Vec2 BtGetTouchedTile(cocos2d::Touch* touch, cocos2d::experimental::TMX
 
     auto lLoc = layer->convertTouchToNodeSpace(touch);
     auto tLoc = PointApplyTransform(lLoc, n2t);
-    tLoc = cocos2d::Vec2(BtRound(tLoc.x), BtRound(tLoc.y) + 1);
+    tLoc = cocos2d::Vec2(BtRound(tLoc.x), BtRound(tLoc.y));
     //CCLOG("lLoc -> %.2f, %.2f", lLoc.x, lLoc.y);
     //CCLOG("tLoc -> %.2f, %.2f", tLoc.x, tLoc.y);
     return tLoc;
 }
 
+cocos2d::Sprite* BtCreateIsoSprite(const std::string& imagePath, int borderPixels = 0)
+{
+    cocos2d::Sprite* sprite = cocos2d::Sprite::create(imagePath);
+    auto sf = sprite->getSpriteFrame();
+
+    if (borderPixels > 0)
+    {
+        cocos2d::SpriteFrame *frame = cocos2d::SpriteFrame::createWithTexture(sf->getTexture(), sf->getRect());
+        auto rect = sf->getRectInPixels();
+        rect.origin.x = borderPixels;
+        rect.origin.y = borderPixels;
+        rect.size.width -= borderPixels * 2;
+        rect.size.height -= borderPixels * 2;
+        frame->setRectInPixels(rect);
+        sprite->setDisplayFrame(frame);
+    }
+
+    cocos2d::Size size = sprite->getContentSize();
+    sprite->setAnchorPoint(cocos2d::Vec2(0.5f, size.width * 0.25f / size.height));
+    return sprite;
+}
 
 // on "init" you need to initialize your instance
 bool BtTownScene::init()
@@ -98,8 +108,8 @@ bool BtTownScene::init()
 
     // add a "close" icon to exit the progress. it's an autorelease object
     auto worldButton = cocos2d::MenuItemImage::create(
-        "world_button.png",
-        "world_button.png",
+        "treasure-map-icon.png",
+        "treasure-map-icon.png",
         CC_CALLBACK_1(BtTownScene::onMenuItem,this));
 
     auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
@@ -110,6 +120,18 @@ bool BtTownScene::init()
     auto worldMenu = cocos2d::Menu::create(worldButton, nullptr);
     worldMenu->setPosition(cocos2d::Vec2::ZERO);
     this->addChild(worldMenu, 1);
+
+    int maxZ = 0;
+    for (auto child : m_tileMap->getChildren())
+    {
+        maxZ = std::max(maxZ, child->getLocalZOrder());
+    }
+
+    if (maxZ >= BT_TilemapFileMaxZ)
+        return false;
+
+    m_root = cocos2d::Node::create();
+    m_tileMap->addChild(m_root, BT_TilemapLogicalZ);
 
     return true;
 }
@@ -130,6 +152,11 @@ void BtTownScene::onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, co
         return;
 
     CCLOG("tile -> %.2f, %.2f", tile.x, tile.y);
+    auto pos = layer->getPositionAt(tile);
+
+    cocos2d::Sprite* hall = BtCreateIsoSprite("elements/hall.png", 2);
+    hall->setPosition(pos);
+    m_root->addChild(hall);
 }
 
 void BtTownScene::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event  *event)

@@ -24,4 +24,5 @@
  <objectgroup name="layer_markers">
   <object name="pt_spawn" gid="202" x="375.5" y="426.5"/>
  </objectgroup>
+ <objectgroup name="layer_objects"/>
 </map>

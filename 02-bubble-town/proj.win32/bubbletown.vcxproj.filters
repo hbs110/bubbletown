@@ -18,6 +18,18 @@
     <Filter Include="Classes\MsgHandling">
       <UniqueIdentifier>{3d0b5d32-41a4-47e8-bdd4-bda44a3c1b16}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\Scenes\Scene_Town">
+      <UniqueIdentifier>{9b0bb853-3a3e-4048-adea-6027d86de0ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Scenes\Scene_Bubble">
+      <UniqueIdentifier>{89053a60-29ff-4151-a362-baa2ec31e53a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Scenes\Scene_World">
+      <UniqueIdentifier>{70c8bed9-d954-4909-8f6f-f8a6a5c89a59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\Core\Util">
+      <UniqueIdentifier>{1706aeb8-14a2-48e1-a88a-9ae3d3b70e82}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp">
@@ -29,16 +41,10 @@
     <ClCompile Include="..\Classes\stdafx.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Core\BtGuiUtil.cpp">
-      <Filter>Classes\Core</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Scenes\BtTestScene.cpp">
       <Filter>Classes\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Scenes\AppStartScene.cpp">
-      <Filter>Classes\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Scenes\BtTownScene.cpp">
       <Filter>Classes\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\MsgHandling\BtMsgDispatcher.cpp">
@@ -49,6 +55,12 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Scenes\BtWorldScene.cpp">
       <Filter>Classes\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scenes\BtTownScene.cpp">
+      <Filter>Classes\Scenes\Scene_Town</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Core\BtGuiUtil.cpp">
+      <Filter>Classes\Core\Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -64,9 +76,6 @@
     <ClInclude Include="..\Classes\stdafx.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Core\BtGuiUtil.h">
-      <Filter>Classes\Core</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Core\BtCoreDef.h">
       <Filter>Classes\Core</Filter>
     </ClInclude>
@@ -74,9 +83,6 @@
       <Filter>Classes\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Scenes\AppStartScene.h">
-      <Filter>Classes\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Scenes\BtTownScene.h">
       <Filter>Classes\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\MsgHandling\BtMsgDef.h">
@@ -90,6 +96,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Scenes\BtWorldScene.h">
       <Filter>Classes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scenes\BtTownScene.h">
+      <Filter>Classes\Scenes\Scene_Town</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Core\BtGuiUtil.h">
+      <Filter>Classes\Core\Util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
