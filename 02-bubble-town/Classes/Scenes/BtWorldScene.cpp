@@ -26,10 +26,11 @@ bool BtWorldScene::do_init()
     titleLabel->setPosition(origin.x + visibleSize.width/2, origin.y + visibleSize.height - titleLabel->getContentSize().height);
     m_uiRoot->addChild(titleLabel, 1);
 
+    auto callback = [] (cocos2d::Ref*) { BtEmitMessage(BTMSG_GotoScene, BTSCN_Town); };
     auto worldButton = cocos2d::MenuItemImage::create(
         "world_button.png",
         "world_button.png",
-        CC_CALLBACK_1(BtWorldScene::onMenuItem,this));
+        std::bind(callback, std::placeholders::_1));
     worldButton->setName(Bt_SwitchButton);
     worldButton->setPosition(origin.x + visibleSize.width - worldButton->getContentSize().width / 2, origin.y + worldButton->getContentSize().height / 2);
 
@@ -70,13 +71,5 @@ bool BtWorldScene::do_init()
     // add the sprite as a child to this layer
     this->addChild(sprite, -1);
 
-
-
     return true;
 }
-
-void BtWorldScene::onMenuItem(cocos2d::Ref* sender)
-{
-    BtEmitMessage(BTMSG_GotoScene, BTSCN_Town);
-}
-

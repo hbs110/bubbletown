@@ -35,9 +35,6 @@
     <ClCompile Include="..\Classes\stdafx.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Scenes\BtTestScene.cpp">
-      <Filter>Classes\Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Scenes\AppStartScene.cpp">
       <Filter>Classes\Scenes</Filter>
     </ClCompile>
@@ -78,9 +75,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Core\BtCoreDef.h">
       <Filter>Classes\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Scenes\BtTestScene.h">
-      <Filter>Classes\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Scenes\AppStartScene.h">
       <Filter>Classes\Scenes</Filter>

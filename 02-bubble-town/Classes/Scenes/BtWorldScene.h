@@ -19,7 +19,5 @@ public:
 
 protected:
     virtual bool do_init();  
-
-    void onMenuItem(cocos2d::Ref* sender);
 };
 

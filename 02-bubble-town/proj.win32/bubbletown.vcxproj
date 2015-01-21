@@ -133,7 +133,6 @@
     <ClCompile Include="..\Classes\Scenes\AppStartScene.cpp" />
     <ClCompile Include="..\Classes\Scenes\BtBaseScene.cpp" />
     <ClCompile Include="..\Classes\Scenes\BtSceneUtil.cpp" />
-    <ClCompile Include="..\Classes\Scenes\BtTestScene.cpp" />
     <ClCompile Include="..\Classes\Scenes\BtTownScene.cpp" />
     <ClCompile Include="..\Classes\Scenes\BtWorldScene.cpp" />
     <ClCompile Include="..\Classes\Scenes\Scene_Bubble\BtBubbleScene.cpp" />
@@ -153,7 +152,6 @@
     <ClInclude Include="..\Classes\Scenes\AppStartScene.h" />
     <ClInclude Include="..\Classes\Scenes\BtBaseScene.h" />
     <ClInclude Include="..\Classes\Scenes\BtSceneUtil.h" />
-    <ClInclude Include="..\Classes\Scenes\BtTestScene.h" />
     <ClInclude Include="..\Classes\Scenes\BtTownScene.h" />
     <ClInclude Include="..\Classes\Scenes\BtWorldScene.h" />
     <ClInclude Include="..\Classes\Scenes\Scene_Bubble\BtBubbleScene.h" />
