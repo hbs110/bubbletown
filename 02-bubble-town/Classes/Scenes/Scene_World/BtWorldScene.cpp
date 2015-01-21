@@ -11,8 +11,11 @@
 
 #include "AppMacros.h"
 
-#include "Scenes/BtSceneUtil.h"
+#include "Core/BtCoreDef.h"
 #include "Core/BtMsgDef.h"
+#include "Core/BtMsgDispatcher.h"
+
+#include "Scenes/BtSceneDef.h"
 
 BtConstStr Bt_CloseButton = "close";
 BtConstStr Bt_SwitchButton = "switch";

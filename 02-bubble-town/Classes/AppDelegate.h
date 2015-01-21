@@ -1,7 +1,7 @@
 #ifndef  _APP_DELEGATE_H_
 #define  _APP_DELEGATE_H_
 
-#include "cocos2d.h"
+#include "Core/BtMsgDispatcher.h"
 
 /**
 @brief    The cocos2d Application.
@@ -32,6 +32,12 @@ public:
     @param  the pointer of the application
     */
     virtual void applicationWillEnterForeground();
+
+protected:
+    bool OnMsg_GotoScene(BtMsg& msg);
+
+    typedef std::function<cocos2d::Scene* ()> sceneCreator_t;
+    std::map<std::string, sceneCreator_t> m_sceneCreators;
 };
 
 #endif // _APP_DELEGATE_H_

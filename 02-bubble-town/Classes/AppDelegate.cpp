@@ -3,7 +3,10 @@
 #include "AppMacros.h"
 #include "AppStartScene.h"
 
-#include "Scenes/BtSceneUtil.h"
+#include "Scenes/BtSceneDef.h"
+#include "Scenes/Scene_Bubble/BtBubbleScene.h"
+#include "Scenes/Scene_Town/BtTownScene.h"
+#include "Scenes/Scene_World/BtWorldScene.h"
 
 #include "Core/BtMsgDef.h"
 #include "Core/BtMsgDispatcher.h"
@@ -22,7 +25,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 {
     // message handling
     BtMsgDispatcher::CreateInst();
-    BtMsgDispatcher::Get()->Subscribe(BTMSG_GotoScene, &BtHandleMsg_GotoScene);
+    BtMsgDispatcher::Get()->Subscribe(BTMSG_GotoScene, std::bind(&AppDelegate::OnMsg_GotoScene, this, std::placeholders::_1));
 
     // initialize director
     auto director = cocos2d::Director::getInstance();
@@ -82,11 +85,15 @@ bool AppDelegate::applicationDidFinishLaunching()
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 60);
 
-    // create a scene. it's an autorelease object
-    //auto scene = BulletStormScene::scene();
-    auto scene = BtCreateScene<AppStartScene>();
+    
+    // ------------- Scene ------------- 
 
-    // run
+    m_sceneCreators[BTSCN_Start] = &BtCreateScene<AppStartScene>;
+    m_sceneCreators[BTSCN_Bubble] = &BtCreateScene<BtBubbleScene>;
+    m_sceneCreators[BTSCN_Town] = &BtCreateScene<BtTownScene>;
+    m_sceneCreators[BTSCN_World] = &BtCreateScene<BtWorldScene>;
+
+    auto scene = BtCreateScene<AppStartScene>();
     director->runWithScene(scene);
                             
     return true;
@@ -106,4 +113,25 @@ void AppDelegate::applicationWillEnterForeground() {
 
     // if you use SimpleAudioEngine, it must resume here
     // SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
+}
+
+bool AppDelegate::OnMsg_GotoScene(BtMsg& msg)
+{
+    auto director = cocos2d::Director::getInstance();
+    if (!director)
+        return false;
+
+    auto it = m_sceneCreators.find(msg.m_info);
+    if (it == m_sceneCreators.end())
+        return false;
+
+    cocos2d::Scene* scene = it->second();
+    if (!scene)
+    {
+        CCLOGERROR("The creator of scene ('%s') not found, scene creation failed.", msg.m_info.c_str());
+        return false;
+    }
+
+    director->replaceScene(scene);
+    return true;
 }

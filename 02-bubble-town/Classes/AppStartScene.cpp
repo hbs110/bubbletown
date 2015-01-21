@@ -14,7 +14,7 @@
 #include "Core/BtMsgDef.h"
 #include "Core/BtMsgDispatcher.h"
 
-#include "Scenes/BtSceneUtil.h"
+#include "Scenes/BtSceneDef.h"
 
 const char* const MENU_Bubble  = "Bubble";
 const char* const MENU_Town    = "Town";
@@ -40,10 +40,30 @@ bool AppStartScene::init()
     if ( !Layer::init() )
         return false;
     
-    auto root = BtCreateDefaultUIElements(std::bind(&BtQuitGame, std::placeholders::_1), BTSCN_Start);
-    if (root)
-        addChild(root, 1);
-    
+    auto root = cocos2d::Node::create();
+    if (!root)
+        return false;
+
+    auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
+    auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
+
+    auto closeItem = cocos2d::MenuItemImage::create("CloseNormal.png", "CloseSelected.png", std::bind(&BtQuitGame, std::placeholders::_1));
+    if (!closeItem)
+        return false;
+    closeItem->setPosition(origin + cocos2d::Vec2(visibleSize) - cocos2d::Vec2(closeItem->getContentSize() / 2));
+
+    auto menu = cocos2d::Menu::create(closeItem, nullptr);
+    if (!menu)
+        return false;
+    menu->setPosition(cocos2d::Vec2::ZERO);
+    root->addChild(menu, 1);
+
+    {
+        auto label = cocos2d::LabelTTF::create(BTSCN_Start, "Arial", TITLE_FONT_SIZE);
+        label->setPosition(origin.x + visibleSize.width/2, origin.y + visibleSize.height - label->getContentSize().height);
+        root->addChild(label, 1);
+    }
+
     BtTextMenuBuilder mb;
     mb.AddItem(MENU_Bubble, std::bind([] (cocos2d::Ref*) { BtEmitMessage(BTMSG_GotoScene, BTSCN_Bubble); }, std::placeholders::_1));
     mb.AddItem(MENU_Town, std::bind([] (cocos2d::Ref*) { BtEmitMessage(BTMSG_GotoScene, BTSCN_Town); }, std::placeholders::_1));
@@ -58,8 +78,9 @@ bool AppStartScene::init()
         menuPos.x = origin.x + visibleSize.width / 2;
         menuPos.y = origin.y + visibleSize.height / 4;
         menuMain->setPosition(menuPos);
-        addChild(menuMain, 1);
+        root->addChild(menuMain, 1);
     }
 
+    addChild(root, 1);
     return true;
 }
