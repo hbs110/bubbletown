@@ -12,11 +12,11 @@
 #include "Core/BtMsgDef.h"
 #include "Core/BtMsgDispatcher.h"
 
-#include "AppStartScene.h"
-#include "Scene_Bubble/BtBubbleScene.h"
-#include "BtTownScene.h"
-#include "BtWorldScene.h"
+#include "Scenes/Scene_Bubble/BtBubbleScene.h"
+#include "Scenes/Scene_Town/BtTownScene.h"
+#include "Scenes/Scene_World/BtWorldScene.h"
 
+#include "AppStartScene.h"
 #include "AppMacros.h"
 
 namespace 
@@ -61,24 +61,6 @@ bool BtHandleMsg_GotoScene(BtMsg& msg)
     return true;
 }
 
-void BtStdHandler_BackToMainMenu(cocos2d::Ref* sender)
-{
-    BtEmitMessage(BTMSG_GotoScene, BTSCN_Start);
-}
-
-void BtStdHandler_QuitGame(cocos2d::Ref* sender)
-{
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-    MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
-    return;
-#endif
-
-    cocos2d::Director::getInstance()->end();
-
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-    exit(0);
-#endif
-}
 
 cocos2d::Node* BtCreateDefaultUIElements(const cocos2d::ccMenuCallback& closeButtonHandler, const std::string& title)
 {

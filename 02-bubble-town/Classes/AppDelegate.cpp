@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "AppDelegate.h"
 #include "AppMacros.h"
+#include "AppStartScene.h"
 
-#include "Scenes/AppStartScene.h"
 #include "Scenes/BtSceneUtil.h"
 
 #include "Core/BtMsgDef.h"

@@ -24,28 +24,16 @@
     <Filter Include="Classes\Scenes\Scene_World">
       <UniqueIdentifier>{70c8bed9-d954-4909-8f6f-f8a6a5c89a59}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\App">
+      <UniqueIdentifier>{eb896cb1-beb1-4aea-9d36-44bf2a53763d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Classes\AppDelegate.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>win32</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\stdafx.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Scenes\AppStartScene.cpp">
-      <Filter>Classes\Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Scenes\BtSceneUtil.cpp">
       <Filter>Classes\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Scenes\BtWorldScene.cpp">
-      <Filter>Classes\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Scenes\BtTownScene.cpp">
-      <Filter>Classes\Scenes\Scene_Town</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Core\BtMsgDispatcher.cpp">
       <Filter>Classes\Core</Filter>
@@ -59,34 +47,31 @@
     <ClCompile Include="..\Classes\Scenes\Scene_Bubble\BtBubbleScene.cpp">
       <Filter>Classes\Scenes\Scene_Bubble</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTownScene.cpp">
+      <Filter>Classes\Scenes\Scene_Town</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scenes\Scene_World\BtWorldScene.cpp">
+      <Filter>Classes\Scenes\Scene_World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AppDelegate.cpp">
+      <Filter>Classes\App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AppStartScene.cpp">
+      <Filter>Classes\App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\stdafx.cpp">
+      <Filter>Classes\App</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Classes\AppDelegate.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
     <ClInclude Include="main.h">
       <Filter>win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\AppMacros.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\stdafx.h">
-      <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Core\BtCoreDef.h">
       <Filter>Classes\Core</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Scenes\AppStartScene.h">
-      <Filter>Classes\Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Scenes\BtSceneUtil.h">
       <Filter>Classes\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Scenes\BtWorldScene.h">
-      <Filter>Classes\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Scenes\BtTownScene.h">
-      <Filter>Classes\Scenes\Scene_Town</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Core\BtMsgDef.h">
       <Filter>Classes\Core</Filter>
@@ -102,6 +87,24 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Scenes\Scene_Bubble\BtBubbleScene.h">
       <Filter>Classes\Scenes\Scene_Bubble</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTownScene.h">
+      <Filter>Classes\Scenes\Scene_Town</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scenes\Scene_World\BtWorldScene.h">
+      <Filter>Classes\Scenes\Scene_World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppDelegate.h">
+      <Filter>Classes\App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppMacros.h">
+      <Filter>Classes\App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppStartScene.h">
+      <Filter>Classes\App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\stdafx.h">
+      <Filter>Classes\App</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

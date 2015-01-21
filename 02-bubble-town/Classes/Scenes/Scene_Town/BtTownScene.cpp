@@ -75,14 +75,14 @@ cocos2d::Sprite* BtCreateIsoSprite(const std::string& imagePath, int borderPixel
 }
 
 // on "init" you need to initialize your instance
-bool BtTownScene::init()
+bool BtTownScene::do_init()
 {
-    if ( !Layer::init() )
-        return false;
+    auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
+    auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 
-    auto root = BtCreateDefaultUIElements(std::bind(&BtStdHandler_BackToMainMenu, std::placeholders::_1), BTSCN_Town);
-    if (root)
-        addChild(root, 1);
+    auto titleLabel = cocos2d::LabelTTF::create(BTSCN_Town, "Arial", TITLE_FONT_SIZE);
+    titleLabel->setPosition(origin.x + visibleSize.width/2, origin.y + visibleSize.height - titleLabel->getContentSize().height);
+    m_uiRoot->addChild(titleLabel, 1);
 
     auto map = tileMap_t::create("scn_town02/map_tiles.tmx");
     addChild(map, 0, kTagTileMap);
@@ -125,9 +125,6 @@ bool BtTownScene::init()
         "treasure-map-icon.png",
         "treasure-map-icon.png",
         CC_CALLBACK_1(BtTownScene::onMenuItem,this));
-
-    auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
-    auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
     worldButton->setPosition(origin.x + visibleSize.width - worldButton->getContentSize().width / 2, worldButton->getContentSize().height / 2);
 
     // create menu, it's an autorelease object

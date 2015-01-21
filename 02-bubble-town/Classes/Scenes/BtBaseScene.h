@@ -14,11 +14,11 @@ public:
     BtBaseScene() : m_uiRoot(nullptr) {}
     virtual ~BtBaseScene() {}
 
-    // leave it alone without overriding, it does some common initialization works
+    // leave it alone without overriding, it does some common init works
     virtual bool init();  
 
 protected:
-    // override this one to perform the actuall init work
+    // override this one to perform the actuall init 
     virtual bool do_init() = 0;
 
     cocos2d::Node* m_uiRoot;

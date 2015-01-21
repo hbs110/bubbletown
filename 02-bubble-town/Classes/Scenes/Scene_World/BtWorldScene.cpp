@@ -11,7 +11,7 @@
 
 #include "AppMacros.h"
 
-#include "BtSceneUtil.h"
+#include "Scenes/BtSceneUtil.h"
 #include "Core/BtMsgDef.h"
 
 BtConstStr Bt_CloseButton = "close";
