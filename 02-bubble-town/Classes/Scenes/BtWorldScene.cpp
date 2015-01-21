@@ -12,24 +12,19 @@
 #include "AppMacros.h"
 
 #include "BtSceneUtil.h"
-#include "MsgHandling/BtMsgDef.h"
+#include "Core/BtMsgDef.h"
 
 BtConstStr Bt_CloseButton = "close";
 BtConstStr Bt_SwitchButton = "switch";
 
-
-bool BtWorldScene::init()
+bool BtWorldScene::do_init()
 {
-    if ( !Layer::init() )
-        return false;
-
-    auto root = BtCreateDefaultUIElements(std::bind(&BtStdHandler_BackToMainMenu, std::placeholders::_1), BTSCN_World);
-    if (root)
-        addChild(root, 1);
-
     auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 
+    auto titleLabel = cocos2d::LabelTTF::create(BTSCN_World, "Arial", TITLE_FONT_SIZE);
+    titleLabel->setPosition(origin.x + visibleSize.width/2, origin.y + visibleSize.height - titleLabel->getContentSize().height);
+    m_uiRoot->addChild(titleLabel, 1);
 
     auto worldButton = cocos2d::MenuItemImage::create(
         "world_button.png",

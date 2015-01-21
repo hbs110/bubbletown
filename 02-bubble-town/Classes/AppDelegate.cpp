@@ -5,8 +5,8 @@
 #include "Scenes/AppStartScene.h"
 #include "Scenes/BtSceneUtil.h"
 
-#include "MsgHandling/BtMsgDef.h"
-#include "MsgHandling/BtMsgDispatcher.h"
+#include "Core/BtMsgDef.h"
+#include "Core/BtMsgDispatcher.h"
 
 
 AppDelegate::AppDelegate() {

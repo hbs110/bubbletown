@@ -15,7 +15,7 @@
 #include "Core/BtGuiUtil.h"
 
 #include "Scenes/BtSceneUtil.h"
-#include "MsgHandling/BtMsgDef.h"
+#include "Core/BtMsgDef.h"
 
 enum {
     kTagTileMap = 1,

@@ -4,8 +4,8 @@
 
 #include "Core/BtGuiUtil.h"
 
-#include "MsgHandling/BtMsgDef.h"
-#include "MsgHandling/BtMsgDispatcher.h"
+#include "Core/BtMsgDef.h"
+#include "Core/BtMsgDispatcher.h"
 
 #include "Scenes/BtSceneUtil.h"
 
@@ -62,7 +62,7 @@ void AppStartScene::onMenuItem(Ref* sender)
 
     if (label->getString() == MENU_Bubble)
     {
-        BtEmitMessage(BTMSG_GotoScene, BTSCN_Test);
+        BtEmitMessage(BTMSG_GotoScene, BTSCN_Bubble);
     }
     else if (label->getString() == MENU_Town)
     {

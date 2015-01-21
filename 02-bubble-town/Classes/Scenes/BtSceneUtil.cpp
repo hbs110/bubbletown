@@ -9,11 +9,12 @@
 #include "stdafx.h"
 #include "BtSceneUtil.h"
 
-#include "MsgHandling/BtMsgDef.h"
-#include "MsgHandling/BtMsgDispatcher.h"
+#include "Core/BtMsgDef.h"
+#include "Core/BtMsgDispatcher.h"
 
 #include "AppStartScene.h"
 #include "BtTestScene.h"
+#include "Scene_Bubble/BtBubbleScene.h"
 #include "BtTownScene.h"
 #include "BtWorldScene.h"
 
@@ -27,6 +28,7 @@ namespace
     {
         s_sceneCreatorLut[BTSCN_Start] = &BtCreateScene<AppStartScene>;
         s_sceneCreatorLut[BTSCN_Test] = &BtCreateScene<BtTestScene>;
+        s_sceneCreatorLut[BTSCN_Bubble] = &BtCreateScene<BtBubbleScene>;
         s_sceneCreatorLut[BTSCN_Town] = &BtCreateScene<BtTownScene>;
         s_sceneCreatorLut[BTSCN_World] = &BtCreateScene<BtWorldScene>;
     }

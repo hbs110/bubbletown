@@ -9,10 +9,11 @@
 #pragma once
 
 #include "Core/BtCoreDef.h"
-#include "MsgHandling/BtMsgDispatcher.h"
+#include "Core/BtMsgDispatcher.h"
 
 BtConstStr BTSCN_Start  = "StartScene";
 BtConstStr BTSCN_Test   = "TestScene";
+BtConstStr BTSCN_Bubble = "BubbleScene";
 BtConstStr BTSCN_Town   = "TownScene";
 BtConstStr BTSCN_World  = "WorldScene";
 
