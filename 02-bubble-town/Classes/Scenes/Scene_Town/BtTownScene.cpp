@@ -248,7 +248,9 @@ void BtTownScene::update(float delta)
 
         if (m_townCenterLabel)
         {
-            m_townCenterLabel->setString(std::to_string((int)(100.0f * percent)) + "%");
+            std::ostringstream oss;
+            oss << (int)(100.0f * percent);
+            m_townCenterLabel->setString(oss.str() + "%");
 
             if (BtIsZero(m_countdown))
             {

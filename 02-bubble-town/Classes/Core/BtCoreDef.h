@@ -8,6 +8,11 @@
  
  #pragma once
 
+#include "cocos2d.h"
+
+#include <vector>
+#include <string>
+
 // C-style string constant
 typedef const char* const   BtConstStr;
 
@@ -21,8 +26,8 @@ const int BT_INVALID_ID = -1;
 const cocos2d::Vec2 BT_INVALID_VEC2 = cocos2d::Vec2(-1000123.0f, -1000123.0f);
 
 
-template <typename T> void BtDeletePointer(T& ptr)  {if (ptr)    { delete ptr; ptr = NULL; } }
-template <typename T> void BtDeleteArray(T& pArray) {if (pArray) { delete [] pArray; pArray = NULL; } }
+template <typename T> void BtDeletePointer(T& ptr)  {if (ptr)    { delete ptr; ptr = nullptr; } }
+template <typename T> void BtDeleteArray(T& pArray) {if (pArray) { delete [] pArray; pArray = nullptr; } }
 
 template <typename ELEM, typename CONT>
 bool BtIsInContainer(ELEM e, CONT c) 

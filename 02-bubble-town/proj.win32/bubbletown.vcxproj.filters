@@ -57,7 +57,7 @@
       <Filter>Classes\App</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\stdafx.cpp">
-      <Filter>Classes\App</Filter>
+      <Filter>Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -97,11 +97,11 @@
     <ClInclude Include="..\Classes\AppStartScene.h">
       <Filter>Classes\App</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\stdafx.h">
-      <Filter>Classes\App</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Scenes\BtSceneDef.h">
       <Filter>Classes\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\stdafx.h">
+      <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

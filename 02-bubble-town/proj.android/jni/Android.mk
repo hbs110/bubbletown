@@ -11,13 +11,13 @@ LOCAL_MODULE := cocos2dcpp_shared
 LOCAL_MODULE_FILENAME := libcocos2dcpp
 
 LOCAL_SRC_FILES := ../main.cpp \
-		../../Classes/AppDelegate.cpp \
-		../../Classes/Scenes/AppStartScene.cpp \
-		../../Classes/Scenes/BtSceneUtil.cpp \
-		../../Classes/Scenes/BtTestScene.cpp \
-		../../Classes/Scenes/BtWorldScene.cpp \
-		../../Classes/Scenes/BtTownScene.cpp \
-        ../../Classes/MsgHandling/BtMsgDispatcher.cpp \
+        ../../Classes/AppDelegate.cpp \
+		../../Classes/AppStartScene.cpp \
+        ../../Classes/Scenes/BtBaseScene.cpp \
+		../../Classes/Scenes/Scene_Bubble/BtBubbleScene.cpp \
+		../../Classes/Scenes/Scene_World/BtWorldScene.cpp \
+		../../Classes/Scenes/Scene_Town/BtTownScene.cpp \
+        ../../Classes/Core/BtMsgDispatcher.cpp \
 		../../Classes/Core/BtGuiUtil.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
