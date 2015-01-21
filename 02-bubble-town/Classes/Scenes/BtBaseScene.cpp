@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * \file BtBaseScene.cpp
  * \date 2015/01/21 9:15
  * \author Gu Lu (gulu@kingsoft.com)
@@ -19,24 +19,24 @@ bool BtBaseScene::init()
     if ( !Layer::init() )
         return false;
 
-    auto root = cocos2d::Node::create();
+    auto root = cocos2d::Layer::create();
     if (!root)
         return false;
 
     auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
+    auto callback = [] (Ref *pSender, cocos2d::ui::Widget::TouchEventType type)
+    { 
+        if (type == cocos2d::ui::Widget::TouchEventType::ENDED)
+        {
+            BtEmitMessage(BTMSG_GotoScene, BTSCN_Start);
+        }
+    };
 
-    auto callback = [] (cocos2d::Ref*) { BtEmitMessage(BTMSG_GotoScene, BTSCN_Start); };
-    auto closeItem = cocos2d::MenuItemImage::create("CloseNormal.png", "CloseSelected.png", std::bind(callback, std::placeholders::_1));
-    if (!closeItem)
-        return false;
-    closeItem->setPosition(origin + cocos2d::Vec2(visibleSize) - cocos2d::Vec2(closeItem->getContentSize() / 2));
-
-    auto menu = cocos2d::Menu::create(closeItem, nullptr);
-    if (!menu)
-        return false;
-    menu->setPosition(cocos2d::Vec2::ZERO);
-    root->addChild(menu, 1);
+    cocos2d::ui::Button* btClose = cocos2d::ui::Button::create("CloseNormal.png", "CloseSelected.png");
+    btClose->setPosition(origin + cocos2d::Vec2(visibleSize) - cocos2d::Vec2(btClose->getContentSize() / 2));
+    btClose->addTouchEventListener(std::bind(callback, std::placeholders::_1, std::placeholders::_2));
+    root->addChild(btClose, 1);
 
     addChild(root, 1);
     m_uiRoot = root;

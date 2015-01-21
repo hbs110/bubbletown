@@ -21,7 +21,7 @@ protected:
     // override this one to perform the actuall init 
     virtual bool do_init() = 0;
 
-    cocos2d::Node* m_uiRoot;
+    cocos2d::Layer* m_uiRoot;
 };
 
 
