@@ -133,6 +133,8 @@
     <ClCompile Include="..\Classes\Core\BtMsgDispatcher.cpp" />
     <ClCompile Include="..\Classes\Scenes\BtBaseScene.cpp" />
     <ClCompile Include="..\Classes\Scenes\Scene_Bubble\BtBubbleScene.cpp" />
+    <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTiledMap.cpp" />
+    <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTownBuilding.cpp" />
     <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTownScene.cpp" />
     <ClCompile Include="..\Classes\Scenes\Scene_World\BtWorldScene.cpp" />
     <ClCompile Include="..\Classes\stdafx.cpp">
@@ -152,6 +154,8 @@
     <ClInclude Include="..\Classes\Scenes\BtBaseScene.h" />
     <ClInclude Include="..\Classes\Scenes\BtSceneDef.h" />
     <ClInclude Include="..\Classes\Scenes\Scene_Bubble\BtBubbleScene.h" />
+    <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTiledMap.h" />
+    <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTownBuilding.h" />
     <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTownScene.h" />
     <ClInclude Include="..\Classes\Scenes\Scene_World\BtWorldScene.h" />
     <ClInclude Include="..\Classes\stdafx.h" />

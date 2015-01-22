@@ -67,7 +67,6 @@ bool AppStartScene::init()
     BtTextMenuBuilder mb;
     mb.AddItem(MENU_Bubble, std::bind([] (cocos2d::Ref*) { BtEmitMessage(BTMSG_GotoScene, BTSCN_Bubble); }, std::placeholders::_1));
     mb.AddItem(MENU_Town, std::bind([] (cocos2d::Ref*) { BtEmitMessage(BTMSG_GotoScene, BTSCN_Town); }, std::placeholders::_1));
-    mb.AddItem(MENU_World, std::bind([] (cocos2d::Ref*) { BtEmitMessage(BTMSG_GotoScene, BTSCN_World); }, std::placeholders::_1));
     auto menuMain = mb.Build();
     if (menuMain)
     {

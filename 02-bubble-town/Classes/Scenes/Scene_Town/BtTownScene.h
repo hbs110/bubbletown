@@ -10,16 +10,16 @@
 
 #include "Scenes/BtBaseScene.h"
 
-typedef cocos2d::experimental::TMXTiledMap  tileMap_t;
+#include "BtTiledMap.h"
+
+class BtTownBuilding;
 
 class BtTownScene : public BtBaseScene
 {
 public:
-    BtTownScene() : m_tileMap(nullptr), m_isPicking(false), m_townCenterLabel(nullptr), m_townCenter(nullptr), m_countdown(0.0f) {}
+    BtTownScene() : m_isPicking(false) {}
     virtual ~BtTownScene() {}
     CREATE_FUNC(BtTownScene);
-
-    virtual void update(float delta);
 
 protected:
     virtual bool do_init();
@@ -27,21 +27,14 @@ protected:
     void onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event  *event);
     void onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event  *event);
 
-    void onMenuItem(Ref* sender);
     void onMenu_Clear(Ref* sender);
     void onMenu_Build(Ref* sender, const std::string& buildingName);
 
-
-    tileMap_t* m_tileMap;
+    BtTiledMap m_tiledMap;
 
     bool m_isPicking;
-
-    cocos2d::Node* m_root;
-
-    cocos2d::Sprite* m_townCenter;
-    cocos2d::LabelTTF* m_townCenterLabel;
-    float m_countdown;
-
     std::string m_currentBuildingName;
+
+    std::vector<BtTownBuilding*> m_buildings;
 };
 

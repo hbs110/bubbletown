@@ -59,6 +59,12 @@
     <ClCompile Include="..\Classes\stdafx.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTiledMap.cpp">
+      <Filter>Classes\Scenes\Scene_Town</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTownBuilding.cpp">
+      <Filter>Classes\Scenes\Scene_Town</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -102,6 +108,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\stdafx.h">
       <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTiledMap.h">
+      <Filter>Classes\Scenes\Scene_Town</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTownBuilding.h">
+      <Filter>Classes\Scenes\Scene_Town</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

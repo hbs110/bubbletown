@@ -11,6 +11,7 @@
 
 #include "Core/BtMsgDef.h"
 #include "Core/BtMsgDispatcher.h"
+#include "Core/BtGuiUtil.h"
 
 #include "Scenes/BtSceneDef.h"
 
@@ -19,27 +20,23 @@ bool BtBaseScene::init()
     if ( !Layer::init() )
         return false;
 
-    auto root = cocos2d::Layer::create();
-    if (!root)
+    m_sceneRoot = cocos2d::Layer::create();
+    if (!m_sceneRoot)
         return false;
+    addChild(m_sceneRoot, 1);
+
+    m_uiRoot = cocos2d::Layer::create();
+    if (!m_uiRoot)
+        return false;
+    addChild(m_uiRoot, 2);
 
     auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
-    auto callback = [] (Ref *pSender, cocos2d::ui::Widget::TouchEventType type)
-    { 
-        if (type == cocos2d::ui::Widget::TouchEventType::ENDED)
-        {
-            BtEmitMessage(BTMSG_GotoScene, BTSCN_Start);
-        }
-    };
 
     cocos2d::ui::Button* btClose = cocos2d::ui::Button::create("CloseNormal.png", "CloseSelected.png");
     btClose->setPosition(origin + cocos2d::Vec2(visibleSize) - cocos2d::Vec2(btClose->getContentSize() / 2));
-    btClose->addTouchEventListener(std::bind(callback, std::placeholders::_1, std::placeholders::_2));
-    root->addChild(btClose, 1);
-
-    addChild(root, 1);
-    m_uiRoot = root;
+    BtSetButtonHandler(btClose, [] () { BtEmitMessage(BTMSG_GotoScene, BTSCN_Start); });
+    m_uiRoot->addChild(btClose, 1);
 
     if (!do_init())
         return false;

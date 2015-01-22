@@ -10,7 +10,7 @@
 
 #include "BtCoreDef.h"
 
-const int   BtGui_DefaultMenuFontSize   = 18;
+const int   BtGui_DefaultMenuFontSize   = 16;
 BtConstStr  BtGui_DefaultMenuFont       = "Arial";
 
 class BtTextMenuBuilder
@@ -49,3 +49,7 @@ private:
     std::map<std::string, cocos2d::ccMenuCallback> m_namedHandlers;
 };
 
+
+typedef std::function<void()> buttonHandler_t;
+
+void BtSetButtonHandler(cocos2d::ui::Button* button, buttonHandler_t handler, bool onReleased = false);

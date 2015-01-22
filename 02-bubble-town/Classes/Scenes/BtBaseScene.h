@@ -11,7 +11,7 @@
 class BtBaseScene : public cocos2d::Layer
 {
 public: 
-    BtBaseScene() : m_uiRoot(nullptr) {}
+    BtBaseScene() : m_sceneRoot(nullptr), m_uiRoot(nullptr) {}
     virtual ~BtBaseScene() {}
 
     // leave it alone without overriding, it does some common init works
@@ -21,6 +21,7 @@ protected:
     // override this one to perform the actuall init 
     virtual bool do_init() = 0;
 
+    cocos2d::Layer* m_sceneRoot;
     cocos2d::Layer* m_uiRoot;
 };
 
