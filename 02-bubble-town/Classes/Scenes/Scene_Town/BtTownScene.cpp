@@ -35,6 +35,14 @@ BtConstStr s_buildings[] =
     "workshop",
 };
 
+BtTownScene::BtTownScene() 
+    : m_operationState(eOperationState::Idle)
+    , m_holdBuildingTimer(0.0f)
+    , m_selectedBuilding(nullptr)
+{
+    memset(m_arrows, 0, sizeof(cocos2d::Sprite*) * BT_ARRAY_SIZE(m_arrows));
+}
+
 // on "init" you need to initialize your instance
 bool BtTownScene::do_init()
 {
@@ -56,7 +64,6 @@ bool BtTownScene::do_init()
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     BtTextMenuBuilder mb;
-
     for (auto building : s_buildings)
     {
         mb.AddItem(std::string(MI_Build) + " " + building, std::bind(&BtTownScene::onMenu_Build, this, std::placeholders::_1, building));
@@ -79,24 +86,81 @@ bool BtTownScene::do_init()
     BtSetButtonHandler(btWorld, [] () { BtEmitMessage(BTMSG_GotoScene, BTSCN_World); });
     m_uiRoot->addChild(btWorld, 1);
 
+
+    m_arrows[0] = cocos2d::Sprite::create("elements/fx/arrow_downleft.png");
+    m_arrows[1] = cocos2d::Sprite::create("elements/fx/arrow_downright.png");
+    m_arrows[2] = cocos2d::Sprite::create("elements/fx/arrow_upleft.png");
+    m_arrows[3] = cocos2d::Sprite::create("elements/fx/arrow_upright.png");
+    for (auto arrow : m_arrows)
+    {
+        arrow->setVisible(false);
+        cocos2d::Size size = m_tiledMap.GetTileSize(); 
+        arrow->setScale(size.width / arrow->getContentSize().width * 0.4f, size.height / arrow->getContentSize().height * 0.4f);
+
+        m_tiledMap.GetSpriteRoot()->addChild(arrow, 2);
+    }
+
     return true;
 }
 
 void BtTownScene::onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event *event)
 {
+    if (m_isPlacingBuilding)
+        return;
+
     auto touch = touches[0];
+    cocos2d::Vec2 tileCoord;
+    cocos2d::Vec2 tileCenter;
+    if (!m_tiledMap.getTouchedTileInfo(touch, &tileCoord, &tileCenter))
+        return;
+
     auto touchedPos = m_tiledMap.GetSpriteRoot()->convertTouchToNodeSpace(touch);
 
+    bool selected = false;
     for (auto building : m_buildings)
     {
         cocos2d::Rect bbox = building->getBoundingBox();
         if (bbox.containsPoint(touchedPos))
         {
-            building->playAnim_Selected();
+            if (building != m_selectedBuilding)
+            {
+                if (m_selectedBuilding)
+                    m_selectedBuilding->deselect();
+
+                m_selectedBuilding = building;
+                m_selectedBuilding->select();
+            }
+
+            cocos2d::Vec2 tileCoordBuilding;
+            if (m_tiledMap.getTileCoord(building->getPosition(), &tileCoordBuilding))
+            {
+                cocos2d::Vec2 tilePos;
+                if (m_tiledMap.getTilePosition(cocos2d::Vec2(tileCoordBuilding.x, tileCoordBuilding.y + 2), &tilePos))
+                    m_arrows[0]->setPosition(tilePos);
+                if (m_tiledMap.getTilePosition(cocos2d::Vec2(tileCoordBuilding.x + 2, tileCoordBuilding.y), &tilePos))
+                    m_arrows[1]->setPosition(tilePos);
+                if (m_tiledMap.getTilePosition(cocos2d::Vec2(tileCoordBuilding.x - 2, tileCoordBuilding.y), &tilePos))
+                    m_arrows[2]->setPosition(tilePos);
+                if (m_tiledMap.getTilePosition(cocos2d::Vec2(tileCoordBuilding.x, tileCoordBuilding.y - 2), &tilePos))
+                    m_arrows[3]->setPosition(tilePos);
+
+                for (auto arrow : m_arrows)
+                    arrow->setVisible(true);
+            }
+
+            selected = true;
             break;
         }
     }
 
+    if (!selected && m_selectedBuilding)
+    {
+        for (auto arrow : m_arrows)
+            arrow->setVisible(false);
+
+        m_selectedBuilding->deselect();
+        m_selectedBuilding = nullptr;
+    }
 }
 
 void BtTownScene::onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event *event)
@@ -134,3 +198,4 @@ void BtTownScene::onMenu_Build(Ref* sender, const std::string& buildingName)
     m_placingBuildingName = buildingName;
     m_isPlacingBuilding = true;
 }
+

@@ -47,7 +47,6 @@ BtTownBuilding::BtTownBuilding()
     : m_countDownLabel(nullptr)
     , m_countdown(0.0f)
 {
-
 }
 
 bool BtTownBuilding::initDeco()
@@ -98,5 +97,16 @@ void BtTownBuilding::playAnim_Selected()
         cocos2d::ScaleTo::create(BtBuilding_DefaultAnimLength, BtBuilding_DefaultScale * 1.2f),
         cocos2d::ScaleTo::create(BtBuilding_DefaultAnimLength, BtBuilding_DefaultScale), nullptr);
     runAction(action);
+}
+
+void BtTownBuilding::select()
+{
+    m_isSelected = true;
+    playAnim_Selected();
+}
+
+void BtTownBuilding::deselect()
+{
+    m_isSelected = false;
 }
 

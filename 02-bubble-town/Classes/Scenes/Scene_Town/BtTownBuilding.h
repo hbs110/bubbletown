@@ -19,13 +19,17 @@ public:
 
     bool initDeco();
 
-    void playAnim_Selected();
+    void select();
+    void deselect();
 
     virtual void update(float delta);
 
 protected:
     cocos2d::ui::Text* m_countDownLabel;
     float m_countdown;
+
+    void playAnim_Selected();
+    bool m_isSelected;
 
 private:
     BtTownBuilding();

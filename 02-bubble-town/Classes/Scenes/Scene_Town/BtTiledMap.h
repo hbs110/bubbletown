@@ -27,9 +27,12 @@ public:
     tileMap_t* GetTileMapRoot() const { return m_tileMap; }
     cocos2d::Node* GetSpriteRoot() const { return m_spriteRoot; }
     tileLayer_t* GetTileMapLayer(const std::string& layerName);
+    cocos2d::Size GetTileSize() { return m_tileMap->getTileSize(); }
 
     bool getTouchedTileInfo(cocos2d::Touch * touch, cocos2d::Vec2* tileCoord, cocos2d::Vec2* tileCenterPos);
-
+    bool getTileCoord(const cocos2d::Vec2& pos, cocos2d::Vec2* tileCoord);
+    bool getTilePosition(const cocos2d::Vec2& tileCoord, cocos2d::Vec2* tileCenterPos);
+    
     void onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event  *event);
 
 private:

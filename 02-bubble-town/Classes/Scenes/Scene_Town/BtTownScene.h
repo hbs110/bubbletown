@@ -24,7 +24,7 @@ enum class eOperationState
 class BtTownScene : public BtBaseScene
 {
 public:
-    BtTownScene() : m_operationState(eOperationState::Idle), m_holdBuildingTimer(0.0f) {}
+    BtTownScene();
     virtual ~BtTownScene() {}
     CREATE_FUNC(BtTownScene);
 
@@ -40,10 +40,14 @@ protected:
     // entities
     BtTiledMap m_tiledMap;
     std::vector<BtTownBuilding*> m_buildings;
+    BtTownBuilding* m_selectedBuilding;
 
     // placing building
     bool m_isPlacingBuilding;
     std::string m_placingBuildingName;
+
+    // moving building
+    cocos2d::Sprite* m_arrows[4];
 
     // not used yet
     eOperationState m_operationState;

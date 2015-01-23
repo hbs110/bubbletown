@@ -83,11 +83,36 @@ bool BtTiledMap::getTouchedTileInfo(cocos2d::Touch * touch, cocos2d::Vec2* tileC
     if (!layer)
         return false;
 
-    cocos2d::Mat4 n2t = layer->tileToNodeTransform().getInversed();
     auto lLoc = layer->convertTouchToNodeSpace(touch);
-    auto tLoc = PointApplyTransform(lLoc, n2t);
+
+    if (!getTileCoord(lLoc, tileCoord))
+        return false;
+
+    if (!getTilePosition(*tileCoord, tileCenterPos))
+        return false;
+
+    return true;
+}
+
+bool BtTiledMap::getTileCoord(const cocos2d::Vec2& pos, cocos2d::Vec2* tileCoord)
+{
+    auto layer = GetTileMapLayer(BtLayer_Background);
+    if (!layer)
+        return false;
+
+    cocos2d::Mat4 n2t = layer->tileToNodeTransform().getInversed();
+    auto tLoc = PointApplyTransform(pos, n2t);
     *tileCoord = cocos2d::Vec2(BtRound(tLoc.x), BtRound(tLoc.y));
-    *tileCenterPos = layer->getPositionAt(*tileCoord);
+    return true;
+}
+
+bool BtTiledMap::getTilePosition(const cocos2d::Vec2& tileCoord, cocos2d::Vec2* tileCenterPos)
+{
+    auto layer = GetTileMapLayer(BtLayer_Background);
+    if (!layer)
+        return false;
+
+    *tileCenterPos = layer->getPositionAt(tileCoord);
     return true;
 }
 
