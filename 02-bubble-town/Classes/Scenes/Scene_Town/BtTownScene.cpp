@@ -25,7 +25,6 @@ enum {
 };
 
 BtConstStr MI_Build = "build";
-BtConstStr MI_Clear = "clear";
 
 BtConstStr s_buildings[] = 
 {
@@ -51,6 +50,7 @@ bool BtTownScene::do_init()
     m_sceneRoot->addChild(m_tiledMap.GetTileMapRoot(), 1);
 
     auto listener = cocos2d::EventListenerTouchAllAtOnce::create();
+    listener->onTouchesBegan = CC_CALLBACK_2(BtTownScene::onTouchesBegan, this);
     listener->onTouchesEnded = CC_CALLBACK_2(BtTownScene::onTouchesEnded, this);
     listener->onTouchesMoved = CC_CALLBACK_2(BtTownScene::onTouchesMoved, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
@@ -61,7 +61,6 @@ bool BtTownScene::do_init()
     {
         mb.AddItem(std::string(MI_Build) + " " + building, std::bind(&BtTownScene::onMenu_Build, this, std::placeholders::_1, building));
     }
-    mb.AddItem(MI_Clear, std::bind(&BtTownScene::onMenu_Clear, this, std::placeholders::_1));
 
     mb.SetItemAlign(BtTextMenuBuilder::Left);
     cocos2d::Menu* menuBuild = mb.Build();
@@ -83,9 +82,26 @@ bool BtTownScene::do_init()
     return true;
 }
 
+void BtTownScene::onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event *event)
+{
+    auto touch = touches[0];
+    auto touchedPos = m_tiledMap.GetSpriteRoot()->convertTouchToNodeSpace(touch);
+
+    for (auto building : m_buildings)
+    {
+        cocos2d::Rect bbox = building->getBoundingBox();
+        if (bbox.containsPoint(touchedPos))
+        {
+            building->playAnim_Selected();
+            break;
+        }
+    }
+
+}
+
 void BtTownScene::onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event *event)
 {
-    if (!m_isPicking)
+    if (!m_isPlacingBuilding || m_placingBuildingName.empty())
         return;
 
     // support one touch only (ignore additional touches)
@@ -98,11 +114,14 @@ void BtTownScene::onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, co
     if (!m_tiledMap.getTouchedTileInfo(touch, &tileCoord, &tileCenter))
         return;
 
-    BtTownBuilding* building = BtTownBuilding::create(m_currentBuildingName, std::string("elements/") + m_currentBuildingName + ".png", 2);
+    BtTownBuilding* building = BtTownBuilding::create(m_placingBuildingName, std::string("elements/") + m_placingBuildingName + ".png", 2);
     building->initDeco();
     building->setPosition(tileCenter);
     m_buildings.push_back(building);
     m_tiledMap.GetSpriteRoot()->addChild(building);
+
+    m_isPlacingBuilding = false;
+    m_placingBuildingName = "";
 }
 
 void BtTownScene::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event  *event)
@@ -110,15 +129,8 @@ void BtTownScene::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, co
     m_tiledMap.onTouchesMoved(touches, event);
 }
 
-void BtTownScene::onMenu_Clear(Ref* sender)
-{
-    m_isPicking = false;
-    CCLOG("m_isPicking -> %d", m_isPicking);
-}
-
 void BtTownScene::onMenu_Build(Ref* sender, const std::string& buildingName)
 {
-    CCLOG("Build touched.");
-    m_currentBuildingName = buildingName;
-    m_isPicking = true;
+    m_placingBuildingName = buildingName;
+    m_isPlacingBuilding = true;
 }

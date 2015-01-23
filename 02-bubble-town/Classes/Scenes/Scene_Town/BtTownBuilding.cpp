@@ -92,3 +92,11 @@ void BtTownBuilding::update(float delta)
     }
 }
 
+void BtTownBuilding::playAnim_Selected()
+{
+    auto action = cocos2d::Sequence::create(
+        cocos2d::ScaleTo::create(BtBuilding_DefaultAnimLength, BtBuilding_DefaultScale * 1.2f),
+        cocos2d::ScaleTo::create(BtBuilding_DefaultAnimLength, BtBuilding_DefaultScale), nullptr);
+    runAction(action);
+}
+

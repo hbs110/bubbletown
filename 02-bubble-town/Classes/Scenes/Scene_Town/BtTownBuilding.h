@@ -8,6 +8,9 @@
 
 #pragma once
 
+const float BtBuilding_DefaultScale = 1.0f;
+const float BtBuilding_DefaultAnimLength = 0.1f;
+
 class BtTownBuilding : public cocos2d::Sprite
 {
 public: 
@@ -15,6 +18,8 @@ public:
     virtual ~BtTownBuilding() {}
 
     bool initDeco();
+
+    void playAnim_Selected();
 
     virtual void update(float delta);
 

@@ -11,6 +11,21 @@
 #include "Core/BtMsgDef.h"
 #include "Core/BtMsgDispatcher.h"
 
+// the default scene creation process
+template <typename T>
+cocos2d::Scene* BtCreateScene()
+{
+    T *layer = T::create(); // create() should guarantee the layer pointer is autoreleased 
+    if (!layer)
+        return nullptr;
+
+    auto scene = cocos2d::Scene::create();  // Scene::create() ensures creating autorelease object
+    if (!scene)
+        return nullptr;
+
+    scene->addChild(layer);
+    return scene;
+}
 
 AppDelegate::AppDelegate() {
 
