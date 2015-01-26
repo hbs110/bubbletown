@@ -27,6 +27,9 @@
     <Filter Include="Classes\App">
       <UniqueIdentifier>{eb896cb1-beb1-4aea-9d36-44bf2a53763d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\Services">
+      <UniqueIdentifier>{281ea409-9714-40eb-9ab8-631cb1d830b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -64,6 +67,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTownBuilding.cpp">
       <Filter>Classes\Scenes\Scene_Town</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Services\BtLuaService.cpp">
+      <Filter>Classes\Services</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -114,6 +120,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTownBuilding.h">
       <Filter>Classes\Scenes\Scene_Town</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Services\BtLuaService.h">
+      <Filter>Classes\Services</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

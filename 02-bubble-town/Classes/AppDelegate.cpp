@@ -11,6 +11,8 @@
 #include "Core/BtMsgDef.h"
 #include "Core/BtMsgDispatcher.h"
 
+#include "Services/BtLuaService.h"
+
 // the default scene creation process
 template <typename T>
 cocos2d::Scene* BtCreateScene()
@@ -28,6 +30,7 @@ cocos2d::Scene* BtCreateScene()
 }
 
 AppDelegate::AppDelegate() {
+    BtLuaService::DestroyInst();
 
 }
 
@@ -110,6 +113,9 @@ bool AppDelegate::applicationDidFinishLaunching()
 
     auto scene = BtCreateScene<AppStartScene>();
     director->runWithScene(scene);
+
+    BtLuaService::CreateInst();
+    BtLuaService::Get()->Init();
                             
     return true;
 }

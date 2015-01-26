@@ -8,7 +8,12 @@ BtLua_Patch = 0
 
 BtLuaDistDir = "BtLua-v{}.{}.{}".format(BtLua_Major, BtLua_Minor, BtLua_Patch) 
 
-btlua_libfile = "btlua-static.lib"
+BtLua_LibFiles = [ 
+    "lua-5.2.3-static.lib",
+    "btlua-static.lib", 
+    "lua-5.2.3-static-debug.lib", 
+    "btlua-static-debug.lib"
+]
 
 def main():
     # remove existing dist directory
@@ -20,9 +25,8 @@ def main():
 
     # copy lib (currently only the static release version is used)
     os.makedirs(os.path.join(BtLuaDistDir, "lib"))
-    source_file = os.path.join("BtLua/build/vs2012/bin", btlua_libfile)
-    target_file = os.path.join(BtLuaDistDir, "lib", btlua_libfile)
-    shutil.copyfile(source_file, target_file)
+    for f in BtLua_LibFiles:
+        shutil.copyfile(os.path.join("BtLua/build/vs2012/bin", f), os.path.join(BtLuaDistDir, "lib", f))
 
 if __name__ == '__main__':
     main()
