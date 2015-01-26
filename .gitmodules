@@ -1,0 +1,3 @@
+[submodule "02-bubble-town/Dependencies/BtLua"]
+	path = 02-bubble-town/Dependencies/BtLua
+	url = git://github.com/mc-gulu/BtLua.git
