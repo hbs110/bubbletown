@@ -1,5 +1,8 @@
-# Ignore thumbnails created by windows
+﻿# Ignore thumbnails created by windows
 Thumbs.db
+
+# 依赖项生成的中间目录
+/02-bubble-town/Dependencies/BtLua-v0.1.0
 
 
 # 测试用的资源文件
