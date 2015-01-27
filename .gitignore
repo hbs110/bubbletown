@@ -2,7 +2,7 @@
 Thumbs.db
 
 # 依赖项生成的中间目录
-/02-bubble-town/Dependencies/BtLua-v0.1.0
+/02-bubble-town/Dependencies/BtLua-v*
 
 
 # 测试用的资源文件

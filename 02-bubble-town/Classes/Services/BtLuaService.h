@@ -10,7 +10,7 @@
 
 #include "Core/BtCoreDef.h"
 
-class BtLuaVM;
+class BtLua;
 
 class BtLuaService 
 {
@@ -21,6 +21,6 @@ public:
     void Destroy();
 
 private:
-    BtLuaVM* m_lua;
+    BtLua* m_lua;
 };
 

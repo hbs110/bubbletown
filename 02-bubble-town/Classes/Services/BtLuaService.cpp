@@ -35,7 +35,7 @@ BtLuaService::~BtLuaService()
 
 bool BtLuaService::Init()
 {
-    m_lua = new BtLuaVM;
+    m_lua = new BtLua;
     if (!m_lua->Init("bootstrap.lua"))
         return false;
 
