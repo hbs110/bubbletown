@@ -10,6 +10,7 @@
 #include "BtLuaService.h"
 
 #include <btlua.h>
+#include <btlua_call.h>
 
 #ifdef _DEBUG
 #   define LIB_NAME_POSTFIX  "-debug"
@@ -35,6 +36,8 @@ BtLuaService::~BtLuaService()
 
 bool BtLuaService::Init()
 {
+    BtLuaAddErrorOutput(std::bind(&BtLuaService::OnError, this, std::placeholders::_1));
+
     m_lua = new BtLua;
     if (!m_lua->Init("bootstrap.lua"))
         return false;
@@ -43,11 +46,22 @@ bool BtLuaService::Init()
     if (m_lua->GetGlobalString("foo", &value))
         CCLOG("foo: %s", value.c_str());
 
+    luabridge::LuaRef ref = m_lua->GetGlobalCallable("get_building_image");
+    luabridge::LuaRef ret = BtLuaCall(m_lua->GetHandle(), std::bind(ref, "hall"));
+    if (ret.isString())
+    {
+        CCLOG("ret: %s", ret.tostring().c_str());
+    }
     return true;
 }
 
 void BtLuaService::Destroy()
 {
     BtDeletePointer(m_lua);
+}
+
+void BtLuaService::OnError(const std::string& errMsg)
+{
+    CCLOG(errMsg.c_str());
 }
 

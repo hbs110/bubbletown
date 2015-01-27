@@ -22,5 +22,7 @@ public:
 
 private:
     BtLua* m_lua;
+
+    void OnError(const std::string& errMsg);
 };
 
