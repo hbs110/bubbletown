@@ -12,7 +12,9 @@
 
 #include "btlua.h"
 
-#define BT_CALL_LUA(func_name, ...)      BTLUA_CALL_FUNCTION(BtLuaService::Get()->GetHandle(), func_name, __VA_ARGS__)
+#define BT_L                          BtLuaService::Get()->GetHandle()          
+
+#define BT_CALL_LUA(func_name, ...)     BTLUA_CALL_FUNCTION(BT_L, func_name, __VA_ARGS__)
 
 class BtLuaService 
 {

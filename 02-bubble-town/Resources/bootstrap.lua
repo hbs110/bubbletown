@@ -1,6 +1,4 @@
 
-foo = "bar"
-
 t_buildings = {}
 t_buildings["hall"]         = { arrawScale = 0.4, arrawDist = 2 }
 t_buildings["deco"]         = { arrawScale = 0.4, arrawDist = 2 }
@@ -17,11 +15,12 @@ function get_building_names()
 end
 
 function get_building_image(name)
-    local imageEntry = t_buildings[name]
-    if imageEntry == nil then
+    if t_buildings[name] == nil then
         return nil
+    else
+        return "elements/"..name..".png"
     end
-
-    return "elements/"..name..".png"
 end
 
+function get_building_arrowScale(name) return t_buildings[name].arrawScale end
+function get_building_arrowDist(name) return t_buildings[name].arrawDist end

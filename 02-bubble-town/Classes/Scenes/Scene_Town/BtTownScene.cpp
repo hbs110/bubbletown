@@ -22,6 +22,8 @@
 
 #include "Services/BtLuaService.h"
 
+#include "Core/tinyformat-2.0.1/tinyformat.h"
+
 enum {
     kTagTileMap = 1,
 };
@@ -96,8 +98,6 @@ bool BtTownScene::do_init()
     for (auto arrow : m_arrows)
     {
         arrow->setVisible(false);
-        cocos2d::Size size = m_tiledMap.GetTileSize(); 
-        arrow->setScale(size.width / arrow->getContentSize().width * 0.4f, size.height / arrow->getContentSize().height * 0.4f);
 
         m_tiledMap.GetSpriteRoot()->addChild(arrow, 2);
     }
@@ -136,18 +136,32 @@ void BtTownScene::onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, co
             cocos2d::Vec2 tileCoordBuilding;
             if (m_tiledMap.getTileCoord(building->getPosition(), &tileCoordBuilding))
             {
+                float arrowDist = 1.0f;
+                btlua_ref dist = BT_CALL_LUA("get_building_arrowDist", building->getName());
+                if (dist.isNumber())
+                    arrowDist = (float) dist;
+
                 cocos2d::Vec2 tilePos;
-                if (m_tiledMap.getTilePosition(cocos2d::Vec2(tileCoordBuilding.x, tileCoordBuilding.y + 2), &tilePos))
+                if (m_tiledMap.getTilePosition(cocos2d::Vec2(tileCoordBuilding.x, tileCoordBuilding.y + arrowDist), &tilePos))
                     m_arrows[0]->setPosition(tilePos);
-                if (m_tiledMap.getTilePosition(cocos2d::Vec2(tileCoordBuilding.x + 2, tileCoordBuilding.y), &tilePos))
+                if (m_tiledMap.getTilePosition(cocos2d::Vec2(tileCoordBuilding.x + arrowDist, tileCoordBuilding.y), &tilePos))
                     m_arrows[1]->setPosition(tilePos);
-                if (m_tiledMap.getTilePosition(cocos2d::Vec2(tileCoordBuilding.x - 2, tileCoordBuilding.y), &tilePos))
+                if (m_tiledMap.getTilePosition(cocos2d::Vec2(tileCoordBuilding.x - arrowDist, tileCoordBuilding.y), &tilePos))
                     m_arrows[2]->setPosition(tilePos);
-                if (m_tiledMap.getTilePosition(cocos2d::Vec2(tileCoordBuilding.x, tileCoordBuilding.y - 2), &tilePos))
+                if (m_tiledMap.getTilePosition(cocos2d::Vec2(tileCoordBuilding.x, tileCoordBuilding.y - arrowDist), &tilePos))
                     m_arrows[3]->setPosition(tilePos);
 
+                float arrowScale = 1.0f;
+                btlua_ref scale = BT_CALL_LUA("get_building_arrowScale", building->getName());
+                if (scale.isNumber())
+                    arrowScale = (float) scale;
+
                 for (auto arrow : m_arrows)
+                {
+                    cocos2d::Size size = m_tiledMap.GetTileSize();
+                    arrow->setScale(size.width / arrow->getContentSize().width * arrowScale, size.height / arrow->getContentSize().height * arrowScale);
                     arrow->setVisible(true);
+                }
             }
 
             selected = true;
@@ -180,11 +194,11 @@ void BtTownScene::onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, co
     if (!m_tiledMap.getTouchedTileInfo(touch, &tileCoord, &tileCenter))
         return;
 
-    btlua_ref ret = BT_CALL_LUA("get_building_image", m_placingBuildingName);
-    if (!ret.isString())
+    btlua_ref image = BT_CALL_LUA("get_building_image", m_placingBuildingName);
+    if (!image.isString())
         return;
 
-    BtTownBuilding* building = BtTownBuilding::create(m_placingBuildingName, ret.tostring(), 2);
+    BtTownBuilding* building = BtTownBuilding::create(m_placingBuildingName, image.tostring(), 2);
     building->initDeco();
     building->setPosition(tileCenter);
     m_buildings.push_back(building);
