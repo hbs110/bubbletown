@@ -22,9 +22,14 @@ public:
     bool Init();
     void Destroy();
 
-    btlua_handle GetHandle();
+    btlua_handle GetHandle();  // main Lua handle accessing
 
 private:
+    // callbacks of various internal events
     void OnError(const std::string& errMsg);
+    void OnPrint(const std::string& msg);
+
+    // methods exposed to Lua 
+    static void NativePrint(const std::string& msg);
 };
 

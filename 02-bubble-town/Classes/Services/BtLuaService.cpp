@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "BtLuaService.h"
 
+#include "Core/tinyformat-2.0.1/tinyformat.h"
+
 #include <btlua.h>
 
 #ifdef _DEBUG
@@ -24,6 +26,10 @@ namespace
 {
     // wouldn't pollute the global namespace
     btlua_handle L;
+
+    BtConstStr Namespace_Default = "bubbletown";
+
+    BtConstStr Func_Print = "print";
 }
 
 BT_SINGLETON_IMPL(BtLuaService);
@@ -40,18 +46,22 @@ BtLuaService::~BtLuaService()
 
 bool BtLuaService::Init()
 {
-    BtLua_SetErrorOutput(std::bind(&BtLuaService::OnError, this, std::placeholders::_1));
-
     L = BtLua_Init();
     if (!L)
         return false;
 
+    BtLua_SetErrorOutput(std::bind(&BtLuaService::OnError, this, std::placeholders::_1));
+
     if (!BtLua_ExecFile(L, "bootstrap.lua"))
         return false;
 
-    std::string value;
-    if (BtLua_GetGlobalString(L, "foo", &value))
-        CCLOG("foo: %s", value.c_str());
+    luabridge::getGlobalNamespace(L)
+        .beginNamespace(Namespace_Default)
+        .addFunction(Func_Print, BtLuaService::NativePrint)
+        .endNamespace();
+
+    // replacing system functions with customized ones 
+    BtLua_ExecString(L, tinyformat::format("_G.%s = %s.%s", Func_Print, Namespace_Default, Func_Print));
 
     return true;
 }
@@ -61,13 +71,23 @@ void BtLuaService::Destroy()
     BtLua_Destroy(L);
 }
 
-void BtLuaService::OnError(const std::string& errMsg)
-{
-    CCLOG(errMsg.c_str());
-}
-
 btlua_handle BtLuaService::GetHandle()
 {
     return L;
+}
+
+void BtLuaService::OnError(const std::string& errMsg)
+{
+    CCLOG("lua_err: %s", errMsg.c_str());
+}
+
+void BtLuaService::OnPrint(const std::string& msg)
+{
+    CCLOG("lua: %s", msg.c_str());
+}
+
+void BtLuaService::NativePrint(const std::string& msg)
+{
+    Get()->OnPrint(msg);
 }
 
