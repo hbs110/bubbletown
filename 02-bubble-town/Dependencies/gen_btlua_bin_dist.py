@@ -11,10 +11,12 @@ BtSrcDir_LuaBridge = "BtLua/dep/LuaBridge/Source/LuaBridge"
 
 BtLua_LibFiles = [ 
     "lua-5.2.3-static.lib",
-    "btlua-static.lib", 
     "lua-5.2.3-static-debug.lib", 
+    "btlua-static.lib", 
     "btlua-static-debug.lib"
 ]
+
+BtLua_Toolset = "vs2013"
 
 def main():
     # remove existing dist directory
@@ -33,9 +35,9 @@ def main():
             shutil.copyfile(os.path.join(BtSrcDir_Lua, f), os.path.join(target_dir, f))
 
     # copy lib (currently only the static release version is used)
-    os.makedirs(os.path.join(BtLuaDistDir, "lib", "vs2012"))
+    os.makedirs(os.path.join(BtLuaDistDir, "lib", BtLua_Toolset))
     for f in BtLua_LibFiles:
-        shutil.copyfile(os.path.join("BtLua/build/vs2012/bin", f), os.path.join(BtLuaDistDir, "lib", "vs2012", f))
+        shutil.copyfile(os.path.join("BtLua", "build", BtLua_Toolset, "bin", f), os.path.join(BtLuaDistDir, "lib", BtLua_Toolset, f))
 
 if __name__ == '__main__':
     main()
