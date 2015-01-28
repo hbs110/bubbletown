@@ -20,6 +20,8 @@
 
 #include "BtTownBuilding.h"
 
+#include "Services/BtLuaService.h"
+
 enum {
     kTagTileMap = 1,
 };
@@ -178,7 +180,11 @@ void BtTownScene::onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, co
     if (!m_tiledMap.getTouchedTileInfo(touch, &tileCoord, &tileCenter))
         return;
 
-    BtTownBuilding* building = BtTownBuilding::create(m_placingBuildingName, std::string("elements/") + m_placingBuildingName + ".png", 2);
+    btlua_ref ret = BT_CALL_LUA("get_building_image", m_placingBuildingName);
+    if (!ret.isString())
+        return;
+
+    BtTownBuilding* building = BtTownBuilding::create(m_placingBuildingName, ret.tostring(), 2);
     building->initDeco();
     building->setPosition(tileCenter);
     m_buildings.push_back(building);

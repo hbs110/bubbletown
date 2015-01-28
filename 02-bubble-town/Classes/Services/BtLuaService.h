@@ -10,7 +10,9 @@
 
 #include "Core/BtCoreDef.h"
 
-class BtLua;
+#include "btlua.h"
+
+#define BT_CALL_LUA(func_name, ...)      BTLUA_CALL_FUNCTION(BtLuaService::Get()->GetHandle(), func_name, __VA_ARGS__)
 
 class BtLuaService 
 {
@@ -20,9 +22,9 @@ public:
     bool Init();
     void Destroy();
 
-private:
-    BtLua* m_lua;
+    btlua_handle GetHandle();
 
+private:
     void OnError(const std::string& errMsg);
 };
 

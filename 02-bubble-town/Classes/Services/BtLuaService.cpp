@@ -22,14 +22,13 @@
 
 namespace
 {
-    // wouln't pollute the global namepace
+    // wouldn't pollute the global namespace
     btlua_handle L;
 }
 
 BT_SINGLETON_IMPL(BtLuaService);
 
 BtLuaService::BtLuaService() 
-    : m_lua(nullptr)
 {
 
 }
@@ -54,11 +53,6 @@ bool BtLuaService::Init()
     if (BtLua_GetGlobalString(L, "foo", &value))
         CCLOG("foo: %s", value.c_str());
 
-    btlua_ref ret = BT_CALL_LUA("get_building_image", "hall");
-    if (ret.isString())
-    {
-        CCLOG("ret: %s", ret.tostring().c_str());
-    }
     return true;
 }
 
@@ -70,5 +64,10 @@ void BtLuaService::Destroy()
 void BtLuaService::OnError(const std::string& errMsg)
 {
     CCLOG(errMsg.c_str());
+}
+
+btlua_handle BtLuaService::GetHandle()
+{
+    return L;
 }
 
