@@ -6,14 +6,6 @@ t_buildings["house"]        = { arrawScale = 0.4, arrawDist = 2 }
 t_buildings["shop"]         = { arrawScale = 0.4, arrawDist = 2 }
 t_buildings["workshop"]     = { arrawScale = 0.4, arrawDist = 2 }
 
-function get_building_names()
-    local names = {}
-    for i, v in ipairs(t_buildings) do 
-        table.insert(names, i)
-    end
-    return names
-end
-
 function get_building_image(name)
     if t_buildings[name] == nil then
         return nil

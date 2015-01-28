@@ -11,6 +11,7 @@
 #include "Scenes/BtBaseScene.h"
 
 #include "BtTiledMap.h"
+#include "BtTownSceneWidgets.h"
 
 class BtTownBuilding;
 
@@ -47,10 +48,11 @@ protected:
     std::string m_placingBuildingName;
 
     // moving building
-    cocos2d::Sprite* m_arrows[4];
 
     // not used yet
     eOperationState m_operationState;
     float m_holdBuildingTimer;
+
+    BtTownSceneWidgets m_widgets;
 };
 

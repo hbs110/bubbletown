@@ -71,6 +71,9 @@
     <ClCompile Include="..\Classes\Services\BtLuaService.cpp">
       <Filter>Classes\Services</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTownSceneWidgets.cpp">
+      <Filter>Classes\Scenes\Scene_Town</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -123,6 +126,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Services\BtLuaService.h">
       <Filter>Classes\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTownSceneWidgets.h">
+      <Filter>Classes\Scenes\Scene_Town</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
