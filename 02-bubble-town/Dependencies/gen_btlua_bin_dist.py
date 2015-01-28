@@ -3,11 +3,7 @@ import shutil
 import os
 import fnmatch
 
-BtLua_Major = 0
-BtLua_Minor = 1
-BtLua_Patch = 1
-
-BtLuaDistDir = "BtLua-v{}.{}.{}".format(BtLua_Major, BtLua_Minor, BtLua_Patch) 
+BtLuaDistDir = "BtLua-dist"
 BtLuaDistInclude = os.path.join(BtLuaDistDir, "include")
 
 BtSrcDir_Lua = 'BtLua/dep/lua/src'
@@ -37,9 +33,9 @@ def main():
             shutil.copyfile(os.path.join(BtSrcDir_Lua, f), os.path.join(target_dir, f))
 
     # copy lib (currently only the static release version is used)
-    os.makedirs(os.path.join(BtLuaDistDir, "lib"))
+    os.makedirs(os.path.join(BtLuaDistDir, "lib", "vs2012"))
     for f in BtLua_LibFiles:
-        shutil.copyfile(os.path.join("BtLua/build/vs2012/bin", f), os.path.join(BtLuaDistDir, "lib", f))
+        shutil.copyfile(os.path.join("BtLua/build/vs2012/bin", f), os.path.join(BtLuaDistDir, "lib", "vs2012", f))
 
 if __name__ == '__main__':
     main()

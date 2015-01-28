@@ -32,7 +32,7 @@ cocos2d::Menu* BtTextMenuBuilder::Build()
         return nullptr;
 
     cocos2d::Vector<cocos2d::MenuItem*> items;
-    for (int i = 0; i < m_itemTexts.size(); ++i)
+    for (size_t i = 0; i < m_itemTexts.size(); ++i)
     {
         auto label = cocos2d::LabelTTF::create(m_itemTexts[i], BtGui_DefaultMenuFont, BtGui_DefaultMenuFontSize);
         auto item = cocos2d::MenuItemLabel::create(label);

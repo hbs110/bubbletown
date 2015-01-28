@@ -10,7 +10,6 @@
 #include "BtLuaService.h"
 
 #include <btlua.h>
-#include <btlua_call.h>
 
 #ifdef _DEBUG
 #   define LIB_NAME_POSTFIX  "-debug"
@@ -20,6 +19,12 @@
 
 #pragma comment(lib, "lua-5.2.3-static"LIB_NAME_POSTFIX".lib")
 #pragma comment(lib, "btlua-static"LIB_NAME_POSTFIX".lib")
+
+namespace
+{
+    // wouln't pollute the global namepace
+    btlua_handle L;
+}
 
 BT_SINGLETON_IMPL(BtLuaService);
 
@@ -36,18 +41,20 @@ BtLuaService::~BtLuaService()
 
 bool BtLuaService::Init()
 {
-    BtLuaAddErrorOutput(std::bind(&BtLuaService::OnError, this, std::placeholders::_1));
+    BtLua_SetErrorOutput(std::bind(&BtLuaService::OnError, this, std::placeholders::_1));
 
-    m_lua = new BtLua;
-    if (!m_lua->Init("bootstrap.lua"))
+    L = BtLua_Init();
+    if (!L)
+        return false;
+
+    if (!BtLua_ExecFile(L, "bootstrap.lua"))
         return false;
 
     std::string value;
-    if (m_lua->GetGlobalString("foo", &value))
+    if (BtLua_GetGlobalString(L, "foo", &value))
         CCLOG("foo: %s", value.c_str());
 
-    luabridge::LuaRef ref = m_lua->GetGlobalCallable("get_building_image");
-    luabridge::LuaRef ret = BtLuaCall(m_lua->GetHandle(), std::bind(ref, "hall"));
+    btlua_ref ret = BT_CALL_LUA("get_building_image", "hall");
     if (ret.isString())
     {
         CCLOG("ret: %s", ret.tostring().c_str());
@@ -57,7 +64,7 @@ bool BtLuaService::Init()
 
 void BtLuaService::Destroy()
 {
-    BtDeletePointer(m_lua);
+    BtLua_Destroy(L);
 }
 
 void BtLuaService::OnError(const std::string& errMsg)
