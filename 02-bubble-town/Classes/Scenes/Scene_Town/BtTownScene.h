@@ -38,12 +38,14 @@ protected:
 
     void onMenu_Build(Ref* sender, const std::string& buildingName);
 
-    void updateArrowPositions(BtTownBuilding* building);
+    void updateArrows(BtTownBuilding* building, bool avail);
 
     // entities
     BtTiledMap m_tiledMap;
     std::vector<BtTownBuilding*> m_buildings;
+
     BtTownBuilding* m_selectedBuilding;
+    cocos2d::Vec2 m_selectedBuildingOriginalCoord;
 
     // placing building
     bool m_isPlacingBuilding;

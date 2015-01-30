@@ -36,6 +36,7 @@ public:
     
     void onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event  *event);
 
+    bool isInSocket(const cocos2d::Vec2& tileCoord);
     void beginSocketShimmering();
     void endSocketShimmering();
 

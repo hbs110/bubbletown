@@ -152,3 +152,10 @@ void BtTiledMap::endSocketShimmering()
     layerSockets->stopAllActions();
 }
 
+bool BtTiledMap::isInSocket(const cocos2d::Vec2& tileCoord)
+{
+    auto layerSockets = GetTileMapLayer(BtLayer_Sockets);
+    int gid = layerSockets->getTileGIDAt(tileCoord);
+    return gid != 0;
+}
+

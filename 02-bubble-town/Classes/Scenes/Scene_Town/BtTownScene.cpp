@@ -118,9 +118,10 @@ void BtTownScene::onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, co
 
                 m_selectedBuilding = building;
                 m_selectedBuilding->select();
+                m_selectedBuildingOriginalCoord = m_selectedBuilding->getPosition();
             }
 
-            updateArrowPositions(building);
+            updateArrows(building, true);
 
             selected = true;
             break;
@@ -138,32 +139,48 @@ void BtTownScene::onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, co
 
 void BtTownScene::onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event *event)
 {
-    if (!m_isPlacingBuilding || m_placingBuildingName.empty())
-        return;
+    if (m_isPlacingBuilding && m_placingBuildingName.size())
+    {
+        // support one touch only (ignore additional touches)
+        auto touch = touches[0];
+        if (touch->getStartLocation() == touch->getLocation())
+        {
+            cocos2d::Vec2 tileCoord;
+            cocos2d::Vec2 tileCenter;
+            if (m_tiledMap.getTouchedTileInfo(touch, &tileCoord, &tileCenter) &&
+                m_tiledMap.isInSocket(tileCoord))
+            {
+                btlua_ref image = BT_CALL_LUA("get_building_image", m_placingBuildingName);
+                if (image.isString())
+                {
+                    BtTownBuilding* building = BtTownBuilding::create(m_placingBuildingName, image.tostring(), 2);
+                    building->initDeco();
+                    building->setPosition(tileCenter);
+                    m_buildings.push_back(building);
+                    m_tiledMap.GetSpriteRoot()->addChild(building);
+                }
+            }
+        }
 
-    // support one touch only (ignore additional touches)
-    auto touch = touches[0];
-    if (touch->getStartLocation() != touch->getLocation())
-        return; // return if onTouchesMoved() is called
+        m_isPlacingBuilding = false;
+        m_placingBuildingName = "";
+        m_tiledMap.endSocketShimmering();
+    }
 
-    cocos2d::Vec2 tileCoord;
-    cocos2d::Vec2 tileCenter;
-    if (!m_tiledMap.getTouchedTileInfo(touch, &tileCoord, &tileCenter))
-        return;
-
-    btlua_ref image = BT_CALL_LUA("get_building_image", m_placingBuildingName);
-    if (!image.isString())
-        return;
-
-    BtTownBuilding* building = BtTownBuilding::create(m_placingBuildingName, image.tostring(), 2);
-    building->initDeco();
-    building->setPosition(tileCenter);
-    m_buildings.push_back(building);
-    m_tiledMap.GetSpriteRoot()->addChild(building);
-
-    m_isPlacingBuilding = false;
-    m_placingBuildingName = "";
-    m_tiledMap.endSocketShimmering();
+    if (m_selectedBuilding)
+    {
+        auto touch = touches[0];
+        cocos2d::Vec2 tileCoord;
+        cocos2d::Vec2 tileCenter;
+        if (m_tiledMap.getTouchedTileInfo(touch, &tileCoord, &tileCenter))
+        {
+            if (!m_tiledMap.isInSocket(tileCoord))
+            {
+                m_selectedBuilding->setPosition(m_selectedBuildingOriginalCoord);
+                updateArrows(m_selectedBuilding, true);
+            }
+        }
+    }
 }
 
 void BtTownScene::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event  *event)
@@ -178,7 +195,7 @@ void BtTownScene::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, co
             if (m_tiledMap.getTouchedTileInfo(touches[0], &tileCoord, &tileCenter))
             {
                 m_selectedBuilding->setPosition(tileCenter);
-                updateArrowPositions(m_selectedBuilding);
+                updateArrows(m_selectedBuilding, m_tiledMap.isInSocket(tileCoord));
             }
         }
     } 
@@ -195,7 +212,7 @@ void BtTownScene::onMenu_Build(Ref* sender, const std::string& buildingName)
     m_tiledMap.beginSocketShimmering();
 }
 
-void BtTownScene::updateArrowPositions(BtTownBuilding* building)
+void BtTownScene::updateArrows(BtTownBuilding* building, bool avail)
 {
     cocos2d::Vec2 tileCoordBuilding;
     if (m_tiledMap.getTileCoord(building->getPosition(), &tileCoordBuilding))
@@ -211,6 +228,7 @@ void BtTownScene::updateArrowPositions(BtTownBuilding* building)
             arrowScale = (float) scale;
 
         m_widgets.showArrowsAt(&m_tiledMap, tileCoordBuilding, arrowScale, arrowDist);
+        m_widgets.markArrowsAvail(avail);
     }
 }
 

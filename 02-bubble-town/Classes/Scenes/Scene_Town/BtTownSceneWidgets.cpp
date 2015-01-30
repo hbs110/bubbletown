@@ -69,3 +69,9 @@ void BtTownSceneWidgets::showArrowsAt(BtTiledMap* tileMap, const cocos2d::Vec2& 
         arrow->setVisible(true);
     }
 }
+
+void BtTownSceneWidgets::markArrowsAvail(bool avail)
+{
+    for (auto arrow : m_arrows)
+        arrow->setOpacity(avail ? 255 : 128);
+}

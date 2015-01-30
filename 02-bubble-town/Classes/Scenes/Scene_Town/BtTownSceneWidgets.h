@@ -22,6 +22,7 @@ public:
 
     void showArrowsAt(BtTiledMap* tileMap, const cocos2d::Vec2& coord, float scale, float dist);
     void hideArrows();
+    void markArrowsAvail(bool avail);
 
 private:
     cocos2d::Sprite* m_arrows[BT_ArrowCount];
