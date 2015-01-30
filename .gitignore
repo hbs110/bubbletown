@@ -4,11 +4,8 @@ Thumbs.db
 # 依赖项生成的中间目录
 /02-bubble-town/Dependencies/BtLua-*
 
-
-# 测试用的资源文件
-/**/Resources/test_texture_pool/map
-
 # 本地的配置文件
+*.user
 /**/proj.android/local.properties
 /**/proj.android/ant.properties
 

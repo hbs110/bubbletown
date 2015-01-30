@@ -38,6 +38,8 @@ protected:
 
     void onMenu_Build(Ref* sender, const std::string& buildingName);
 
+    void updateArrowPositions(BtTownBuilding* building);
+
     // entities
     BtTiledMap m_tiledMap;
     std::vector<BtTownBuilding*> m_buildings;
@@ -46,8 +48,6 @@ protected:
     // placing building
     bool m_isPlacingBuilding;
     std::string m_placingBuildingName;
-
-    // moving building
 
     // not used yet
     eOperationState m_operationState;

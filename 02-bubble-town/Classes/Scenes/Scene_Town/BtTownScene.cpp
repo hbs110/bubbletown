@@ -120,21 +120,7 @@ void BtTownScene::onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, co
                 m_selectedBuilding->select();
             }
 
-            cocos2d::Vec2 tileCoordBuilding;
-            if (m_tiledMap.getTileCoord(building->getPosition(), &tileCoordBuilding))
-            {
-                float arrowDist = 1.0f;
-                btlua_ref dist = BT_CALL_LUA("get_building_arrowDist", building->getName());
-                if (dist.isNumber())
-                    arrowDist = (float) dist;
-
-                float arrowScale = 1.0f;
-                btlua_ref scale = BT_CALL_LUA("get_building_arrowScale", building->getName());
-                if (scale.isNumber())
-                    arrowScale = (float) scale;
-
-                m_widgets.showArrowsAt(&m_tiledMap, tileCoordBuilding, arrowScale, arrowDist);
-            }
+            updateArrowPositions(building);
 
             selected = true;
             break;
@@ -177,16 +163,54 @@ void BtTownScene::onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, co
 
     m_isPlacingBuilding = false;
     m_placingBuildingName = "";
+    m_tiledMap.endSocketShimmering();
 }
 
 void BtTownScene::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event  *event)
 {
-    m_tiledMap.onTouchesMoved(touches, event);
+    if (m_selectedBuilding)
+    {
+        auto layer = m_tiledMap.GetTileMapLayer(BtLayer_Background);
+        if (layer)
+        {
+            cocos2d::Vec2 tileCoord;
+            cocos2d::Vec2 tileCenter;
+            if (m_tiledMap.getTouchedTileInfo(touches[0], &tileCoord, &tileCenter))
+            {
+                m_selectedBuilding->setPosition(tileCenter);
+                updateArrowPositions(m_selectedBuilding);
+            }
+        }
+    } 
+    else
+    {
+        m_tiledMap.onTouchesMoved(touches, event);
+    }
 }
 
 void BtTownScene::onMenu_Build(Ref* sender, const std::string& buildingName)
 {
     m_placingBuildingName = buildingName;
     m_isPlacingBuilding = true;
+    m_tiledMap.beginSocketShimmering();
+}
+
+void BtTownScene::updateArrowPositions(BtTownBuilding* building)
+{
+    cocos2d::Vec2 tileCoordBuilding;
+    if (m_tiledMap.getTileCoord(building->getPosition(), &tileCoordBuilding))
+    {
+        float arrowDist = 1.0f;
+        btlua_ref dist = BT_CALL_LUA("get_building_arrowDist", building->getName());
+        if (dist.isNumber())
+            arrowDist = (float) dist;
+
+        float arrowScale = 1.0f;
+        btlua_ref scale = BT_CALL_LUA("get_building_arrowScale", building->getName());
+        if (scale.isNumber())
+            arrowScale = (float) scale;
+
+        m_widgets.showArrowsAt(&m_tiledMap, tileCoordBuilding, arrowScale, arrowDist);
+    }
 }
 

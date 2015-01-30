@@ -13,7 +13,8 @@
 typedef cocos2d::experimental::TMXTiledMap tileMap_t;
 typedef cocos2d::experimental::TMXLayer tileLayer_t;
 
-BtConstStr BtLayer_Background = "layer_background";
+BtConstStr BtLayer_Background   = "layer_background";
+BtConstStr BtLayer_Sockets      = "layer_sockets";
 
 class BtTiledMap 
 {
@@ -34,6 +35,9 @@ public:
     bool getTilePosition(const cocos2d::Vec2& tileCoord, cocos2d::Vec2* tileCenterPos);
     
     void onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event  *event);
+
+    void beginSocketShimmering();
+    void endSocketShimmering();
 
 private:
     tileMap_t* m_tileMap;

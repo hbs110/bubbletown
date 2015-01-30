@@ -14,6 +14,10 @@
 const int BT_TilemapFileMaxZ = 10;
 const int BT_TilemapLogicalZ = BT_TilemapFileMaxZ + 10;
 
+const float BtFadingDuration = 0.8f;
+const float BtFadingTargetOpacity = 64;
+
+
 bool BtTiledMap::Load(const std::string& filename)
 {
     auto map = tileMap_t::create(filename);
@@ -25,12 +29,24 @@ bool BtTiledMap::Load(const std::string& filename)
     if (maxElem == map->getChildren().end() || !(*maxElem) || (*maxElem)->getLocalZOrder() >= BT_TilemapFileMaxZ)
         return false;
 
-    auto s = map->getContentSize();
-    CCLOG("ContentSize: %f, %f", s.width,s.height);
-    map->setPosition(cocos2d::Vec2(0, 0));
-
     m_tileMap = map;
     m_tileMap->retain();
+    auto layerBackground = GetTileMapLayer(BtLayer_Background);
+    if (!layerBackground)
+        return false;
+    auto layerSockets = GetTileMapLayer(BtLayer_Sockets);
+    if (!layerSockets)
+        return false;
+
+    // flush all tiles into sprites
+    cocos2d::Size layerSize = layerSockets->getLayerSize();
+    for (int y = 0; y < layerSize.height; ++y)
+        for (int x = 0; x < layerSize.width; ++x)
+            auto sprite = layerSockets->getTileAt(cocos2d::Vec2(x, y));
+
+    auto s = m_tileMap->getContentSize();
+    CCLOG("ContentSize: %f, %f", s.width,s.height);
+    m_tileMap->setPosition(cocos2d::Vec2(0, 0));
 
     m_spriteRoot = cocos2d::Node::create();
     m_spriteRoot->retain();
@@ -114,5 +130,25 @@ bool BtTiledMap::getTilePosition(const cocos2d::Vec2& tileCoord, cocos2d::Vec2* 
 
     *tileCenterPos = layer->getPositionAt(tileCoord);
     return true;
+}
+
+void BtTiledMap::beginSocketShimmering()
+{
+    auto layerSockets = GetTileMapLayer(BtLayer_Sockets);
+    layerSockets->setOpacity(128);
+    layerSockets->setCascadeOpacityEnabled(true);
+
+    auto action = cocos2d::RepeatForever::create(
+        cocos2d::Sequence::create(
+        cocos2d::FadeTo::create(BtFadingDuration, BtFadingTargetOpacity),
+        cocos2d::FadeTo::create(BtFadingDuration, 255), nullptr));
+    layerSockets->runAction(action);
+}
+
+void BtTiledMap::endSocketShimmering()
+{
+    auto layerSockets = GetTileMapLayer(BtLayer_Sockets);
+    layerSockets->setOpacity(255);
+    layerSockets->stopAllActions();
 }
 

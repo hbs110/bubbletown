@@ -20,7 +20,6 @@ public:
 
     bool init(cocos2d::Node* parent);
 
-    cocos2d::Sprite* getArrow(int i) { return m_arrows[i]; }
     void showArrowsAt(BtTiledMap* tileMap, const cocos2d::Vec2& coord, float scale, float dist);
     void hideArrows();
 
