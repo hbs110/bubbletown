@@ -148,14 +148,18 @@ void BtTownScene::onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, co
             cocos2d::Vec2 tileCoord;
             cocos2d::Vec2 tileCenter;
             if (m_tiledMap.getTouchedTileInfo(touch, &tileCoord, &tileCenter) &&
-                m_tiledMap.isInSocket(tileCoord))
+                isAvailForBuilding(tileCoord, m_placingBuildingName))
             {
                 btlua_ref image = BT_CALL_LUA("get_building_image", m_placingBuildingName);
                 if (image.isString())
                 {
                     BtTownBuilding* building = BtTownBuilding::create(m_placingBuildingName, image.tostring(), 2);
                     building->initDeco();
-                    building->setPosition(tileCenter);
+
+                    cocos2d::Vec2 buildingPos;
+                    getBuildingPos(tileCoord, m_placingBuildingName, &buildingPos);
+                    building->setPosition(buildingPos);
+
                     m_buildings.push_back(building);
                     m_tiledMap.GetSpriteRoot()->addChild(building);
                 }
@@ -174,7 +178,7 @@ void BtTownScene::onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, co
         cocos2d::Vec2 tileCenter;
         if (m_tiledMap.getTouchedTileInfo(touch, &tileCoord, &tileCenter))
         {
-            if (!m_tiledMap.isInSocket(tileCoord))
+            if (!isAvailForBuilding(tileCoord, m_selectedBuilding->getName()))
             {
                 m_selectedBuilding->setPosition(m_selectedBuildingOriginalCoord);
                 updateArrows(m_selectedBuilding, true);
@@ -194,8 +198,10 @@ void BtTownScene::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, co
             cocos2d::Vec2 tileCenter;
             if (m_tiledMap.getTouchedTileInfo(touches[0], &tileCoord, &tileCenter))
             {
-                m_selectedBuilding->setPosition(tileCenter);
-                updateArrows(m_selectedBuilding, m_tiledMap.isInSocket(tileCoord));
+                cocos2d::Vec2 buildingPos;
+                getBuildingPos(tileCoord, m_selectedBuilding->getName(), &buildingPos);
+                m_selectedBuilding->setPosition(buildingPos);
+                updateArrows(m_selectedBuilding, isAvailForBuilding(tileCoord, m_selectedBuilding->getName()));
             }
         }
     } 
@@ -217,18 +223,53 @@ void BtTownScene::updateArrows(BtTownBuilding* building, bool avail)
     cocos2d::Vec2 tileCoordBuilding;
     if (m_tiledMap.getTileCoord(building->getPosition(), &tileCoordBuilding))
     {
-        float arrowDist = 1.0f;
-        btlua_ref dist = BT_CALL_LUA("get_building_arrowDist", building->getName());
-        if (dist.isNumber())
-            arrowDist = (float) dist;
+        cocos2d::Rect tileRect;
+        getBuildingRect(tileCoordBuilding, building->getName(), &tileRect);
 
         float arrowScale = 1.0f;
         btlua_ref scale = BT_CALL_LUA("get_building_arrowScale", building->getName());
         if (scale.isNumber())
             arrowScale = (float) scale;
 
-        m_widgets.showArrowsAt(&m_tiledMap, tileCoordBuilding, arrowScale, arrowDist);
+        m_widgets.showArrowsAt(&m_tiledMap, tileRect, arrowScale);
         m_widgets.markArrowsAvail(avail);
     }
+}
+
+bool BtTownScene::isAvailForBuilding(const cocos2d::Vec2& tileCoord, const std::string& buildingName)
+{
+    cocos2d::Rect tileRect;
+    getBuildingRect(tileCoord, buildingName, &tileRect);
+    return m_tiledMap.isInSocketArea(tileRect);
+}
+
+void BtTownScene::getBuildingRect(const cocos2d::Vec2& tileCoord, const std::string& buildingName, cocos2d::Rect* tileRect)
+{
+    if (!tileRect)
+        return;
+
+    float width = 1.0f;
+    btlua_ref w = BT_CALL_LUA("get_building_width", buildingName);
+    if (w.isNumber())
+        width = (float) w;
+
+    float height = 1.0f;
+    btlua_ref h = BT_CALL_LUA("get_building_height", buildingName);
+    if (h.isNumber())
+        height = (float) h;
+
+    tileRect->origin.x = tileCoord.x - (float) (((int) width - 1) / 2);
+    tileRect->origin.y = tileCoord.y - (float) (((int) height - 1) / 2);
+    tileRect->size.width = width - 1;
+    tileRect->size.height = height - 1;
+
+}
+
+void BtTownScene::getBuildingPos(const cocos2d::Vec2& tileCoord, const std::string& buildingName, cocos2d::Vec2* buildingPos)
+{
+    cocos2d::Rect tileRect;
+    getBuildingRect(tileCoord, buildingName, &tileRect);
+    cocos2d::Vec2 buildingTile = cocos2d::Vec2(tileRect.getMidX(), tileRect.getMidY());
+    m_tiledMap.getTilePosition(buildingTile, buildingPos);
 }
 

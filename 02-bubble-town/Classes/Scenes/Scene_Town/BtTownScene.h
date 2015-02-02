@@ -38,6 +38,9 @@ protected:
 
     void onMenu_Build(Ref* sender, const std::string& buildingName);
 
+    void getBuildingRect(const cocos2d::Vec2& tileCoord, const std::string& buildingName, cocos2d::Rect* tileRect);
+    void getBuildingPos(const cocos2d::Vec2& tileCoord, const std::string& buildingName, cocos2d::Vec2* buildingPos);
+    bool isAvailForBuilding(const cocos2d::Vec2& tileCoord, const std::string& buildingName);
     void updateArrows(BtTownBuilding* building, bool avail);
 
     // entities

@@ -20,6 +20,8 @@ BtConstStr BtArrowImages[] = {
     "elements/fx/arrow_upright.png"
 };
 
+const float BtArrowDistToBuildEdge = 1.5f;
+
 BtTownSceneWidgets::BtTownSceneWidgets()
 {
     memset(m_arrows, 0, sizeof(cocos2d::Sprite*) * BT_ArrowCount);
@@ -46,20 +48,20 @@ void BtTownSceneWidgets::hideArrows()
         m_arrows[i]->setVisible(false);
 }
 
-void BtTownSceneWidgets::showArrowsAt(BtTiledMap* tileMap, const cocos2d::Vec2& coord, float scale, float dist)
+void BtTownSceneWidgets::showArrowsAt(BtTiledMap* tileMap, const cocos2d::Rect& tileRect, float scale)
 {
     if (!tileMap)
         return;
 
     cocos2d::Vec2 tilePos;
-    if (tileMap->getTilePosition(cocos2d::Vec2(coord.x, coord.y + dist), &tilePos))
-        m_arrows[0]->setPosition(tilePos);
-    if (tileMap->getTilePosition(cocos2d::Vec2(coord.x + dist, coord.y), &tilePos))
-        m_arrows[1]->setPosition(tilePos);
-    if (tileMap->getTilePosition(cocos2d::Vec2(coord.x - dist, coord.y), &tilePos))
+    if (tileMap->getTilePosition(cocos2d::Vec2(tileRect.origin.x - BtArrowDistToBuildEdge, tileRect.origin.y + tileRect.size.height / 2), &tilePos))
         m_arrows[2]->setPosition(tilePos);
-    if (tileMap->getTilePosition(cocos2d::Vec2(coord.x, coord.y - dist), &tilePos))
+    if (tileMap->getTilePosition(cocos2d::Vec2(tileRect.origin.x + tileRect.size.width / 2, tileRect.origin.y - BtArrowDistToBuildEdge), &tilePos))
         m_arrows[3]->setPosition(tilePos);
+    if (tileMap->getTilePosition(cocos2d::Vec2(tileRect.origin.x + tileRect.size.width / 2, tileRect.origin.y + tileRect.size.height + BtArrowDistToBuildEdge), &tilePos))
+        m_arrows[0]->setPosition(tilePos);
+    if (tileMap->getTilePosition(cocos2d::Vec2(tileRect.origin.x + tileRect.size.width + BtArrowDistToBuildEdge, tileRect.origin.y + tileRect.size.height / 2), &tilePos))
+        m_arrows[1]->setPosition(tilePos);
 
     for (auto arrow : m_arrows)
     {

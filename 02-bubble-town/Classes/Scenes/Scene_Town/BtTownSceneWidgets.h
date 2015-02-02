@@ -20,7 +20,7 @@ public:
 
     bool init(cocos2d::Node* parent);
 
-    void showArrowsAt(BtTiledMap* tileMap, const cocos2d::Vec2& coord, float scale, float dist);
+    void showArrowsAt(BtTiledMap* tileMap, const cocos2d::Rect& tileRect, float scale);
     void hideArrows();
     void markArrowsAvail(bool avail);
 
