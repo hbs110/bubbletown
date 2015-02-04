@@ -1,3 +1,6 @@
 [submodule "02-bubble-town/Dependencies/BtLua"]
 	path = 02-bubble-town/Dependencies/BtLua
 	url = https://github.com/mc-gulu/BtLua.git
+[submodule "tools/utouch"]
+	path = tools/utouch
+	url = https://github.com/mc-gulu/utouch.git
