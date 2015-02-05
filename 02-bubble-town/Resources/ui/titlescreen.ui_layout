@@ -1,0 +1,36 @@
+{
+  "IsFullscren": true,
+  "DesignTimeResolution": "0, 0",
+  "Name": "Root",
+  "Position": "0, 0",
+  "Size": "720, 1280",
+  "LogicalSize": "0, 0",
+  "Visible": true,
+  "Dock": 0,
+  "AlignH": 1,
+  "AlignV": 1,
+  "Margin": 3,
+  "Tag": null,
+  "Locked": false,
+  "UserData": null,
+  "__type_info__": "RootNode",
+  "Children": [
+    {
+      "Res": "uires://res/atlases/!default!:tongyi.png",
+      "Name": "Image",
+      "Position": "0, 0",
+      "Size": "720, 1080",
+      "LogicalSize": "0, 0",
+      "Visible": true,
+      "Dock": 0,
+      "AlignH": 1,
+      "AlignV": 1,
+      "Margin": 3,
+      "Tag": null,
+      "Locked": false,
+      "UserData": null,
+      "__type_info__": "Image",
+      "Children": []
+    }
+  ]
+}
