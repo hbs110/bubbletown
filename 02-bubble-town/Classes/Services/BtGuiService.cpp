@@ -30,3 +30,9 @@ bool BtGuiService::Init()
 void BtGuiService::Destroy()
 {
 }
+
+cocos2d::Node* BtGuiService::LoadLayout(const char* layoutFilePath)
+{
+
+    return nullptr;
+}

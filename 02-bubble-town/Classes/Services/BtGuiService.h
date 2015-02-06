@@ -18,6 +18,7 @@ public:
     bool Init();
     void Destroy();
 
-
+protected:
+    cocos2d::Node* LoadLayout(const char* layoutFilePath);
 };
 
