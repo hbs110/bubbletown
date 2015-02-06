@@ -138,6 +138,7 @@
     <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTownScene.cpp" />
     <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTownSceneWidgets.cpp" />
     <ClCompile Include="..\Classes\Scenes\Scene_World\BtWorldScene.cpp" />
+    <ClCompile Include="..\Classes\Services\BtGuiService.cpp" />
     <ClCompile Include="..\Classes\Services\BtLuaService.cpp" />
     <ClCompile Include="..\Classes\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -161,6 +162,7 @@
     <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTownScene.h" />
     <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTownSceneWidgets.h" />
     <ClInclude Include="..\Classes\Scenes\Scene_World\BtWorldScene.h" />
+    <ClInclude Include="..\Classes\Services\BtGuiService.h" />
     <ClInclude Include="..\Classes\Services\BtLuaService.h" />
     <ClInclude Include="..\Classes\stdafx.h" />
     <ClInclude Include="main.h" />

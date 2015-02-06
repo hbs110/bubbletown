@@ -74,6 +74,9 @@
     <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTownSceneWidgets.cpp">
       <Filter>Classes\Scenes\Scene_Town</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Services\BtGuiService.cpp">
+      <Filter>Classes\Services</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -129,6 +132,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTownSceneWidgets.h">
       <Filter>Classes\Scenes\Scene_Town</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Services\BtGuiService.h">
+      <Filter>Classes\Services</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
