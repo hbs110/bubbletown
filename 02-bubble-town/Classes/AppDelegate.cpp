@@ -49,7 +49,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     auto director = cocos2d::Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
-        glview = cocos2d::GLViewImpl::create("Cpp Empty Test");
+        glview = cocos2d::GLViewImpl::createWithRect("bubbletown", cocos2d::Rect(0, 0, 720, 1280), 0.5);
         director->setOpenGLView(glview);
     }
 
