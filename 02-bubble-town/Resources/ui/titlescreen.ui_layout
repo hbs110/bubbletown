@@ -16,10 +16,10 @@
   "__type_info__": "RootNode",
   "Children": [
     {
-      "Res": "uires://res/atlases/!default!:tongyi.png",
+      "Res": "uires://titlescreen_tiles:01-01.png",
       "Name": "Image",
       "Position": "0, 0",
-      "Size": "720, 1080",
+      "Size": "720, 1280",
       "LogicalSize": "0, 0",
       "Visible": true,
       "Dock": 0,
@@ -30,7 +30,42 @@
       "Locked": false,
       "UserData": null,
       "__type_info__": "Image",
-      "Children": []
+      "Children": [
+        {
+          "Res": "uires://titlescreen_tiles:01-02.png",
+          "Name": "Image",
+          "Position": "106, 195",
+          "Size": "500, 314",
+          "LogicalSize": "0, 0",
+          "Visible": true,
+          "Dock": 0,
+          "AlignH": 1,
+          "AlignV": 1,
+          "Margin": 3,
+          "Tag": null,
+          "Locked": false,
+          "UserData": null,
+          "__type_info__": "Image",
+          "Children": []
+        },
+        {
+          "Res": "uires://titlescreen_tiles:01-08.png",
+          "Name": "Image<1>",
+          "Position": "478, 960",
+          "Size": "216, 156",
+          "LogicalSize": "0, 0",
+          "Visible": true,
+          "Dock": 0,
+          "AlignH": 1,
+          "AlignV": 1,
+          "Margin": 3,
+          "Tag": null,
+          "Locked": false,
+          "UserData": null,
+          "__type_info__": "Image",
+          "Children": []
+        }
+      ]
     }
   ]
 }
