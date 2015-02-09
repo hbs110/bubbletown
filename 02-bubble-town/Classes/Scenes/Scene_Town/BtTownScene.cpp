@@ -22,8 +22,6 @@
 
 #include "Services/BtLuaService.h"
 
-#include "Core/tinyformat-2.0.1/tinyformat.h"
-
 enum {
     kTagTileMap = 1,
 };

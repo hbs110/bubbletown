@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "BtLuaService.h"
 
-#include "Core/tinyformat-2.0.1/tinyformat.h"
+#include "Core/tinyformat/tinyformat.h"
 
 #include <btlua.h>
 
