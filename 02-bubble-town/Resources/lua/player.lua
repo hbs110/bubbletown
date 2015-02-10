@@ -25,7 +25,11 @@ function player.load(profileName)
 		return false
 	end
 
-	player.info = data
+	-- merge the loaded profile into player.info
+	for k,v in pairs(data) do
+		player.info[k] = v 
+	end
+
 	player.profile_name = profileName
 	return true
 end

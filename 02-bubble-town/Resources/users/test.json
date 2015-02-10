@@ -1,6 +1,12 @@
 {
+  "buildings": [],
   "coins": 0,
   "diamonds": 0,
+  "energy": 5,
   "exp": 0,
-  "level": 3
+  "heros": [],
+  "in_progress_events": [],
+  "items": [],
+  "level": 1,
+  "level_stats": []
 }
