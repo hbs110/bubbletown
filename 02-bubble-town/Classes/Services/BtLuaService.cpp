@@ -27,8 +27,6 @@ namespace
     // wouldn't pollute the global namespace
     btlua_handle L;
 
-    BtConstStr Namespace_Default = "bubbletown";
-
     BtConstStr Func_Print = "print";
 }
 
@@ -56,12 +54,12 @@ bool BtLuaService::Init()
         return false;
 
     luabridge::getGlobalNamespace(L)
-        .beginNamespace(Namespace_Default)
+        .beginNamespace(BtNativeNamespace)
         .addFunction(Func_Print, BtLuaService::NativePrint)
         .endNamespace();
 
     // replacing system functions with customized ones 
-    BtLua_ExecString(L, tinyformat::format("_G.%s = %s.%s", Func_Print, Namespace_Default, Func_Print));
+    BtLua_ExecString(L, tinyformat::format("_G.%s = %s.%s", Func_Print, BtNativeNamespace, Func_Print));
 
     return true;
 }

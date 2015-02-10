@@ -14,7 +14,7 @@
 #include "Core/BtMsgDef.h"
 #include "Core/BtMsgDispatcher.h"
 
-#include "Scenes/BtSceneDef.h"
+#include "Services/BtLuaService.h"
 
 const char* const MENU_Bubble  = "Bubble";
 const char* const MENU_Town    = "Town";
@@ -58,15 +58,13 @@ bool AppStartScene::init()
     menu->setPosition(cocos2d::Vec2::ZERO);
     root->addChild(menu, 1);
 
-    {
-        auto label = cocos2d::LabelTTF::create(BTSCN_Start, "Arial", TITLE_FONT_SIZE);
-        label->setPosition(origin.x + visibleSize.width/2, origin.y + visibleSize.height - label->getContentSize().height);
-        root->addChild(label, 1);
-    }
+    auto label = cocos2d::LabelTTF::create("Start", "Arial", TITLE_FONT_SIZE);
+    label->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height - label->getContentSize().height);
+    root->addChild(label, 1);
 
     BtTextMenuBuilder mb;
-    mb.AddItem(MENU_Bubble, std::bind([] (cocos2d::Ref*) { BtEmitMessage(BTMSG_GotoScene, BTSCN_Bubble); }, std::placeholders::_1));
-    mb.AddItem(MENU_Town, std::bind([] (cocos2d::Ref*) { BtEmitMessage(BTMSG_GotoScene, BTSCN_Town); }, std::placeholders::_1));
+    mb.AddItem(MENU_Bubble, std::bind([](cocos2d::Ref*) { BT_CALL_LUA("goto_scene", "scn_bubble"); }, std::placeholders::_1));
+    mb.AddItem(MENU_Town, std::bind([](cocos2d::Ref*) { BT_CALL_LUA("goto_scene", "scn_town"); }, std::placeholders::_1));
     auto menuMain = mb.Build();
     if (menuMain)
     {

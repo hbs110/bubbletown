@@ -13,7 +13,7 @@
 #include "Core/BtMsgDispatcher.h"
 #include "Core/BtGuiUtil.h"
 
-#include "Scenes/BtSceneDef.h"
+#include "Services/BtLuaService.h"
 
 bool BtBaseScene::init()
 {
@@ -35,7 +35,10 @@ bool BtBaseScene::init()
 
     cocos2d::ui::Button* btClose = cocos2d::ui::Button::create("CloseNormal.png", "CloseSelected.png");
     btClose->setPosition(origin + cocos2d::Vec2(visibleSize) - cocos2d::Vec2(btClose->getContentSize() / 2));
-    BtSetButtonHandler(btClose, [] () { BtEmitMessage(BTMSG_GotoScene, BTSCN_Start); });
+    
+    // the close button handler here should be moved to script
+    BtSetButtonHandler(btClose, []() { BT_CALL_LUA("goto_scene", "scn_start"); });
+
     m_uiRoot->addChild(btClose, 1);
 
     if (!do_init())

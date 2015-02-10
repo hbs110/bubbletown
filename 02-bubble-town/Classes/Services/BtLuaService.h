@@ -16,6 +16,11 @@
 
 #define BT_CALL_LUA(func_name, ...)     BTLUA_CALL_FUNCTION(BT_L, func_name, __VA_ARGS__)
 
+namespace
+{
+    BtConstStr BtNativeNamespace = "bt_native";
+}
+
 class BtLuaService 
 {
     BT_SINGLETON_DEF(BtLuaService);
@@ -26,6 +31,11 @@ public:
 
     btlua_handle GetHandle();  // main Lua handle accessing
 
+    template <typename T>
+    void RegisterVariable(const char* name, T* var);
+    template <typename FUNC>
+    void RegisterFunction(const char* name, FUNC const fp);
+
 private:
     // callbacks of various internal events
     void OnError(const std::string& errMsg);
@@ -35,3 +45,32 @@ private:
     static void NativePrint(const std::string& msg);
 };
 
+
+/* ----- Implementation Details ----- */
+
+template <typename T>
+void BtLuaService::RegisterVariable(const char* name, T* var)
+{
+    btlua_handle h = GetHandle();
+    if (!h)
+        return;
+
+    luabridge::getGlobalNamespace(h)
+        .beginNamespace(BtNativeNamespace)
+        .addVariable(name, var)
+        .endNamespace();
+}
+
+
+template <typename FUNC>
+void BtLuaService::RegisterFunction(const char* name, FUNC const fp)
+{
+    btlua_handle h = GetHandle();
+    if (!h)
+        return;
+
+    luabridge::getGlobalNamespace(h)
+        .beginNamespace(BtNativeNamespace)
+        .addFunction(name, fp)
+        .endNamespace();
+}

@@ -3,7 +3,6 @@
 #include "AppMacros.h"
 #include "AppStartScene.h"
 
-#include "Scenes/BtSceneDef.h"
 #include "Scenes/Scene_Bubble/BtBubbleScene.h"
 #include "Scenes/Scene_Town/BtTownScene.h"
 #include "Scenes/Scene_World/BtWorldScene.h"
@@ -13,29 +12,16 @@
 
 #include "Services/BtLuaService.h"
 
-// the default scene creation process
-template <typename T>
-cocos2d::Scene* BtCreateScene()
-{
-    T *layer = T::create(); // create() should guarantee the layer pointer is autoreleased 
-    if (!layer)
-        return nullptr;
-
-    auto scene = cocos2d::Scene::create();  // Scene::create() ensures creating autorelease object
-    if (!scene)
-        return nullptr;
-
-    scene->addChild(layer);
-    return scene;
-}
+#include "AppNativeInterfaces.h"
 
 AppDelegate::AppDelegate() {
-    BtLuaService::DestroyInst();
 
 }
 
 AppDelegate::~AppDelegate() 
 {
+    CallLua_Destroy();
+    BtLuaService::DestroyInst();
     BtMsgDispatcher::DestroyInst();
 }
 
@@ -104,19 +90,23 @@ bool AppDelegate::applicationDidFinishLaunching()
     director->setAnimationInterval(1.0 / 60);
 
     
-    // ------------- Scene ------------- 
-
-    m_sceneCreators[BTSCN_Start] = &BtCreateScene<AppStartScene>;
-    m_sceneCreators[BTSCN_Bubble] = &BtCreateScene<BtBubbleScene>;
-    m_sceneCreators[BTSCN_Town] = &BtCreateScene<BtTownScene>;
-    m_sceneCreators[BTSCN_World] = &BtCreateScene<BtWorldScene>;
-
-    auto scene = BtCreateScene<AppStartScene>();
-    director->runWithScene(scene);
-
     BtLuaService::CreateInst();
-    BtLuaService::Get()->Init();
-                            
+    if (!BtLuaService::Get()->Init())
+        return false;
+
+    BtLuaService::Get()->RegisterFunction("goto_scene", &AppNativeInterfaces::EmitMsg_GotoScene);
+
+    RegisterSceneCreator<AppStartScene>("scn_start");
+    RegisterSceneCreator<BtBubbleScene>("scn_bubble");
+    RegisterSceneCreator<BtTownScene>("scn_town");
+    RegisterSceneCreator<BtWorldScene>("scn_world");
+
+    auto luaTick = std::bind(&AppDelegate::CallLua_Tick, this, std::placeholders::_1);
+    cocos2d::Director::getInstance()->getScheduler()->schedule(luaTick, this, 1.0f, false, "AppDelegate::TickLua");
+
+    if (!CallLua_Init())
+        return false;
+
     return true;
 }
 
@@ -153,6 +143,38 @@ bool AppDelegate::OnMsg_GotoScene(BtMsg& msg)
         return false;
     }
 
-    director->replaceScene(scene);
+    if (director->getRunningScene())
+    {
+        director->replaceScene(scene);
+    }
+    else
+    {
+        director->runWithScene(scene);
+    }
     return true;
+}
+
+void AppDelegate::CallLua_Tick(float deltaSeconds)
+{
+    BT_CALL_LUA("hostcall_tick", deltaSeconds);
+}
+
+bool AppDelegate::CallLua_Init()
+{
+    bool succ = false;
+    btlua_ref val = BT_CALL_LUA("hostcall_init");
+    if (val.type() == LUA_TBOOLEAN)
+        succ = val.cast<bool>();
+    if (!succ)
+    {
+        CCLOG("hostcall_init() failed.");
+        return false;
+    }
+
+    return true;
+}
+
+void AppDelegate::CallLua_Destroy()
+{
+    BT_CALL_LUA("hostcall_destroy");
 }

@@ -15,7 +15,7 @@
 #include "Core/BtMsgDef.h"
 #include "Core/BtMsgDispatcher.h"
 
-#include "Scenes/BtSceneDef.h"
+#include "Services/BtLuaService.h"
 
 BtConstStr Bt_CloseButton = "close";
 BtConstStr Bt_SwitchButton = "switch";
@@ -25,11 +25,11 @@ bool BtWorldScene::do_init()
     auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 
-    auto titleLabel = cocos2d::LabelTTF::create(BTSCN_World, "Arial", TITLE_FONT_SIZE);
+    auto titleLabel = cocos2d::LabelTTF::create("WorldScene", "Arial", TITLE_FONT_SIZE);
     titleLabel->setPosition(origin.x + visibleSize.width/2, origin.y + visibleSize.height - titleLabel->getContentSize().height);
     m_uiRoot->addChild(titleLabel, 1);
 
-    auto callback = [] (cocos2d::Ref*) { BtEmitMessage(BTMSG_GotoScene, BTSCN_Town); };
+    auto callback = [](cocos2d::Ref*) { BT_CALL_LUA("goto_scene", "scn_town"); };
     auto worldButton = cocos2d::MenuItemImage::create(
         "world_button.png",
         "world_button.png",

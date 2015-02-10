@@ -3,6 +3,8 @@
 
 #include "Core/BtMsgDispatcher.h"
 
+#include "Services/BtLuaService.h"
+
 /**
 @brief    The cocos2d Application.
 
@@ -38,6 +40,38 @@ protected:
 
     typedef std::function<cocos2d::Scene* ()> sceneCreator_t;
     std::map<std::string, sceneCreator_t> m_sceneCreators;
+
+    template <typename T>
+    void RegisterSceneCreator(const char* luaSceneName)
+    {
+        btlua_ref sceneNameRef = BT_CALL_LUA("get_scene_name", luaSceneName);
+        if (!sceneNameRef.isString())
+            return;
+
+        std::string sceneName = sceneNameRef.tostring();
+        m_sceneCreators[sceneName] = std::bind(&AppDelegate::CreateScene < T >, this, sceneName);
+    }
+
+    template <typename T>
+    cocos2d::Scene* CreateScene(const std::string& sceneName)
+    {
+        T *layer = T::create(); // create() should guarantee the layer pointer is autoreleased 
+        if (!layer)
+            return nullptr;
+
+        layer->setName(sceneName);
+
+        auto scene = cocos2d::Scene::create();  // Scene::create() ensures creating autorelease object
+        if (!scene)
+            return nullptr;
+
+        scene->addChild(layer);
+        return scene;
+    }
+
+    bool CallLua_Init();
+    void CallLua_Tick(float deltaSeconds);
+    void CallLua_Destroy();
 };
 
 #endif // _APP_DELEGATE_H_

@@ -77,6 +77,9 @@
     <ClCompile Include="..\Classes\Services\BtGuiService.cpp">
       <Filter>Classes\Services</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\AppNativeInterfaces.cpp">
+      <Filter>Classes\App</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -115,9 +118,6 @@
     <ClInclude Include="..\Classes\AppStartScene.h">
       <Filter>Classes\App</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Scenes\BtSceneDef.h">
-      <Filter>Classes\Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\stdafx.h">
       <Filter>Classes</Filter>
     </ClInclude>
@@ -135,6 +135,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Services\BtGuiService.h">
       <Filter>Classes\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppNativeInterfaces.h">
+      <Filter>Classes\App</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

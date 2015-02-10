@@ -16,8 +16,6 @@
 #include "Core/BtMsgDef.h"
 #include "Core/BtMsgDispatcher.h"
 
-#include "Scenes/BtSceneDef.h"
-
 #include "BtTownBuilding.h"
 
 #include "Services/BtLuaService.h"
@@ -41,7 +39,7 @@ bool BtTownScene::do_init()
     auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 
-    auto titleLabel = cocos2d::LabelTTF::create(BTSCN_Town, "Arial", TITLE_FONT_SIZE);
+    auto titleLabel = cocos2d::LabelTTF::create("TownScene", "Arial", TITLE_FONT_SIZE);
     titleLabel->setPosition(origin.x + visibleSize.width/2, origin.y + visibleSize.height - titleLabel->getContentSize().height);
     m_uiRoot->addChild(titleLabel, 1);
 
@@ -81,7 +79,7 @@ bool BtTownScene::do_init()
 
     cocos2d::ui::Button* btWorld = cocos2d::ui::Button::create("treasure-map-icon.png", "treasure-map-icon.png");
     btWorld->setPosition(cocos2d::Vec2(origin.x + visibleSize.width - btWorld->getContentSize().width / 2, btWorld->getContentSize().height / 2));
-    BtSetButtonHandler(btWorld, [] () { BtEmitMessage(BTMSG_GotoScene, BTSCN_World); });
+    BtSetButtonHandler(btWorld, []() { BT_CALL_LUA("goto_scene", "scn_world"); });
     m_uiRoot->addChild(btWorld, 1);
 
     if (!m_widgets.init(m_tiledMap.GetSpriteRoot()))
