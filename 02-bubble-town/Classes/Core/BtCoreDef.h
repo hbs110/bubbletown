@@ -8,6 +8,11 @@
  
  #pragma once
 
+#include "cocos2d.h"
+
+#include <vector>
+#include <string>
+
 // C-style string constant
 typedef const char* const   BtConstStr;
 
@@ -15,11 +20,14 @@ typedef const char* const   BtConstStr;
 #define BT_ARRAY_SIZE(arr)  ( sizeof(arr) / sizeof(arr[0]) )
 
 // invalid id
-const int BT_INVALID_ID = -1;   
+const int BT_INVALID_ID = -1;
+
+// invalid id
+const cocos2d::Vec2 BT_INVALID_VEC2 = cocos2d::Vec2(-1000123.0f, -1000123.0f);
 
 
-template <typename T> void BtDeletePointer(T& ptr)  {if (ptr)    { delete ptr; ptr = NULL; } }
-template <typename T> void BtDeleteArray(T& pArray) {if (pArray) { delete [] pArray; pArray = NULL; } }
+template <typename T> void BtDeletePointer(T& ptr)  {if (ptr)    { delete ptr; ptr = nullptr; } }
+template <typename T> void BtDeleteArray(T& pArray) {if (pArray) { delete [] pArray; pArray = nullptr; } }
 
 template <typename ELEM, typename CONT>
 bool BtIsInContainer(ELEM e, CONT c) 
@@ -76,3 +84,27 @@ bool BtIsInContainer(ELEM e, CONT c)
  *	Singleton Object 
  */
 #define BT_SGT_INST(className)  s_##className
+
+/* 
+    Round to the nearest integer
+*/
+template <typename T>
+T BtRound(T value)
+{
+    T base = floor(value);
+    if (value < base + T(0.5f))
+    {
+        return base;
+    } 
+    else
+    {
+        return base + T(1.0f);
+    }
+}
+
+const float BT_EPSILON = 0.00001f;
+template <typename T>
+T BtIsZero(T value)
+{
+    return value < (T)BT_EPSILON && value > - (T)BT_EPSILON;
+}

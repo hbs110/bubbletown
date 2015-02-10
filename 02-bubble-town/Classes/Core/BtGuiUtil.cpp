@@ -31,16 +31,26 @@ cocos2d::Menu* BtTextMenuBuilder::Build()
     if (m_itemTexts.empty())
         return nullptr;
 
-    if (!m_handler)
-        return nullptr;
-
     cocos2d::Vector<cocos2d::MenuItem*> items;
-    for (int i = 0; i < m_itemTexts.size(); ++i)
+    for (size_t i = 0; i < m_itemTexts.size(); ++i)
     {
-        auto label = cocos2d::LabelTTF::create(m_itemTexts[i], "Arial", BtGui_DefaultMenuFontSize);
+        auto label = cocos2d::LabelTTF::create(m_itemTexts[i], BtGui_DefaultMenuFont, BtGui_DefaultMenuFontSize);
         auto item = cocos2d::MenuItemLabel::create(label);
 
-        item->setCallback(m_handler);
+        auto it = m_namedHandlers.find(m_itemTexts[i]);
+        if (it != m_namedHandlers.end())
+        {
+            if (it->second)
+                item->setCallback(it->second);
+        }
+        else
+        {
+            if (m_handler)
+                item->setCallback(m_handler);
+        }
+
+        if (!item)
+            continue;
 
         switch (m_itemAlignment)
         {
@@ -75,4 +85,26 @@ cocos2d::Menu* BtTextMenuBuilder::Build()
     return menu;
 }
 
+void BtTextMenuBuilder::AddItem(const std::string& itemText, cocos2d::ccMenuCallback handler)
+{
+    AddItem(itemText);
+    m_namedHandlers[itemText] = handler;
+}
+
+void BtSetButtonHandler(cocos2d::ui::Button* button, buttonHandler_t handler, bool onReleased /*= false*/)
+{
+    if (!button)
+        return;
+
+    auto callback = [onReleased, handler] (cocos2d::Ref *pSender, cocos2d::ui::Widget::TouchEventType type)
+    { 
+        if ((!onReleased && type == cocos2d::ui::Widget::TouchEventType::BEGAN) ||
+            (onReleased && type == cocos2d::ui::Widget::TouchEventType::ENDED))
+        {
+            handler();
+        }
+    };
+
+    button->addTouchEventListener(std::bind(callback, std::placeholders::_1, std::placeholders::_2));
+}
 

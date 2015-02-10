@@ -8,17 +8,16 @@
 
 #pragma once
 
-#include "Core/BtGuiUtil.h"
+#include "Scenes/BtBaseScene.h"
 
-class BtWorldScene : public cocos2d::Layer
+class BtWorldScene : public BtBaseScene
 {
 public:
     BtWorldScene() {}
     virtual ~BtWorldScene() {}
     CREATE_FUNC(BtWorldScene);
 
-    virtual bool init();  
-
-    void onMenuItem(cocos2d::Ref* sender);
+protected:
+    virtual bool do_init();  
 };
 

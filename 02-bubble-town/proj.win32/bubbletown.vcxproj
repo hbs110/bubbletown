@@ -73,7 +73,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\Classes;..\..\..\external;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Classes;..\Dependencies\BtLua-dist\include\lua;..\Dependencies\BtLua-dist\include\luabridge;..\Dependencies\BtLua-dist\include;..\..\..\external;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;COCOS2D_DEBUG=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -86,7 +86,7 @@
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OutDir);..\Dependencies\BtLua-dist\lib\vs2013;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -101,7 +101,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\Classes;..\..\..\external;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Classes;..\Dependencies\BtLua-dist\include\lua;..\Dependencies\BtLua-dist\include\luabridge;..\Dependencies\BtLua-dist\include;..\..\..\external;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -114,7 +114,7 @@
     <Link>
       <AdditionalDependencies>glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OutDir);..\Dependencies\BtLua-dist\lib\vs2013;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -128,13 +128,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
+    <ClCompile Include="..\Classes\AppNativeInterfaces.cpp" />
+    <ClCompile Include="..\Classes\AppStartScene.cpp" />
     <ClCompile Include="..\Classes\Core\BtGuiUtil.cpp" />
-    <ClCompile Include="..\Classes\MsgHandling\BtMsgDispatcher.cpp" />
-    <ClCompile Include="..\Classes\Scenes\AppStartScene.cpp" />
-    <ClCompile Include="..\Classes\Scenes\BtSceneUtil.cpp" />
-    <ClCompile Include="..\Classes\Scenes\BtTestScene.cpp" />
-    <ClCompile Include="..\Classes\Scenes\BtTownScene.cpp" />
-    <ClCompile Include="..\Classes\Scenes\BtWorldScene.cpp" />
+    <ClCompile Include="..\Classes\Core\BtMsgDispatcher.cpp" />
+    <ClCompile Include="..\Classes\Scenes\BtBaseScene.cpp" />
+    <ClCompile Include="..\Classes\Scenes\Scene_Bubble\BtBubbleScene.cpp" />
+    <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTiledMap.cpp" />
+    <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTownBuilding.cpp" />
+    <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTownScene.cpp" />
+    <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTownSceneWidgets.cpp" />
+    <ClCompile Include="..\Classes\Scenes\Scene_World\BtWorldScene.cpp" />
+    <ClCompile Include="..\Classes\Services\BtGuiService.cpp" />
+    <ClCompile Include="..\Classes\Services\BtLuaService.cpp" />
     <ClCompile Include="..\Classes\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -144,15 +150,21 @@
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\AppMacros.h" />
+    <ClInclude Include="..\Classes\AppNativeInterfaces.h" />
+    <ClInclude Include="..\Classes\AppStartScene.h" />
     <ClInclude Include="..\Classes\Core\BtCoreDef.h" />
     <ClInclude Include="..\Classes\Core\BtGuiUtil.h" />
-    <ClInclude Include="..\Classes\MsgHandling\BtMsgDef.h" />
-    <ClInclude Include="..\Classes\MsgHandling\BtMsgDispatcher.h" />
-    <ClInclude Include="..\Classes\Scenes\AppStartScene.h" />
-    <ClInclude Include="..\Classes\Scenes\BtSceneUtil.h" />
-    <ClInclude Include="..\Classes\Scenes\BtTestScene.h" />
-    <ClInclude Include="..\Classes\Scenes\BtTownScene.h" />
-    <ClInclude Include="..\Classes\Scenes\BtWorldScene.h" />
+    <ClInclude Include="..\Classes\Core\BtMsgDef.h" />
+    <ClInclude Include="..\Classes\Core\BtMsgDispatcher.h" />
+    <ClInclude Include="..\Classes\Scenes\BtBaseScene.h" />
+    <ClInclude Include="..\Classes\Scenes\Scene_Bubble\BtBubbleScene.h" />
+    <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTiledMap.h" />
+    <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTownBuilding.h" />
+    <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTownScene.h" />
+    <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTownSceneWidgets.h" />
+    <ClInclude Include="..\Classes\Scenes\Scene_World\BtWorldScene.h" />
+    <ClInclude Include="..\Classes\Services\BtGuiService.h" />
+    <ClInclude Include="..\Classes\Services\BtLuaService.h" />
     <ClInclude Include="..\Classes\stdafx.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>

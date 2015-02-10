@@ -1,13 +1,18 @@
 #include "stdafx.h"
 #include "AppDelegate.h"
 #include "AppMacros.h"
+#include "AppStartScene.h"
 
-#include "Scenes/AppStartScene.h"
-#include "Scenes/BtSceneUtil.h"
+#include "Scenes/Scene_Bubble/BtBubbleScene.h"
+#include "Scenes/Scene_Town/BtTownScene.h"
+#include "Scenes/Scene_World/BtWorldScene.h"
 
-#include "MsgHandling/BtMsgDef.h"
-#include "MsgHandling/BtMsgDispatcher.h"
+#include "Core/BtMsgDef.h"
+#include "Core/BtMsgDispatcher.h"
 
+#include "Services/BtLuaService.h"
+
+#include "AppNativeInterfaces.h"
 
 AppDelegate::AppDelegate() {
 
@@ -15,6 +20,8 @@ AppDelegate::AppDelegate() {
 
 AppDelegate::~AppDelegate() 
 {
+    CallLua_Destroy();
+    BtLuaService::DestroyInst();
     BtMsgDispatcher::DestroyInst();
 }
 
@@ -22,13 +29,13 @@ bool AppDelegate::applicationDidFinishLaunching()
 {
     // message handling
     BtMsgDispatcher::CreateInst();
-    BtMsgDispatcher::Get()->Subscribe(BTMSG_GotoScene, &BtMsgGotoScene_Handle);
+    BtMsgDispatcher::Get()->Subscribe(BTMSG_GotoScene, std::bind(&AppDelegate::OnMsg_GotoScene, this, std::placeholders::_1));
 
     // initialize director
     auto director = cocos2d::Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
-        glview = cocos2d::GLViewImpl::create("Cpp Empty Test");
+        glview = cocos2d::GLViewImpl::createWithRect("bubbletown", cocos2d::Rect(0, 0, 720, 1280), 0.5);
         director->setOpenGLView(glview);
     }
 
@@ -82,13 +89,24 @@ bool AppDelegate::applicationDidFinishLaunching()
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 60);
 
-    // create a scene. it's an autorelease object
-    //auto scene = BulletStormScene::scene();
-    auto scene = BtCreateScene<AppStartScene>();
+    
+    BtLuaService::CreateInst();
+    if (!BtLuaService::Get()->Init())
+        return false;
 
-    // run
-    director->runWithScene(scene);
-                            
+    BtLuaService::Get()->RegisterFunction("goto_scene", &AppNativeInterfaces::EmitMsg_GotoScene);
+
+    RegisterSceneCreator<AppStartScene>("scn_start");
+    RegisterSceneCreator<BtBubbleScene>("scn_bubble");
+    RegisterSceneCreator<BtTownScene>("scn_town");
+    RegisterSceneCreator<BtWorldScene>("scn_world");
+
+    auto luaTick = std::bind(&AppDelegate::CallLua_Tick, this, std::placeholders::_1);
+    cocos2d::Director::getInstance()->getScheduler()->schedule(luaTick, this, 1.0f, false, "AppDelegate::TickLua");
+
+    if (!CallLua_Init())
+        return false;
+
     return true;
 }
 
@@ -106,4 +124,57 @@ void AppDelegate::applicationWillEnterForeground() {
 
     // if you use SimpleAudioEngine, it must resume here
     // SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
+}
+
+bool AppDelegate::OnMsg_GotoScene(BtMsg& msg)
+{
+    auto director = cocos2d::Director::getInstance();
+    if (!director)
+        return false;
+
+    auto it = m_sceneCreators.find(msg.m_info);
+    if (it == m_sceneCreators.end())
+        return false;
+
+    cocos2d::Scene* scene = it->second();
+    if (!scene)
+    {
+        CCLOGERROR("The creator of scene ('%s') not found, scene creation failed.", msg.m_info.c_str());
+        return false;
+    }
+
+    if (director->getRunningScene())
+    {
+        director->replaceScene(scene);
+    }
+    else
+    {
+        director->runWithScene(scene);
+    }
+    return true;
+}
+
+void AppDelegate::CallLua_Tick(float deltaSeconds)
+{
+    BT_CALL_LUA("hostcall_tick", deltaSeconds);
+}
+
+bool AppDelegate::CallLua_Init()
+{
+    bool succ = false;
+    btlua_ref val = BT_CALL_LUA("hostcall_init");
+    if (val.type() == LUA_TBOOLEAN)
+        succ = val.cast<bool>();
+    if (!succ)
+    {
+        CCLOG("hostcall_init() failed.");
+        return false;
+    }
+
+    return true;
+}
+
+void AppDelegate::CallLua_Destroy()
+{
+    BT_CALL_LUA("hostcall_destroy");
 }

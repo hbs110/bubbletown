@@ -11,29 +11,29 @@
 
 #include "AppMacros.h"
 
-#include "BtSceneUtil.h"
+#include "Core/BtCoreDef.h"
+#include "Core/BtMsgDef.h"
+#include "Core/BtMsgDispatcher.h"
+
+#include "Services/BtLuaService.h"
 
 BtConstStr Bt_CloseButton = "close";
 BtConstStr Bt_SwitchButton = "switch";
 
-
-bool BtWorldScene::init()
+bool BtWorldScene::do_init()
 {
-    if ( !Layer::init() )
-        return false;
-
-    auto root = BtCreateDefaultUIElements(std::bind(&BtStdHandler_BackToMainMenu, std::placeholders::_1), BTSCN_World);
-    if (root)
-        addChild(root, 1);
-
     auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
     auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
 
+    auto titleLabel = cocos2d::LabelTTF::create("WorldScene", "Arial", TITLE_FONT_SIZE);
+    titleLabel->setPosition(origin.x + visibleSize.width/2, origin.y + visibleSize.height - titleLabel->getContentSize().height);
+    m_uiRoot->addChild(titleLabel, 1);
 
+    auto callback = [](cocos2d::Ref*) { BT_CALL_LUA("goto_scene", "scn_town"); };
     auto worldButton = cocos2d::MenuItemImage::create(
         "world_button.png",
         "world_button.png",
-        CC_CALLBACK_1(BtWorldScene::onMenuItem,this));
+        std::bind(callback, std::placeholders::_1));
     worldButton->setName(Bt_SwitchButton);
     worldButton->setPosition(origin.x + visibleSize.width - worldButton->getContentSize().width / 2, origin.y + worldButton->getContentSize().height / 2);
 
@@ -74,13 +74,5 @@ bool BtWorldScene::init()
     // add the sprite as a child to this layer
     this->addChild(sprite, -1);
 
-
-
     return true;
 }
-
-void BtWorldScene::onMenuItem(cocos2d::Ref* sender)
-{
-    BtMsgGotoScene_Emit(BTSCN_Town);
-}
-
