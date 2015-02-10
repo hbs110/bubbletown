@@ -14,7 +14,9 @@
 
 #include "AppNativeInterfaces.h"
 
-AppDelegate::AppDelegate() {
+AppDelegate::AppDelegate()
+    : m_startTime(0.0)
+{
 
 }
 
@@ -89,12 +91,14 @@ bool AppDelegate::applicationDidFinishLaunching()
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 60);
 
+    m_startTime = cocos2d::utils::gettime();
     
     BtLuaService::CreateInst();
     if (!BtLuaService::Get()->Init())
         return false;
 
     BtLuaService::Get()->RegisterFunction("goto_scene", &AppNativeInterfaces::EmitMsg_GotoScene);
+    BtLuaService::Get()->RegisterFunction("get_current_time", &AppNativeInterfaces::GetCurrentGameTime);
 
     RegisterSceneCreator<AppStartScene>("scn_start");
     RegisterSceneCreator<BtBubbleScene>("scn_bubble");
