@@ -35,6 +35,9 @@ public:
     */
     virtual void applicationWillEnterForeground();
 
+    double GetStartTime() const { return m_startTime; }
+    double GetCurTime() const { return cocos2d::utils::gettime() - m_startTime; }
+
 protected:
     bool OnMsg_GotoScene(BtMsg& msg);
 
@@ -72,6 +75,8 @@ protected:
     bool CallLua_Init();
     void CallLua_Tick(float deltaSeconds);
     void CallLua_Destroy();
+
+    double m_startTime;
 };
 
 #endif // _APP_DELEGATE_H_

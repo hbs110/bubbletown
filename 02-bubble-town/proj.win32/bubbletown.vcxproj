@@ -155,6 +155,7 @@
     <ClInclude Include="..\Classes\Core\BtCoreDef.h" />
     <ClInclude Include="..\Classes\Core\BtGuiUtil.h" />
     <ClInclude Include="..\Classes\Core\BtMsgDef.h" />
+    <ClInclude Include="..\Classes\Core\BtMsgDef_AUTOGEN.h" />
     <ClInclude Include="..\Classes\Core\BtMsgDispatcher.h" />
     <ClInclude Include="..\Classes\Scenes\BtBaseScene.h" />
     <ClInclude Include="..\Classes\Scenes\Scene_Bubble\BtBubbleScene.h" />

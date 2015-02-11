@@ -139,5 +139,8 @@
     <ClInclude Include="..\Classes\AppNativeInterfaces.h">
       <Filter>Classes\App</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Core\BtMsgDef_AUTOGEN.h">
+      <Filter>Classes\Core</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
