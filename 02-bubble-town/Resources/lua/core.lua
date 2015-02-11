@@ -1,9 +1,9 @@
 
-core = {}
-
 -- this library is found here
 -- 		http://regex.info/blog/lua/json
-JSON = (loadfile "lua/JSON/JSON.lua")() -- one-time load of the routines
+JSON = dofile "lua/JSON/JSON.lua" 
+
+core = {}
 
 PLAYER_PROFILE_DIR = "users/"
 

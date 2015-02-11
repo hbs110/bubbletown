@@ -3,7 +3,7 @@ inbox = {}
 
 inbox.msgs = {}
 
--- I don't know how to call var_args lua functions from C++ directly in luabridge
+-- I don't know how to call var_args lua functions from C++ directly with luabridge
 -- up to 9 parameters looks enough for cross language invoking
 -- please also note the hidden parameter 'arg' is deprecated in Lua 5.2, use {...} instead.
 function inbox.post(msgID, msgInfo, p1, p2, p3, p4, p5, p6, p7, p8, p9)

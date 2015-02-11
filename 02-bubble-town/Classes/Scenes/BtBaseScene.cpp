@@ -46,3 +46,17 @@ bool BtBaseScene::init()
 
     return true;
 }
+
+void BtBaseScene::preEnter(const std::string& sceneConfig)
+{
+    m_preEnterConfig = sceneConfig;
+}
+
+void BtBaseScene::onEnter()
+{
+    cocos2d::Layer::onEnter();
+
+    do_enter();
+
+    m_preEnterConfig = "";
+}

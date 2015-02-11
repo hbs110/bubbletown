@@ -21,6 +21,8 @@ public:
     int m_id;
     std::string m_info;
     float m_creationTime;
+
+    std::vector<std::string> m_extraParams;
 };
 
 typedef std::function<bool(BtMsg& msg)> msgHandler_t;

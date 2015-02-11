@@ -3,8 +3,12 @@
 
 BtMsgID = 
 {
-	GotoScene = 0,  	-- 跳转到场景
-	UI_ButtonPressed,  	-- 按钮被按下
+	-- Game events
+	GotoScene = 0,  			-- 跳转到场景
+	StartNextLevel = 1,			-- 开始下一关
+
+	-- UI events
+	UI_ButtonPressed = 100,  	-- 按钮被按下
 };
 
 

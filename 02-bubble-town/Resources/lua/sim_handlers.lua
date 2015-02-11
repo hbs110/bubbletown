@@ -1,12 +1,21 @@
 
+level = dofile "lua/level.lua"
 
 handlers = {}
 
-function OnMsg_GotoScene(msg) 
-	util.goto_scene(msg.info)
-end
+handlers.player = nil
 
--- register handlers
-handlers[BtMsgID.GotoScene] = OnMsg_GotoScene 
+handlers[BtMsgID.GotoScene] = function (msg) util.goto_scene(msg.info) end
+
+handlers[BtMsgID.StartNextLevel] = 
+	function (msg)
+		if handlers.player == nil then
+			return
+		end
+
+		local levelCfg = level.prepare(handlers.player)
+		util.goto_scene(BTSCN_bubble, levelCfg) 
+	end
+
 return handlers
 

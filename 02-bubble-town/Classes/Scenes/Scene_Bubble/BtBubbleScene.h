@@ -19,5 +19,8 @@ public:
 
 protected:
     virtual bool do_init();  
+    virtual void do_enter();
+
+    void onLootPressed();
 };
 

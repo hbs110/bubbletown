@@ -17,18 +17,23 @@
 
 bool BtBubbleScene::do_init()
 {
-    auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
-    auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
-
     cocos2d::ui::Button* btLoot = cocos2d::ui::Button::create("done.png", "done.png");
-    btLoot->setName("Loot");
-    btLoot->setPosition(origin + cocos2d::Vec2(visibleSize) / 2);
+    btLoot->setPosition(cocos2d::Director::getInstance()->getVisibleOrigin() + cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize()) / 2);
     m_uiRoot->addChild(btLoot, 1);
-
-    BtSetButtonHandler(btLoot, [btLoot]()
-    {
-        BT_POST_LUA_WITH_FLUSH((int) BtMsgID::UI_ButtonPressed, BTSCN_bubble, btLoot->getName());
-    });
-
+    BtSetButtonHandler(btLoot, std::bind(&BtBubbleScene::onLootPressed, this));
     return true;
 }
+
+void BtBubbleScene::do_enter()
+{
+    // read 'battleConfig' below for current level
+    std::string battleConfig = m_preEnterConfig;
+    CCLOG(battleConfig.c_str());
+    // it would be cleared as soon as do_enter() ends
+}
+
+void BtBubbleScene::onLootPressed()
+{
+    
+}
+

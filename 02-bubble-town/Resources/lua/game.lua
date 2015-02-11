@@ -10,6 +10,7 @@ game = {}
 game.simulation = dofile "lua/simulation.lua"
 game.player = dofile "lua/player.lua"
 
+game.simulation.handlers.player = game.player
 
 -- test vars
 TEST_PLAYER_PROFILE = "test"
@@ -43,8 +44,8 @@ function game.destroy()
 		however, we *should* save the profile onto server later, would revisit here then. 
 	--]]
 
-	if game.player.save() then
-		print("player profile saved.")
+	if not game.player.save() then
+		print("player profile saving failed.")
 	end
 
 	core.checkpoint("game.destroy() done.")

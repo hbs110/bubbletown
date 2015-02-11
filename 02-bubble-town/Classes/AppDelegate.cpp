@@ -136,6 +136,9 @@ bool AppDelegate::OnMsg_GotoScene(BtMsg& msg)
     if (!director)
         return false;
 
+    if (msg.m_extraParams.size() != 1)
+        return false;
+
     auto it = m_sceneCreators.find(msg.m_info);
     if (it == m_sceneCreators.end())
         return false;
@@ -145,6 +148,15 @@ bool AppDelegate::OnMsg_GotoScene(BtMsg& msg)
     {
         CCLOGERROR("The creator of scene ('%s') not found, scene creation failed.", msg.m_info.c_str());
         return false;
+    }
+
+    for (auto c : scene->getChildren())
+    {
+        BtBaseScene* scene = dynamic_cast<BtBaseScene*>(c);
+        if (scene)
+        {
+            scene->preEnter(msg.m_extraParams[0]);
+        }
     }
 
     if (director->getRunningScene())

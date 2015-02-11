@@ -63,7 +63,7 @@ bool AppStartScene::init()
     root->addChild(label, 1);
 
     BtTextMenuBuilder mb;
-    mb.AddItem(MENU_Bubble, std::bind([](cocos2d::Ref*) { BT_POST_LUA_WITH_FLUSH(BtMsgID::GotoScene, BTSCN_bubble); }, std::placeholders::_1));
+    mb.AddItem(MENU_Bubble, std::bind([](cocos2d::Ref*) { BT_POST_LUA_WITH_FLUSH(BtMsgID::StartNextLevel, ""); }, std::placeholders::_1));
     mb.AddItem(MENU_Town, std::bind([](cocos2d::Ref*) { BT_POST_LUA_WITH_FLUSH(BtMsgID::GotoScene, BTSCN_town); }, std::placeholders::_1));
     auto menuMain = mb.Build();
     if (menuMain)

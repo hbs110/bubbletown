@@ -12,10 +12,12 @@ player.info = default_player_info
 player.profile_name = "__unnamed__"
 
 function player.save()
-	if not core.save_json(core.build_profile_path(player.profile_name)) then
+	local profilePath = core.build_profile_path(player.profile_name)
+	if not core.save_json(profilePath) then
 		return false
 	end
 
+	print(string.format("profile saved into '%s'.", profilePath))
 	return true
 end
 
@@ -32,6 +34,10 @@ function player.load(profileName)
 
 	player.profile_name = profileName
 	return true
+end
+
+function player.get_next_level()
+	return 1
 end
 
 return player

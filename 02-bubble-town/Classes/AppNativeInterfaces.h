@@ -12,6 +12,6 @@ class AppNativeInterfaces
 {
 public: 
     static double GetCurrentGameTime();
-    static void GotoScene(const std::string& sceneName);
+    static void GotoScene(const std::string& sceneName, const std::string& sceneConfig);
 };
 
