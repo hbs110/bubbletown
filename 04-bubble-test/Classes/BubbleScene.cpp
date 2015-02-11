@@ -21,12 +21,9 @@ const int kGridWidth = kScreenWidth / kBubbleWidth;
 const int kGridHeight = kScreenHeight / kBubbleRealHeight;
 const int kBubbleCountPerLine = kScreenWidth / kBubbleWidth;
 
-bool BubbleCollisionDetect(Sprite *s1, Sprite *s2) {
-  Vec2 loc1 = s1->getPosition();
-  Vec2 loc2 = s2->getPosition();
+bool BubbleCollisionDetect(Vec2 loc1, Vec2 loc2) {
   auto dist = sqrt((loc1.x - loc2.x) * (loc1.x - loc2.x) + (loc1.y - loc2.y) * (loc1.y - loc2.y));
-  auto size = s1->getContentSize();
-  if (dist <= size.height)
+  if (dist <= kBubbleWidth)
     return true;
   return false;
 }
@@ -93,7 +90,9 @@ class GridLayer : public cocos2d::Layer {
   Grid Pos2Grid(Vec2);
 
   void FillGrid(Grid dest, Bubble *bubble, bool replace = false);
+  bool IsFilled(Grid dest);
   bool CheckCollision(Sprite *s);
+  void FindOverlapGrid(Vec2 pos, vector<Grid> *vec_grid);
 
   static GridLayer * Shared() {
     if (gridlayer == NULL) {
@@ -104,6 +103,7 @@ class GridLayer : public cocos2d::Layer {
 
  private:
   void FreeGridHeadLine();
+  void GetAroundGrid(Grid v, vector<Grid> *vec_grid);
 
   vector<BubbleLine> lines_;
   float collision_height_ = 2000;
@@ -154,6 +154,7 @@ void GridLayer::FreeGridHeadLine() {
 }
 
 void GridLayer::update(float dt) {
+#if 0
   auto loc = getPosition();
   loc.y -= 10 * dt;
   last_move_delta_ += 10 * dt;
@@ -163,6 +164,11 @@ void GridLayer::update(float dt) {
     FreeGridHeadLine();
   }
   setPosition(loc);
+#endif
+}
+
+bool GridLayer::IsFilled(Grid dest) {
+  return lines_[dest.y][dest.x] ? true : false;
 }
 
 void GridLayer::FillGrid(Grid dest, Bubble *bubble, bool replace) {
@@ -187,10 +193,65 @@ void GridLayer::FillGrid(Grid dest, Bubble *bubble, bool replace) {
 
 Grid GridLayer::Pos2Grid(Vec2 pos) {
   Grid v;
+  float offset = kBubbleWidth / 2;
   v.y = int((pos.y + last_move_delta_) / kBubbleRealHeight);
-  v.x = int(pos.x / kBubbleWidth);
-  cocos2d::log("%s: %f, %f, %d, %d\n", __FUNCTION__, pos.x, pos.y, v.x, v.y);
+  if (v.y & 0x01)
+    v.x = int((pos.x - offset) / kBubbleWidth);
+  else
+    v.x = int(pos.x / kBubbleWidth);
+  // cocos2d::log("%s: %f, %f, %d, %d\n", __FUNCTION__, pos.x, pos.y, v.x, v.y);
   return v;
+}
+
+#define IS_VALID_GRID(g) \
+  (((g).x >= 0 && (g).x < kGridWidth) && ((g).y >= 0 && (g).y < (kGridHeight + 2)))
+
+//   O O O
+//  O O O
+//   O O O
+//  O O O
+void GridLayer::GetAroundGrid(Grid v, vector<Grid> *vec_grid) {
+  static int offset0[][2] = {
+    { -1,  0, },
+    { -1,  1, },
+    {  0,  1, },
+    {  1,  0, },
+    {  0, -1, },
+    { -1, -1, },
+  };
+
+  static int offset1[][2] = {
+    { -1,  0, },
+    { -1,  1, },
+    {  0,  1, },
+    {  1,  0, },
+    {  0, -1, },
+    { -1, -1, },
+  };
+
+  int (*offset)[2] = v.y & 0x01 ? &offset1[0] : &offset0[0];
+
+  for (int i = 0; i < 6; i++) {
+    auto g = v;
+    g.x += offset[i][0];
+    g.y += offset[i][1];
+    if (IS_VALID_GRID(g)) {
+      vec_grid->push_back(g);
+    }
+  }
+}
+
+void GridLayer::FindOverlapGrid(Vec2 pos, vector<Grid> *vec_grid) {
+  auto g = Pos2Grid(pos);
+  vector<Grid> around;
+  GetAroundGrid(g, &around);
+  // cocos2d::log("get around of: %d %d %d\n", g.x, g.y, around.size());
+  for (auto& v : around) {
+    //cocos2d::log("around: %d %d\n", v.x, v.y);
+    if (BubbleCollisionDetect(pos, Grid2Pos(v))) {
+        vec_grid->push_back(v);
+    }
+  }
 }
 
 Vec2 GridLayer::Grid2Pos(Grid grid) {
@@ -224,13 +285,6 @@ void GridLayer::GridInit(float screen_width, float screen_height,
   collision_height_ = screen_height;
 }
 
-bool GridLayer::CheckCollision(Sprite *s) {
-  Vec2 loc = s->getPosition();
-  if (loc.y < collision_height_)
-    return false;
-  return false;
-}
-
 class BubbleLayer : public cocos2d::Layer {
  public:
   CREATE_FUNC(BubbleLayer);
@@ -257,6 +311,7 @@ class BubbleLayer : public cocos2d::Layer {
   float sin_a_ = 0.0;
   float cos_a_ = 0.0;
   void addNewSpriteWithCoords(Vec2 p);
+  bool CheckCollision();
 };
 
 void BubbleLayer::addNewSpriteWithCoords(Vec2 dest) {
@@ -429,16 +484,41 @@ void BubbleLayer::Move(float dt) {
   bubble_->sprite()->setPosition(dest);
 }
 
+bool BubbleLayer::CheckCollision() {
+  if (!bubble_)
+    return false;
+
+  auto gl = GridLayer::Shared();
+  vector<Grid> grids;
+  gl->FindOverlapGrid(bubble_->sprite()->getPosition(), &grids);
+  for (auto& g : grids) {
+    if (gl->IsFilled(g)) {
+      cocos2d::log("collision %d,%d\n", g.x, g.y);
+      return true;
+    }
+  }
+  return false;
+}
+
 void BubbleLayer::update(float dt) {
   Move(dt);
   CheckEdge();
+
+  auto gl = GridLayer::Shared();
   if (CheckOutScreen()) {
-    auto gl = GridLayer::Shared();
     assert(gl);
     auto dest = gl->Pos2Grid(bubble_->sprite()->getPosition());
     auto s = bubble_;
     StopBubble();
     gl->FillGrid(dest, s, false);
+    return;
+  }
+  if (CheckCollision()) {
+    auto dest = gl->Pos2Grid(bubble_->sprite()->getPosition());
+    auto s = bubble_;
+    StopBubble();
+    gl->FillGrid(dest, s, false);
+    return;
   }
 }
 
