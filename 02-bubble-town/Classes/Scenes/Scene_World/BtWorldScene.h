@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "Core/BtMsgDef.h"
 #include "Scenes/BtBaseScene.h"
 
 class BtWorldScene : public BtBaseScene
@@ -15,7 +16,7 @@ class BtWorldScene : public BtBaseScene
 public:
     BtWorldScene() {}
     virtual ~BtWorldScene() {}
-    CREATE_FUNC(BtWorldScene);
+    BT_DEF_SCENE(BtWorldScene, BTSCN_world);
 
 protected:
     virtual bool do_init();  

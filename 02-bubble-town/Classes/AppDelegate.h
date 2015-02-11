@@ -45,29 +45,22 @@ protected:
     std::map<std::string, sceneCreator_t> m_sceneCreators;
 
     template <typename T>
-    void RegisterSceneCreator(const char* luaSceneName)
+    void RegisterSceneCreator()
     {
-        btlua_ref sceneNameRef = BT_CALL_LUA("get_scene_name", luaSceneName);
-        if (!sceneNameRef.isString())
-            return;
-
-        std::string sceneName = sceneNameRef.tostring();
-        m_sceneCreators[sceneName] = std::bind(&AppDelegate::CreateScene < T >, this, sceneName);
+        m_sceneCreators[T::getSceneName()] = std::bind(&AppDelegate::CreateScene < T >, this);
     }
 
     template <typename T>
-    cocos2d::Scene* CreateScene(const std::string& sceneName)
+    cocos2d::Scene* CreateScene()
     {
         T *layer = T::create(); // create() should guarantee the layer pointer is autoreleased 
         if (!layer)
             return nullptr;
-
-        layer->setName(sceneName);
+        layer->setName(T::getSceneName());
 
         auto scene = cocos2d::Scene::create();  // Scene::create() ensures creating autorelease object
         if (!scene)
             return nullptr;
-
         scene->addChild(layer);
         return scene;
     }

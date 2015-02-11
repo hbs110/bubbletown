@@ -1,20 +1,19 @@
 
-dofile "lua/core.lua"
-dofile "lua/scenes.lua"
+dofile "lua/shared/def.lua"
 
 core = dofile "lua/core.lua"
+util = dofile "lua/util.lua"
 
-game = {}
 
 -- install components
-game.inbox = dofile "lua/inbox.lua"
+game = {}
 game.simulation = dofile "lua/simulation.lua"
 game.player = dofile "lua/player.lua"
 
--- assemble components together
-game.simulation.inbox = game.inbox
 
+-- test vars
 TEST_PLAYER_PROFILE = "test"
+
 
 function game.init() 
 	core.checkpoint("game.init() started.")
@@ -24,7 +23,7 @@ function game.init()
 		return false
 	end
 
-	goto_scene("scn_start")
+	util.goto_scene(BTSCN_start)
 	core.checkpoint("game.init() done.")
 	return true
 end

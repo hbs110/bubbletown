@@ -31,7 +31,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 {
     // message handling
     BtMsgDispatcher::CreateInst();
-    BtMsgDispatcher::Get()->Subscribe(BTMSG_GotoScene, std::bind(&AppDelegate::OnMsg_GotoScene, this, std::placeholders::_1));
+    BtMsgDispatcher::Get()->Subscribe((int)BtMsgID::GotoScene, std::bind(&AppDelegate::OnMsg_GotoScene, this, std::placeholders::_1));
 
     // initialize director
     auto director = cocos2d::Director::getInstance();
@@ -97,13 +97,13 @@ bool AppDelegate::applicationDidFinishLaunching()
     if (!BtLuaService::Get()->Init())
         return false;
 
-    BtLuaService::Get()->RegisterFunction("goto_scene", &AppNativeInterfaces::EmitMsg_GotoScene);
+    BtLuaService::Get()->RegisterFunction("goto_scene", &AppNativeInterfaces::GotoScene);
     BtLuaService::Get()->RegisterFunction("get_current_time", &AppNativeInterfaces::GetCurrentGameTime);
 
-    RegisterSceneCreator<AppStartScene>("scn_start");
-    RegisterSceneCreator<BtBubbleScene>("scn_bubble");
-    RegisterSceneCreator<BtTownScene>("scn_town");
-    RegisterSceneCreator<BtWorldScene>("scn_world");
+    RegisterSceneCreator<AppStartScene>();
+    RegisterSceneCreator<BtBubbleScene>();
+    RegisterSceneCreator<BtTownScene>();
+    RegisterSceneCreator<BtWorldScene>();
 
     auto luaTick = std::bind(&AppDelegate::CallLua_Tick, this, std::placeholders::_1);
     cocos2d::Director::getInstance()->getScheduler()->schedule(luaTick, this, 1.0f, false, "AppDelegate::TickLua");

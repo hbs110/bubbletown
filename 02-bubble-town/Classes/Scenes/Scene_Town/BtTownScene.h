@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "Core/BtMsgDef.h"
 #include "Scenes/BtBaseScene.h"
 
 #include "BtTiledMap.h"
@@ -27,7 +28,7 @@ class BtTownScene : public BtBaseScene
 public:
     BtTownScene();
     virtual ~BtTownScene() {}
-    CREATE_FUNC(BtTownScene);
+    BT_DEF_SCENE(BtTownScene, BTSCN_town);
 
 protected:
     virtual bool do_init();

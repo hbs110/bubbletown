@@ -10,6 +10,6 @@ hostcall_init = game.init
 hostcall_tick = game.tick
 hostcall_destroy = game.destroy
 
-hostcall_post = game.inbox.post
+hostcall_post = game.simulation.inbox.post
 hostcall_flush = game.simulation.process_messages
 

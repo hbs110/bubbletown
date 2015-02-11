@@ -27,7 +27,7 @@ bool BtBubbleScene::do_init()
 
     BtSetButtonHandler(btLoot, [btLoot]()
     {
-        BT_POST_LUA_WITH_FLUSH((int) BtMsgID::UI_ButtonPressed, "scn_bubble", btLoot->getName());
+        BT_POST_LUA_WITH_FLUSH((int) BtMsgID::UI_ButtonPressed, BTSCN_bubble, btLoot->getName());
     });
 
     return true;

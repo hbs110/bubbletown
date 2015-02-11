@@ -8,13 +8,14 @@
 
 #pragma once
 
+#include "Core/BtMsgDef.h"
 #include "Scenes/BtBaseScene.h"
 
 class BtBubbleScene : public BtBaseScene
 {
 public: 
     virtual ~BtBubbleScene() {}
-    CREATE_FUNC(BtBubbleScene);
+    BT_DEF_SCENE(BtBubbleScene, BTSCN_bubble);
 
 protected:
     virtual bool do_init();  

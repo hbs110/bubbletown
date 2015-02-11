@@ -23,9 +23,9 @@ AppDelegate* BtGetApp()
     return dynamic_cast<AppDelegate*>(app);
 }
 
-void AppNativeInterfaces::EmitMsg_GotoScene(const std::string& sceneName)
+void AppNativeInterfaces::GotoScene(const std::string& sceneName)
 {
-    BtEmitMessage(BTMSG_GotoScene, sceneName);
+    BtEmitMessage((int)BtMsgID::GotoScene, sceneName);
 }
 
 double AppNativeInterfaces::GetCurrentGameTime()

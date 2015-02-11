@@ -8,6 +8,11 @@
 
 #pragma once
 
+// by using this macro, developer won't forget to define the scene name in Lua (and regenerate the AUTOGEN header)
+#define BT_DEF_SCENE(class_name, scene_name) \
+    CREATE_FUNC(class_name); \
+    public: static BtConstStr getSceneName() { return scene_name; }
+
 class BtBaseScene : public cocos2d::Layer
 {
 public: 

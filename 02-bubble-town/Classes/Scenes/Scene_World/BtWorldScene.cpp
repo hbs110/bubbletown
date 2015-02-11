@@ -29,7 +29,7 @@ bool BtWorldScene::do_init()
     titleLabel->setPosition(origin.x + visibleSize.width/2, origin.y + visibleSize.height - titleLabel->getContentSize().height);
     m_uiRoot->addChild(titleLabel, 1);
 
-    auto callback = [](cocos2d::Ref*) { BT_CALL_LUA("goto_scene", "scn_town"); };
+    auto callback = [](cocos2d::Ref*) { BT_POST_LUA_WITH_FLUSH(BtMsgID::GotoScene, BTSCN_town); };
     auto worldButton = cocos2d::MenuItemImage::create(
         "world_button.png",
         "world_button.png",

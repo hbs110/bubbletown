@@ -5,37 +5,38 @@ import shutil
 import os
 import fnmatch
 
-LuaSrcFile = "Resources/lua/shared/def_msgs.lua"
+LuaSrcFile = "Resources/lua/shared/def.lua"
 CppDestFile = "Classes/Core/BtMsgDef_AUTOGEN.h"
 
 EnumName_MsgId = 'BtMsgID'
+SceneNamePrefix = 'BTSCN_'
 
-
-CppPragmaText = "#pragma once\n"
-
-CppWarningText = \
-u"""
-
-/*
+CppHeadingText = \
+u"""/*
     !!! 此文件由脚本生成，请勿直接修改 !!!
 
-    请修改文件 {}
-    并运行 {} 重新生成此头文件
+    如需修改，请修改文件 {} ，并运行 {} 重新生成此头文件
 */
+
+#pragma once
+
+#include "BtCoreDef.h"
 
 """.format(LuaSrcFile, __file__).encode('utf-8')
 
 
 def convert(src, dest):
     
-    dest.write(CppPragmaText)
-    dest.write(CppWarningText)
+    dest.write(CppHeadingText)
 
     for line in src:
         line = line.replace('--', '//')
 
         if line.startswith(EnumName_MsgId):
             line = "enum class " + EnumName_MsgId + "\n"
+
+        if line.startswith(SceneNamePrefix):
+            line = "BtConstStr " + line
 
         dest.write(line)
 

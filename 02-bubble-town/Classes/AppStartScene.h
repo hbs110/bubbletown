@@ -8,11 +8,15 @@
 
 #pragma once
 
+#include "Core/BtMsgDef.h"
+#include "Scenes/BtBaseScene.h"
+
 class AppStartScene : public cocos2d::Layer
 {
 public:
     virtual ~AppStartScene() {}
-    CREATE_FUNC(AppStartScene);
+    
+    BT_DEF_SCENE(AppStartScene, BTSCN_start);
 
     virtual bool init();  
 };
