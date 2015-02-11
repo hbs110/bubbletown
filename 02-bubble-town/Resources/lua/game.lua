@@ -6,8 +6,13 @@ core = dofile "lua/core.lua"
 
 game = {}
 
-game.inbox = dofile "lua/game_inbox.lua"
+-- install components
+game.inbox = dofile "lua/inbox.lua"
+game.simulation = dofile "lua/simulation.lua"
 game.player = dofile "lua/player.lua"
+
+-- assemble components together
+game.simulation.inbox = game.inbox
 
 TEST_PLAYER_PROFILE = "test"
 
@@ -26,6 +31,7 @@ end
 
 function game.tick(deltaSeconds) 
 	-- core.checkpoint(string.format("game.tick(%.3f).", deltaSeconds))
+	game.simulation.tick(deltaSeconds)
 end
 
 function game.destroy() 

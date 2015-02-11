@@ -8,4 +8,6 @@
 
 #pragma once
 
+#include "BtMsgDef_AUTOGEN.h"
+
 const int BTMSG_GotoScene = 1;  // Ìø×ªµ½³¡¾°

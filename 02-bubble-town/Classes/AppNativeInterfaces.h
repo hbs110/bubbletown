@@ -13,6 +13,5 @@ class AppNativeInterfaces
 public: 
     static double GetCurrentGameTime();
     static void EmitMsg_GotoScene(const std::string& sceneName);
-    static bool CopyFile(const std::string& src, const std::string& dest);
 };
 

@@ -34,8 +34,3 @@ double AppNativeInterfaces::GetCurrentGameTime()
     return ad ? ad->GetCurTime() : 0.0;
 }
 
-bool AppNativeInterfaces::CopyFile(const std::string& src, const std::string& dest)
-{
-
-    return true;
-}
