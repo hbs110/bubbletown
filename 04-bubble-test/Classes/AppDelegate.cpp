@@ -28,8 +28,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
-        glview = GLViewImpl::create("My Game");
-        director->setOpenGLView(glview);
+      glview = GLViewImpl::createWithRect("bubbletest", cocos2d::Rect(0, 0, 720, 1280), 0.5);
+      // glview = GLViewImpl::create("My Game");
+      director->setOpenGLView(glview);
     }
 
     glview->setDesignResolutionSize(720, 1280, ResolutionPolicy::SHOW_ALL);
