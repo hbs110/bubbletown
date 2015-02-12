@@ -37,7 +37,7 @@ bool BtBaseScene::init()
     btClose->setPosition(origin + cocos2d::Vec2(visibleSize) - cocos2d::Vec2(btClose->getContentSize() / 2));
     
     // the close button handler here should be moved to script
-    BtSetButtonHandler(btClose, []() { BT_POST_LUA_WITH_FLUSH(BtMsgID::GotoScene, BTSCN_start); });
+    BtSetButtonHandler(btClose, []() { BT_POST_LUA_AND_FLUSH(BtMsgID::GotoScene, BTSCN_start); });
 
     m_uiRoot->addChild(btClose, 1);
 
@@ -59,4 +59,11 @@ void BtBaseScene::onEnter()
     do_enter();
 
     m_preEnterConfig = "";
+}
+
+void BtBaseScene::onExit()
+{
+    cocos2d::Layer::onExit();
+
+    do_exit();
 }

@@ -13,14 +13,24 @@
 
 class BtBubbleScene : public BtBaseScene
 {
-public: 
+public:
+    BtBubbleScene();
     virtual ~BtBubbleScene() {}
     BT_DEF_SCENE(BtBubbleScene, BTSCN_bubble);
 
 protected:
     virtual bool do_init();  
     virtual void do_enter();
+    virtual void do_exit();
 
-    void onLootPressed();
+    void onButton_Loot();
+    void onButton_Restart();
+    void onButton_Next();
+
+    void showEndScreen(bool show);
+
+    cocos2d::ui::Button* m_btLoot;
+    cocos2d::ui::Button* m_btRestart;
+    cocos2d::ui::Button* m_btNext;
 };
 

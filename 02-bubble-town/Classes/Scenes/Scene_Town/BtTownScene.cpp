@@ -79,7 +79,7 @@ bool BtTownScene::do_init()
 
     cocos2d::ui::Button* btWorld = cocos2d::ui::Button::create("treasure-map-icon.png", "treasure-map-icon.png");
     btWorld->setPosition(cocos2d::Vec2(origin.x + visibleSize.width - btWorld->getContentSize().width / 2, btWorld->getContentSize().height / 2));
-    BtSetButtonHandler(btWorld, []() { BT_POST_LUA_WITH_FLUSH(BtMsgID::GotoScene, BTSCN_world); });
+    BtSetButtonHandler(btWorld, []() { BT_POST_LUA_AND_FLUSH(BtMsgID::GotoScene, BTSCN_world); });
     m_uiRoot->addChild(btWorld, 1);
 
     if (!m_widgets.init(m_tiledMap.GetSpriteRoot()))

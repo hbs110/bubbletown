@@ -10,6 +10,7 @@ player = {}
 
 player.info = default_player_info
 player.profile_name = "__unnamed__"
+player.current_level = nil
 
 function player.save()
 	local profilePath = core.build_profile_path(player.profile_name)
@@ -37,7 +38,16 @@ function player.load(profileName)
 end
 
 function player.get_next_level()
-	return 1
+	if player.current_level ~= nil then
+		return player.current_level + 1
+	else
+		return 1
+	end
+end
+
+function player.setCurrentLevel(currentLevel)
+	player.current_level = currentLevel
+	print(string.format("player is now in level '%d'.", player.current_level))
 end
 
 return player

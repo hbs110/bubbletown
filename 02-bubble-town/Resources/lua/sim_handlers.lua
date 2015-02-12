@@ -5,17 +5,41 @@ handlers = {}
 
 handlers.player = nil
 
-handlers[BtMsgID.GotoScene] = function (msg) util.goto_scene(msg.info) end
-
-handlers[BtMsgID.StartNextLevel] = 
-	function (msg)
-		if handlers.player == nil then
-			return
-		end
-
-		local levelCfg = level.prepare(handlers.player)
-		util.goto_scene(BTSCN_bubble, levelCfg) 
+function onStartNextLevel(msg)
+	if handlers.player == nil then
+		return
 	end
+
+	local levelCfg = level.prepare(handlers.player)
+	levelCfg.level_id = player.get_next_level(),
+	util.goto_scene(BTSCN_bubble, levelCfg) 
+end
+
+function onRestartLevel(msg)
+	if handlers.player == nil then
+		return
+	end
+
+	local levelCfg = level.prepare(handlers.player)
+	levelCfg.level_id = player.current_level,
+	util.goto_scene(BTSCN_bubble, levelCfg) 
+end
+
+function onLevelRewards(msg)
+	if handlers.player == nil then
+		return
+	end
+
+	print("rewards: "..msg.info)
+end
+
+
+handlers[BtMsgID.GotoScene] 		= function (msg) util.goto_scene(msg.info) end
+handlers[BtMsgID.StartNextLevel] 	= onStartNextLevel
+handlers[BtMsgID.RestartLevel] 		= onRestartLevel
+handlers[BtMsgID.LevelRewards] 		= onLevelRewards
+handlers[BtMsgID.LevelEntered] 		= function (msg) player.setCurrentLevel(msg.args[1]) end
+handlers[BtMsgID.LevelLeft] 		= function (msg) player.setCurrentLevel(nil) end
 
 return handlers
 

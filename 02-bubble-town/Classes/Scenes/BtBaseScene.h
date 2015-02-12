@@ -24,6 +24,7 @@ public:
     // use do_xxx() below instead
     virtual bool init();  
     virtual void onEnter();
+    virtual void onExit();
     // ----- cocos2d methods end -----
 
     void preEnter(const std::string& sceneConfig);
@@ -32,6 +33,7 @@ protected:
     // override this one to perform the actuall init 
     virtual bool do_init() = 0;
     virtual void do_enter() {}
+    virtual void do_exit() {}
 
     cocos2d::Layer* m_sceneRoot;
     cocos2d::Layer* m_uiRoot;

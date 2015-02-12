@@ -15,10 +15,14 @@ enum class BtMsgID
 {
 	// Game events
 	GotoScene = 0,  			// 跳转到场景
-	StartNextLevel = 1,			// 开始下一关
+	RestartLevel = 1,			// 重玩本关
+	StartNextLevel = 2,			// 开始下一关
+	LevelEntered = 3,
+	LevelLeft = 4,
+	LevelRewards = 5,
 
 	// UI events
-	UI_ButtonPressed = 100,  	// 按钮被按下
+	UI_ButtonPressed = 100,  	
 };
 
 
@@ -28,3 +32,5 @@ BtConstStr BTSCN_start     = "StartScene";
 BtConstStr BTSCN_bubble    = "BubbleScene";
 BtConstStr BTSCN_town      = "TownScene";
 BtConstStr BTSCN_world     = "WorldScene"; 
+
+
