@@ -17,41 +17,45 @@
 
 #include "Core/tinyformat/tinyformat.h"
 
-cocos2d::ui::Button* makeTest(const char* text, buttonHandler_t handler)
-{
-    std::string res = tfm::format("ui_test/%s.png", text);
-    auto bt = cocos2d::ui::Button::create(res, res);
-    if (!bt)
-        return nullptr;
-
-    BtSetButtonHandler(bt, handler);
-    return bt;
-}
-
 BtBubbleScene::BtBubbleScene() 
     : m_btLoot(nullptr)
     , m_btRestart(nullptr)
     , m_btNext(nullptr)
+    , m_labelPlaying(nullptr)
+    , m_labelEnd(nullptr)
 {
 
 }
 
 bool BtBubbleScene::do_init()
 {
-    // loot button
-    m_btLoot = makeTest("loot", std::bind(&BtBubbleScene::onButton_Loot, this));
-    m_btLoot->setPosition(cocos2d::Director::getInstance()->getVisibleOrigin() + cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize()) / 2);
-    m_uiRoot->addChild(m_btLoot, 1);
+    cocos2d::Vec2 center = cocos2d::Director::getInstance()->getVisibleOrigin() + cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize()) / 2;
 
-    // restart button
-    m_btRestart = makeTest("restart", std::bind(&BtBubbleScene::onButton_Restart, this));
-    m_btRestart->setPosition(cocos2d::Vec2(m_btLoot->getPositionX() - 20.0f, m_btLoot->getPositionY() - 50));
-    m_uiRoot->addChild(m_btRestart, 1);
+    auto makeTest = [&](const std::string& text, const cocos2d::Vec2& position, buttonHandler_t handler) -> cocos2d::ui::Button* {
+        std::string res = tfm::format("ui_test/%s.png", text);
+        auto bt = cocos2d::ui::Button::create(res, res);
+        if (bt)
+        {
+            bt->setPosition(position);
+            BtSetButtonHandler(bt, handler);
+            m_uiRoot->addChild(bt, 1);
+        }
+        return bt;
+    };
 
-    // next button
-    m_btNext = makeTest("next", std::bind(&BtBubbleScene::onButton_Next, this));
-    m_btNext->setPosition(cocos2d::Vec2(m_btLoot->getPositionX() + 20.0f, m_btLoot->getPositionY() - 50));
-    m_uiRoot->addChild(m_btNext, 1);
+    auto createLabel = [&](const std::string& text) -> cocos2d::ui::Text*{
+        auto label = cocos2d::ui::Text::create(text, "Arial", 16);
+        label->setPosition(cocos2d::Vec2(center.x, center.y + 50));
+        m_uiRoot->addChild(label, 1);
+        return label;
+    };
+
+    m_btLoot    = makeTest("loot", center, std::bind(&BtBubbleScene::onButton_Loot, this));
+    m_btRestart = makeTest("restart", cocos2d::Vec2(center.x - 20.0f, center.y - 50), std::bind(&BtBubbleScene::onButton_Restart, this));
+    m_btNext    = makeTest("next", cocos2d::Vec2(center.x + 20.0f, center.y - 50), std::bind(&BtBubbleScene::onButton_Next, this));
+    
+    m_labelPlaying  = createLabel("Playing Screen");
+    m_labelEnd      = createLabel("End Screen");
 
     return true;
 }
@@ -98,7 +102,10 @@ void BtBubbleScene::onButton_Next()
 
 void BtBubbleScene::showEndScreen(bool show)
 {
+    m_labelPlaying->setVisible(!show);
     m_btLoot->setVisible(!show);
+
+    m_labelEnd->setVisible(show);
     m_btRestart->setVisible(show);
     m_btNext->setVisible(show);
 }

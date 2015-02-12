@@ -37,7 +37,7 @@ function player.load(profileName)
 	return true
 end
 
-function player.get_next_level()
+function player.getNextLevel()
 	if player.current_level ~= nil then
 		return player.current_level + 1
 	else
@@ -47,7 +47,11 @@ end
 
 function player.setCurrentLevel(currentLevel)
 	player.current_level = currentLevel
-	print(string.format("player is now in level '%d'.", player.current_level))
+	if player.current_level ~= nil then
+		print(string.format("player is now in level '%d'.", player.current_level))
+	else
+		print("player is now out of level.")
+	end
 end
 
 return player

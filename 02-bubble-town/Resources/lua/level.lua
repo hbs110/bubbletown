@@ -3,9 +3,9 @@ JSON = dofile "lua/JSON/JSON.lua"
 
 level = {}
 
-function level.prepare(player)
+function level.prepare(player, levelID)
 	local levelConfig = {
-		level_id = player.get_next_level(),
+		level_id = levelID,
 		items = player.info.items,
 		heros = player.info.heros,
 	} 

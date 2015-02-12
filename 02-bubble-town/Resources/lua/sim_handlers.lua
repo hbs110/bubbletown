@@ -10,8 +10,7 @@ function onStartNextLevel(msg)
 		return
 	end
 
-	local levelCfg = level.prepare(handlers.player)
-	levelCfg.level_id = player.get_next_level(),
+	local levelCfg = level.prepare(handlers.player, player.getNextLevel())
 	util.goto_scene(BTSCN_bubble, levelCfg) 
 end
 
@@ -20,8 +19,7 @@ function onRestartLevel(msg)
 		return
 	end
 
-	local levelCfg = level.prepare(handlers.player)
-	levelCfg.level_id = player.current_level,
+	local levelCfg = level.prepare(handlers.player, player.current_level)
 	util.goto_scene(BTSCN_bubble, levelCfg) 
 end
 
