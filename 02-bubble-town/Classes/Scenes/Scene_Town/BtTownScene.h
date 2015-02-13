@@ -13,6 +13,7 @@
 
 #include "BtTiledMap.h"
 #include "BtTownSceneWidgets.h"
+#include "BtTownSceneUI.h"
 
 class BtTownBuilding;
 
@@ -42,7 +43,7 @@ protected:
     void getBuildingRect(const cocos2d::Vec2& tileCoord, const std::string& buildingName, cocos2d::Rect* tileRect);
     void getBuildingPos(const cocos2d::Vec2& tileCoord, const std::string& buildingName, cocos2d::Vec2* buildingPos);
     bool isAvailForBuilding(const cocos2d::Vec2& tileCoord, const std::string& buildingName);
-    void updateArrows(BtTownBuilding* building, bool avail);
+    void updateArrows(bool avail);
 
     // entities
     BtTiledMap m_tiledMap;
@@ -60,5 +61,8 @@ protected:
     float m_holdBuildingTimer;
 
     BtTownSceneWidgets m_widgets;
+    BtTownSceneUI m_ui;
+
+    void selecteBuilding(BtTownBuilding* building);
 };
 

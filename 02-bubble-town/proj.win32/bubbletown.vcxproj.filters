@@ -80,6 +80,9 @@
     <ClCompile Include="..\Classes\AppNativeInterfaces.cpp">
       <Filter>Classes\App</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTownSceneUI.cpp">
+      <Filter>Classes\Scenes\Scene_Town</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -141,6 +144,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Core\BtMsgDef_AUTOGEN.h">
       <Filter>Classes\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTownSceneUI.h">
+      <Filter>Classes\Scenes\Scene_Town</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

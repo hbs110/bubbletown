@@ -12,6 +12,9 @@
 
 #include "btlua.h"
 
+// Lua 环境中为 native 接口准备的名字空间
+BtConstStr BtNativeNamespace = "bt_native";
+// 全局 Lua 句柄
 #define BT_L    BtLuaService::Get()->GetHandle()          
 
 // 同步调用 lua 函数，指定函数名和任意个参数
@@ -28,11 +31,6 @@
 #define BT_POST_LUA_AND_FLUSH(msg_id, msg_info, ...)      \
     BTLUA_CALL_FUNCTION(BT_L, "hostcall_post", (int)msg_id, msg_info, __VA_ARGS__); \
     BTLUA_CALL_FUNCTION(BT_L, "hostcall_flush")
-
-namespace
-{
-    BtConstStr BtNativeNamespace = "bt_native";
-}
 
 class BtLuaService 
 {
