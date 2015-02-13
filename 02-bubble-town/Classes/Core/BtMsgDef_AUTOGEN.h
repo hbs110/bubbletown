@@ -58,8 +58,8 @@ BtConstStr BTSCN_world     = "WorldScene";
 
 // 建筑定义
 
-BT_Hall		= "hall";
-BT_Deco		= "deco";
-BT_House	= "house";
-BT_Shop		= "shop";
-BT_Workshop	= "workshop";
+BtConstStr BT_Hall		= "hall";
+BtConstStr BT_Deco		= "deco";
+BtConstStr BT_House	= "house";
+BtConstStr BT_Shop		= "shop";
+BtConstStr BT_Workshop	= "workshop";
