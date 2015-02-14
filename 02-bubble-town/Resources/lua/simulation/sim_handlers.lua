@@ -10,7 +10,7 @@ function onStartNextLevel(msg)
 		return
 	end
 
-	local levelCfg = level.prepare(handlers.player, player.getNextLevel())
+	local levelCfg = level.prepare(handlers.player, handlers.player.getNextLevel())
 	util.goto_scene(BTSCN_bubble, levelCfg) 
 end
 
@@ -19,7 +19,7 @@ function onRestartLevel(msg)
 		return
 	end
 
-	local levelCfg = level.prepare(handlers.player, player.current_level)
+	local levelCfg = level.prepare(handlers.player, handlers.player.current_level)
 	util.goto_scene(BTSCN_bubble, levelCfg) 
 end
 
@@ -36,8 +36,8 @@ handlers[BtMsgID.GotoScene] 		= function (msg) util.goto_scene(msg.info) end
 handlers[BtMsgID.StartNextLevel] 	= onStartNextLevel
 handlers[BtMsgID.RestartLevel] 		= onRestartLevel
 handlers[BtMsgID.LevelRewards] 		= onLevelRewards
-handlers[BtMsgID.LevelEntered] 		= function (msg) player.setCurrentLevel(msg.args[1]) end
-handlers[BtMsgID.LevelLeft] 		= function (msg) player.setCurrentLevel(nil) end
+handlers[BtMsgID.LevelEntered] 		= function (msg) handlers.player.setCurrentLevel(msg.args[1]) end
+handlers[BtMsgID.LevelLeft] 		= function (msg) handlers.player.setCurrentLevel(nil) end
 
 return handlers
 

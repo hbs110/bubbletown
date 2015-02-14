@@ -4,6 +4,7 @@ require "def"
 core = require "core"
 util = require "util"
 
+game_sanity = require "game_sanity"
 
 -- install components
 game = {}
@@ -18,6 +19,8 @@ TEST_PLAYER_PROFILE = "test"
 
 function game.init() 
 	core.checkpoint("game.init() started.")
+
+	game_sanity.check_env()
 
 	if not game.player.load(TEST_PLAYER_PROFILE) then
 		core.log_err("Player profile loading failed, possibly broken.")
