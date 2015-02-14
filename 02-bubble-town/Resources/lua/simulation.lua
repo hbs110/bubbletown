@@ -3,10 +3,9 @@
 
 simulation = {}
 
-simulation.inbox    = dofile "lua/sim_inbox.lua"
-
-simulation.handlers = dofile "lua/sim_handlers.lua"
-simulation.handlers_ui = dofile "lua/sim_handlers_ui.lua"
+simulation.inbox    = require "sim_inbox"
+simulation.handlers = require "sim_handlers"
+simulation.handlers_ui = require "sim_handlers_ui"
 
 function simulation.process_messages()
 	if simulation.inbox == nil or simulation.inbox.is_empty() then

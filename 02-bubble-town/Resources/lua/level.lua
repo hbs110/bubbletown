@@ -1,5 +1,5 @@
 
-JSON = dofile "lua/JSON/JSON.lua" 
+JSON = require "JSON" 
 
 level = {}
 

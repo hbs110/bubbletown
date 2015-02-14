@@ -1,9 +1,14 @@
 
+package.path=package.path
+	..';lua/?.lua'
+	..';lua/JSON/?.lua'
+	..';lua/shared/?.lua'
+
 -- 数据表
-dofile "lua/tab_buildings.lua"
+require "tab_buildings"
 
 -- 主逻辑入口
-game = dofile "lua/game.lua"
+game = require "game"
 
 -- 注册一系列系统主入口点
 hostcall_init = game.init

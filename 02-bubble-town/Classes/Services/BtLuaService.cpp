@@ -50,7 +50,7 @@ bool BtLuaService::Init()
 
     BtLua_SetErrorOutput(std::bind(&BtLuaService::OnError, this, std::placeholders::_1));
 
-    if (!BtLua_ExecFile(L, "bootstrap.lua"))
+    if (!BtLua_ExecFile(L, "lua/bootstrap.lua"))
         return false;
 
     luabridge::getGlobalNamespace(L)

@@ -1,10 +1,8 @@
 
-default_player_info = dofile "lua/player_info.lua"
-core = dofile "lua/core.lua"
+default_player_info = require "player_info"
+core = require "core"
 
--- this library is found here
--- 		http://regex.info/blog/lua/json
-JSON = (loadfile "lua/JSON/JSON.lua")() -- one-time load of the routines
+JSON = require "JSON" 
 
 player = {}
 

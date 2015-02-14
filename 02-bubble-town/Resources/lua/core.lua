@@ -1,7 +1,7 @@
 
 -- this library is found here
 -- 		http://regex.info/blog/lua/json
-JSON = dofile "lua/JSON/JSON.lua" 
+JSON = require "JSON" 
 
 core = {}
 

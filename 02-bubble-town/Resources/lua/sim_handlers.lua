@@ -1,5 +1,5 @@
 
-level = dofile "lua/level.lua"
+level = require "level"
 
 handlers = {}
 

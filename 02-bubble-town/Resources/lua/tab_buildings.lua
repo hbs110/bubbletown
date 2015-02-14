@@ -1,5 +1,5 @@
 
-dofile "lua/shared/def.lua"
+require "def"
 
 t_buildings = {}
 t_buildings[BT_Hall]         = { arrawScale = 0.4, sizeInTile = { x = 3, y = 3 } }

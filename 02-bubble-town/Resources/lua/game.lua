@@ -1,14 +1,14 @@
 
-dofile "lua/shared/def.lua"
+require "def"
 
-core = dofile "lua/core.lua"
-util = dofile "lua/util.lua"
+core = require "core"
+util = require "util"
 
 
 -- install components
 game = {}
-game.simulation = dofile "lua/simulation.lua"
-game.player = dofile "lua/player.lua"
+game.simulation = require "simulation"
+game.player = require "player"
 
 game.simulation.handlers.player = game.player
 
@@ -26,6 +26,7 @@ function game.init()
 
 	util.goto_scene(BTSCN_start)
 	core.checkpoint("game.init() done.")
+	core.checkpoint("package.path="..package.path)
 	return true
 end
 
