@@ -38,8 +38,6 @@ protected:
     void onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event  *event);
     void onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event  *event);
 
-    void onMenu_Build(Ref* sender, const std::string& buildingName);
-
     void getBuildingRect(const cocos2d::Vec2& tileCoord, const std::string& buildingName, cocos2d::Rect* tileRect);
     void getBuildingPos(const cocos2d::Vec2& tileCoord, const std::string& buildingName, cocos2d::Vec2* buildingPos);
     bool isAvailForBuilding(const cocos2d::Vec2& tileCoord, const std::string& buildingName);
@@ -52,10 +50,6 @@ protected:
     BtTownBuilding* m_selectedBuilding;
     cocos2d::Vec2 m_selectedBuildingOriginalCoord;
 
-    // placing building
-    bool m_isPlacingBuilding;
-    std::string m_placingBuildingName;
-
     // not used yet
     eOperationState m_operationState;
     float m_holdBuildingTimer;
@@ -63,6 +57,10 @@ protected:
     BtTownSceneWidgets m_widgets;
     BtTownSceneUI m_ui;
 
-    void selecteBuilding(BtTownBuilding* building);
+    std::string m_placingBuildingName;
+    void onPlacingBuildingBegan(const std::string& buildingName);
+    bool isPlacingBuilding() const { return m_placingBuildingName.size(); }
+
+    void selectBuilding(BtTownBuilding* building);
 };
 

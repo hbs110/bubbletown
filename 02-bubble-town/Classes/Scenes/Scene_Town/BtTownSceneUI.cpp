@@ -13,6 +13,9 @@
 
 #include "AppMacros.h"
 
+#include "Services/BtLuaService.h"
+
+BtConstStr MI_Build = "build";
 
 BtTownSceneUI::BtTownSceneUI() 
     : m_btBuild(nullptr)
@@ -46,6 +49,25 @@ bool BtTownSceneUI::init(cocos2d::Node* parent)
     BtSetButtonHandler(m_btUpgrade, std::bind(&BtTownSceneUI::onButton_Upgrade, this));
     parent->addChild(m_btUpgrade, 1);
 
+    BtTextMenuBuilder mb;
+    btlua_ref t = luabridge::getGlobal(BT_L, "t_buildings");
+    BtLua_Iterate(t, [&](btlua_ref key, btlua_ref value) {
+        mb.AddItem(std::string(MI_Build) + " " + key.tostring(),
+                   std::bind(&BtTownSceneUI::onMenu_Build, this, key.tostring()));
+    });
+
+    mb.SetItemAlign(BtTextMenuBuilder::Left);
+    cocos2d::Menu* menuBuild = mb.Build();
+    if (menuBuild)
+    {
+        cocos2d::Vec2 menuPos;
+        menuPos.x = origin.x + 50;
+        menuPos.y = origin.y + visibleSize.height - 100;
+        menuBuild->setPosition(menuPos);
+
+        parent->addChild(menuBuild, 1);
+    }
+
     return true;
 }
 
@@ -62,4 +84,12 @@ void BtTownSceneUI::setUpgradeVisible(bool show)
 {
     if (m_btUpgrade)
         m_btUpgrade->setVisible(show);
+}
+
+void BtTownSceneUI::onMenu_Build(const std::string& buildingName)
+{
+    if (m_onPlacingBuildingBegan)
+    {
+        m_onPlacingBuildingBegan(buildingName);
+    }
 }

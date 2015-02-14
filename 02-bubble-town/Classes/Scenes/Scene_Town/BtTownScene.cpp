@@ -26,8 +26,6 @@ enum {
     kTagTileMap = 1,
 };
 
-BtConstStr MI_Build = "build";
-
 BtTownScene::BtTownScene() 
     : m_operationState(eOperationState::Idle)
     , m_holdBuildingTimer(0.0f)
@@ -44,6 +42,8 @@ bool BtTownScene::do_init()
     if (!m_ui.init(m_uiRoot))
         return false;
 
+    m_ui.setBuildingPlacingBegan(std::bind(&BtTownScene::onPlacingBuildingBegan, this, std::placeholders::_1));
+
     if (!m_tiledMap.Load("scn_town02/map_tiles.tmx"))
         return false;
     m_sceneRoot->addChild(m_tiledMap.GetTileMapRoot(), 1);
@@ -53,25 +53,6 @@ bool BtTownScene::do_init()
     listener->onTouchesEnded = CC_CALLBACK_2(BtTownScene::onTouchesEnded, this);
     listener->onTouchesMoved = CC_CALLBACK_2(BtTownScene::onTouchesMoved, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
-
-    BtTextMenuBuilder mb;
-    btlua_ref t = luabridge::getGlobal(BT_L, "t_buildings");
-    BtLua_Iterate(t, [&](btlua_ref key, btlua_ref value) {
-        mb.AddItem(std::string(MI_Build) + " " + key.tostring(),
-                   std::bind(&BtTownScene::onMenu_Build, this, std::placeholders::_1, key.tostring()));
-    });
-
-    mb.SetItemAlign(BtTextMenuBuilder::Left);
-    cocos2d::Menu* menuBuild = mb.Build();
-    if (menuBuild)
-    {
-        cocos2d::Vec2 menuPos;
-        menuPos.x = origin.x + 50;
-        menuPos.y = origin.y + visibleSize.height - 100;
-        menuBuild->setPosition(menuPos);
-
-        addChild(menuBuild, 1);
-    }
 
     cocos2d::ui::Button* btWorld = cocos2d::ui::Button::create("treasure-map-icon.png", "treasure-map-icon.png");
     btWorld->setPosition(cocos2d::Vec2(origin.x + visibleSize.width - btWorld->getContentSize().width / 2, btWorld->getContentSize().height / 2));
@@ -86,7 +67,7 @@ bool BtTownScene::do_init()
 
 void BtTownScene::onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event *event)
 {
-    if (m_isPlacingBuilding)
+    if (isPlacingBuilding())
         return;
 
     auto touch = touches[0];
@@ -108,12 +89,12 @@ void BtTownScene::onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, co
         }
     }
 
-    selecteBuilding(selected);
+    selectBuilding(selected);
 }
 
 void BtTownScene::onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event *event)
 {
-    if (m_isPlacingBuilding && m_placingBuildingName.size())
+    if (isPlacingBuilding())
     {
         // support one touch only (ignore additional touches)
         auto touch = touches[0];
@@ -140,8 +121,7 @@ void BtTownScene::onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, co
             }
         }
 
-        m_isPlacingBuilding = false;
-        m_placingBuildingName = "";
+        m_placingBuildingName.clear();;
         m_tiledMap.endSocketShimmering();
     }
 
@@ -183,13 +163,6 @@ void BtTownScene::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, co
     {
         m_tiledMap.onTouchesMoved(touches, event);
     }
-}
-
-void BtTownScene::onMenu_Build(Ref* sender, const std::string& buildingName)
-{
-    m_placingBuildingName = buildingName;
-    m_isPlacingBuilding = true;
-    m_tiledMap.beginSocketShimmering();
 }
 
 void BtTownScene::updateArrows(bool avail)
@@ -254,7 +227,7 @@ void BtTownScene::getBuildingPos(const cocos2d::Vec2& tileCoord, const std::stri
     m_tiledMap.getTilePosition(buildingTile, buildingPos);
 }
 
-void BtTownScene::selecteBuilding(BtTownBuilding* building)
+void BtTownScene::selectBuilding(BtTownBuilding* building)
 {
     if (building)
     {
@@ -279,6 +252,12 @@ void BtTownScene::selecteBuilding(BtTownBuilding* building)
 
     m_ui.setUpgradeVisible(building != nullptr);
     updateArrows(true);
+}
+
+void BtTownScene::onPlacingBuildingBegan(const std::string& buildingName)
+{
+    m_placingBuildingName = buildingName;
+    m_tiledMap.beginSocketShimmering();
 }
 
 

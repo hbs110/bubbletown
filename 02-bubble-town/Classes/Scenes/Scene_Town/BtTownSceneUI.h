@@ -15,7 +15,9 @@ public:
     virtual ~BtTownSceneUI() {}
 
     bool init(cocos2d::Node* parent);
+
     void setUpgradeVisible(bool show);
+    void setBuildingPlacingBegan(std::function<void(const std::string&)> val) { m_onPlacingBuildingBegan = val; }
 
 private:
     void onButton_Build();
@@ -23,5 +25,8 @@ private:
 
     cocos2d::ui::Button* m_btBuild;
     cocos2d::ui::Button* m_btUpgrade;
+
+    void onMenu_Build(const std::string& buildingName);
+    std::function<void(const std::string&)> m_onPlacingBuildingBegan;
 };
 
