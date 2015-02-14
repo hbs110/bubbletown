@@ -194,7 +194,7 @@ void BtTownScene::onMenu_Build(Ref* sender, const std::string& buildingName)
 
 void BtTownScene::updateArrows(bool avail)
 {
-    if (!m_selectedBuilding)
+    if (m_selectedBuilding)
     {
         cocos2d::Vec2 tileCoordBuilding;
         if (m_tiledMap.getTileCoord(m_selectedBuilding->getPosition(), &tileCoordBuilding))
