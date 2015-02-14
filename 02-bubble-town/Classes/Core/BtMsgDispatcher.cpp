@@ -11,9 +11,9 @@
 
 BT_SINGLETON_IMPL(BtMsgDispatcher);
 
-BtMsgDispatcher::BtMsgDispatcher() 
+BtMsgDispatcher::BtMsgDispatcher()
+    : m_curTime(0.0f)
 {
-
 }
 
 BtMsgDispatcher::~BtMsgDispatcher()
@@ -21,7 +21,7 @@ BtMsgDispatcher::~BtMsgDispatcher()
 
 }
 
-bool BtMsgDispatcher::Subscribe(int msgID, msgHandler_t h)
+bool BtMsgDispatcher::subscribe(int msgID, msgHandler_t h)
 {
     auto it = m_handlers.find(msgID);
     if (it == m_handlers.end())
@@ -50,41 +50,59 @@ bool BtMsgDispatcher::Subscribe(int msgID, msgHandler_t h)
     return true;
 }
 
-bool BtMsgDispatcher::SubscribeExclusively(int msgID, msgHandler_t h)
+bool BtMsgDispatcher::subscribeExclusively(int msgID, msgHandler_t h)
 {
     // 'exclusively' means there would be only one handler at most (would fail if there is alrady a handler)
     auto it = m_handlers.find(msgID);
     if (it != m_handlers.end() && !it->second.empty())
         return false;
 
-    return Subscribe(msgID, h);
+    return subscribe(msgID, h);
 }
 
-bool BtMsgDispatcher::Notify(BtMsg& msg, float deferred /*= 0.0f*/)
+bool BtMsgDispatcher::receive(BtMsg& msg, float deferred /*= 0.0f*/)
 {
-    auto it = m_handlers.find(msg.m_id);
-    if (it == m_handlers.end())
-        return false;
+    BtMsg added(msg);
+    added.markAsReceived(m_curTime, deferred);
+    m_deferredMsgs.push_back(added);
+    return false;
+}
 
-    bool handled = false;
-    for (auto handler : it->second)
+void BtMsgDispatcher::tick(float currentTime, float deltaSeconds)
+{
+    m_curTime = currentTime;
+
+    for (auto& msg : m_deferredMsgs)
     {
-        if (handler)
+        if (currentTime - msg.m_creationTime >= msg.m_delayTimer)
         {
-            handled = handler(msg);
-            if (handled)
+            auto it = m_handlers.find(msg.m_id);
+            if (it != m_handlers.end())
             {
-                return true;
+                processMessage(msg, it->second);
             }
         }
     }
 
-    return false;
+    if (m_deferredMsgs.size())
+    {
+        m_deferredMsgs.erase(std::remove_if(m_deferredMsgs.begin(), m_deferredMsgs.end(), [](BtMsg& msg) { return msg.m_processed; }));
+    }
 }
 
-void BtMsgDispatcher::ProcessedDeferred()
+bool BtMsgDispatcher::processMessage(BtMsg& msg, msgHandlerList_t& handlers)
 {
+    bool handled = false;
+    for (auto& handler : handlers)
+    {
+        if (handler && handler(msg))
+        {
+            handled = true;
+        }
+    }
 
+    msg.m_processed = true;
+    return handled;
 }
 
 void BtEmitMessage(int msgId, const std::string& msgInfo /*= ""*/, float deferred /*= 0.0f*/)
@@ -93,5 +111,5 @@ void BtEmitMessage(int msgId, const std::string& msgInfo /*= ""*/, float deferre
         return;
 
     BtMsg msg(msgId, msgInfo);
-    BtMsgDispatcher::Get()->Notify(msg, deferred);
+    BtMsgDispatcher::Get()->receive(msg, deferred);
 }

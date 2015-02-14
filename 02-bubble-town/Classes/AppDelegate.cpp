@@ -31,7 +31,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 {
     // message handling
     BtMsgDispatcher::CreateInst();
-    BtMsgDispatcher::Get()->Subscribe((int)BtMsgID::GotoScene, std::bind(&AppDelegate::OnMsg_GotoScene, this, std::placeholders::_1));
+    BtMsgDispatcher::Get()->subscribe((int)BtMsgID::GotoScene, std::bind(&AppDelegate::OnMsg_GotoScene, this, std::placeholders::_1));
 
     // initialize director
     auto director = cocos2d::Director::getInstance();
@@ -106,7 +106,10 @@ bool AppDelegate::applicationDidFinishLaunching()
     RegisterSceneCreator<BtWorldScene>();
 
     auto luaTick = std::bind(&AppDelegate::CallLua_Tick, this, std::placeholders::_1);
-    cocos2d::Director::getInstance()->getScheduler()->schedule(luaTick, this, 1.0f, false, "AppDelegate::TickLua");
+    cocos2d::Director::getInstance()->getScheduler()->schedule(luaTick, this, 1.0f, false, "AppDelegate::TickLua_PerSecond");
+
+    auto msgTick = std::bind(&AppDelegate::TickMsgDispatcher, this, std::placeholders::_1);
+    cocos2d::Director::getInstance()->getScheduler()->schedule(msgTick, this, 0.0f, false, "AppDelegate::TickMsgDispatcher_PerFrame");
 
     if (!CallLua_Init())
         return false;
@@ -193,4 +196,9 @@ bool AppDelegate::CallLua_Init()
 void AppDelegate::CallLua_Destroy()
 {
     BT_CALL_LUA("hostcall_destroy");
+}
+
+void AppDelegate::TickMsgDispatcher(float deltaSeconds)
+{
+    BtMsgDispatcher::Get()->tick(GetCurTime(), deltaSeconds);
 }

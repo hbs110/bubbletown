@@ -27,7 +27,7 @@ void AppNativeInterfaces::GotoScene(const std::string& sceneName, const std::str
 {
     BtMsg msg((int)BtMsgID::GotoScene, sceneName);
     msg.m_extraParams.push_back(sceneConfig);
-    BtMsgDispatcher::Get()->Notify(msg);
+    BtMsgDispatcher::Get()->receive(msg);
 }
 
 double AppNativeInterfaces::GetCurrentGameTime()

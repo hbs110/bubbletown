@@ -14,9 +14,11 @@ BuildingNamePrefix = 'BT_'
 
 CppHeadingText = \
 u"""/*
-    !!! 此文件由脚本生成，请勿直接修改 !!!
+    !!! GENERATED FROM LUA !!!
 
-    如需修改，请修改文件 {} ，并运行 {} 重新生成此头文件
+    For editing, 
+        1. modify the file '{}'
+        2. run '{}' to regenerate this file
 */
 
 #pragma once
@@ -24,7 +26,6 @@ u"""/*
 #include "BtCoreDef.h"
 
 """.format(LuaSrcFile, __file__).encode('utf-8')
-
 
 def convert(src, dest):
     

@@ -54,19 +54,12 @@ bool BtTownScene::do_init()
     listener->onTouchesMoved = CC_CALLBACK_2(BtTownScene::onTouchesMoved, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
-
     BtTextMenuBuilder mb;
-    luabridge::Iterator it(luabridge::getGlobal(BT_L, "t_buildings"));
-    for (; !it.isNil(); ++it)
-    {
-        btlua_ref k = it.key();
-        if (k.isString())
-        {
-            std::string val = k.tostring();
-            mb.AddItem(std::string(MI_Build) + " " + k.tostring(),
-                       std::bind(&BtTownScene::onMenu_Build, this, std::placeholders::_1, k.tostring()));
-        }
-    }
+    btlua_ref t = luabridge::getGlobal(BT_L, "t_buildings");
+    BtLua_Iterate(t, [&](btlua_ref key, btlua_ref value) {
+        mb.AddItem(std::string(MI_Build) + " " + key.tostring(),
+                   std::bind(&BtTownScene::onMenu_Build, this, std::placeholders::_1, key.tostring()));
+    });
 
     mb.SetItemAlign(BtTextMenuBuilder::Left);
     cocos2d::Menu* menuBuild = mb.Build();

@@ -69,6 +69,8 @@ protected:
     void CallLua_Tick(float deltaSeconds);
     void CallLua_Destroy();
 
+    void TickMsgDispatcher(float deltaSeconds);
+
     double m_startTime;
 };
 
