@@ -10,7 +10,8 @@
 #include "BtTownBuilding.h"
 
 #include "Core/BtGuiUtil.h"
-
+#include "Core//BtMsgDef.h"
+#include "Services/BtLuaService.h"
 
 BtTownBuilding* BtTownBuilding::create(const std::string& name, const std::string& resfile, int borderPixels)
 {
@@ -86,6 +87,8 @@ void BtTownBuilding::update(float delta)
                 unscheduleUpdate();
                 removeChild(m_countDownLabel, true);
                 m_countDownLabel = nullptr;
+
+                BT_POST_LUA(BtMsgID::ConstructingFinished, getName());
             }
         }
     }

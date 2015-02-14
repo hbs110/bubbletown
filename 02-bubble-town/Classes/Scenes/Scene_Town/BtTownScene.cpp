@@ -117,6 +117,8 @@ void BtTownScene::onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, co
 
                     m_buildings.push_back(building);
                     m_tiledMap.GetSpriteRoot()->addChild(building);
+
+                    BT_POST_LUA(BtMsgID::ConstructBuilding, m_placingBuildingName);
                 }
             }
         }
