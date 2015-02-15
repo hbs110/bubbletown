@@ -29,7 +29,6 @@ function game.init()
 
 	util.goto_scene(BTSCN_start)
 	core.checkpoint("game.init() done.")
-	core.checkpoint("package.path="..package.path)
 	return true
 end
 

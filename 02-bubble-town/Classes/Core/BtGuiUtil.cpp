@@ -13,6 +13,7 @@ BtTextMenuBuilder::BtTextMenuBuilder()
 {
     m_itemAlignment = eItemAlign::Center;
     m_menuAlignment = eMenuAlign::Vertically;
+    m_textSize = BtGui_DefaultMenuFontSize;
 }
 
 void BtTextMenuBuilder::AddItems(BtConstStr items[], int itemCnt)
@@ -34,7 +35,7 @@ cocos2d::Menu* BtTextMenuBuilder::Build()
     cocos2d::Vector<cocos2d::MenuItem*> items;
     for (size_t i = 0; i < m_itemTexts.size(); ++i)
     {
-        auto label = cocos2d::LabelTTF::create(m_itemTexts[i], BtGui_DefaultMenuFont, BtGui_DefaultMenuFontSize);
+        auto label = cocos2d::LabelTTF::create(m_itemTexts[i], BtGui_DefaultMenuFont, m_textSize);
         auto item = cocos2d::MenuItemLabel::create(label);
 
         auto it = m_namedHandlers.find(m_itemTexts[i]);

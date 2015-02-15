@@ -23,6 +23,8 @@ private:
     void onButton_Build();
     void onButton_Upgrade();
 
+    cocos2d::Menu* m_btMenuBuild;
+
     cocos2d::ui::Button* m_btBuild;
     cocos2d::ui::Button* m_btUpgrade;
 

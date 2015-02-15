@@ -38,6 +38,7 @@ public:
     void SetItemAlign(eItemAlign val) { m_itemAlignment = val; }
     void SetMenuAlign(eMenuAlign val) { m_menuAlignment = val; }
     void SetHandler(cocos2d::ccMenuCallback handler) { m_handler = handler; }
+    void SetTextSize(int val) { m_textSize = val; }
 
     cocos2d::Menu* Build();
 
@@ -47,6 +48,8 @@ private:
     eMenuAlign m_menuAlignment;
     cocos2d::ccMenuCallback  m_handler;
     std::map<std::string, cocos2d::ccMenuCallback> m_namedHandlers;
+
+    int m_textSize;
 };
 
 
