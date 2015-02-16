@@ -23,3 +23,6 @@ hostcall_destroy = game.destroy
 hostcall_post = game.simulation.inbox.post
 hostcall_flush = game.simulation.process_messages
 
+-- UI 刷新
+hostcall_refresh_ui = game.player.refresh_ui
+

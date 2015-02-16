@@ -9,8 +9,8 @@ LuaSrcFile = "Resources/lua/shared/def.lua"
 CppDestFile = "Classes/Core/BtMsgDef_AUTOGEN.h"
 
 EnumName_MsgId = 'BtMsgID'
-SceneNamePrefix = 'BTSCN_'
-BuildingNamePrefix = 'BT_'
+
+StringPrefixes = ['BTSCN_', 'BT_', 'BTPL_']
 
 CppHeadingText = \
 u"""/*
@@ -37,8 +37,10 @@ def convert(src, dest):
         if line.startswith(EnumName_MsgId):
             line = "enum class " + EnumName_MsgId + "\n"
 
-        if line.startswith(SceneNamePrefix) or line.startswith(BuildingNamePrefix):
-            line = "BtConstStr " + line
+        for prefix in StringPrefixes:
+            if line.startswith(prefix):
+                line = "BtConstStr " + line
+                break
 
         dest.write(line)
 

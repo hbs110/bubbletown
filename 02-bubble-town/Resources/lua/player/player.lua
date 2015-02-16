@@ -52,5 +52,13 @@ function player.setCurrentLevel(currentLevel)
 	end
 end
 
+function player.refresh_ui()
+	bt_native.set_player_property(BTPL_Level, player.info[BTPL_Level], false)
+	bt_native.set_player_property(BTPL_Exp, player.info[BTPL_Exp], false)
+	bt_native.set_player_property(BTPL_Coins, player.info[BTPL_Coins], false)
+	bt_native.set_player_property(BTPL_Diamonds, player.info[BTPL_Diamonds], false)
+	bt_native.set_player_property(BTPL_Energy, player.info[BTPL_Energy], true)
+end
+
 return player
 

@@ -97,8 +97,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     if (!BtLuaService::Get()->Init())
         return false;
 
-    BtLuaService::Get()->RegisterFunction("goto_scene", &AppNativeInterfaces::GotoScene);
-    BtLuaService::Get()->RegisterFunction("get_current_time", &AppNativeInterfaces::GetCurrentGameTime);
+    BtRegisterNativeInerfaces();
 
     RegisterSceneCreator<AppStartScene>();
     RegisterSceneCreator<BtBubbleScene>();

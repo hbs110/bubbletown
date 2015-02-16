@@ -13,5 +13,9 @@ class AppNativeInterfaces
 public: 
     static double GetCurrentGameTime();
     static void GotoScene(const std::string& sceneName, const std::string& sceneConfig);
+
+    static void SetPlayerProperty(const std::string& playerProperty, int value, bool flush);
 };
+
+void BtRegisterNativeInerfaces();
 

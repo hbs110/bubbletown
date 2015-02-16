@@ -65,3 +65,13 @@ BtConstStr BT_Deco     = "deco";
 BtConstStr BT_House    = "house";
 BtConstStr BT_Shop     = "shop";
 BtConstStr BT_Workshop = "workshop";
+
+
+// player properties
+
+BtConstStr BTPL_Level    = "level";
+BtConstStr BTPL_Exp      = "exp";
+BtConstStr BTPL_Coins    = "coins";
+BtConstStr BTPL_Diamonds = "diamonds";
+BtConstStr BTPL_Energy   = "energy";
+

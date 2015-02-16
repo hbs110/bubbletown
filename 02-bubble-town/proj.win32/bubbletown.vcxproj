@@ -130,6 +130,7 @@
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\AppNativeInterfaces.cpp" />
     <ClCompile Include="..\Classes\AppStartScene.cpp" />
+    <ClCompile Include="..\Classes\AppUtil.cpp" />
     <ClCompile Include="..\Classes\Core\BtGuiUtil.cpp" />
     <ClCompile Include="..\Classes\Core\BtMsgDispatcher.cpp" />
     <ClCompile Include="..\Classes\Scenes\BtBaseScene.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="..\Classes\AppMacros.h" />
     <ClInclude Include="..\Classes\AppNativeInterfaces.h" />
     <ClInclude Include="..\Classes\AppStartScene.h" />
+    <ClInclude Include="..\Classes\AppUtil.h" />
     <ClInclude Include="..\Classes\Core\BtCoreDef.h" />
     <ClInclude Include="..\Classes\Core\BtGuiUtil.h" />
     <ClInclude Include="..\Classes\Core\BtMsgDef.h" />

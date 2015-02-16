@@ -60,6 +60,11 @@ bool BtTownScene::do_init()
     return true;
 }
 
+void BtTownScene::do_enter()
+{
+    BT_CALL_LUA("hostcall_refresh_ui");
+}
+
 void BtTownScene::onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event *event)
 {
     if (isPlacingBuilding())

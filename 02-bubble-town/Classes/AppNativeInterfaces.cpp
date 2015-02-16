@@ -12,16 +12,10 @@
 #include "Core/BtMsgDef.h"
 #include "Core/BtMsgDispatcher.h"
 
+#include "Scenes/Scene_Town/BtTownScene.h"
+
 #include "AppDelegate.h"
-
-AppDelegate* BtGetApp()
-{
-    cocos2d::Application* app = cocos2d::Application::getInstance();
-    if (!app)
-        return nullptr;
-
-    return dynamic_cast<AppDelegate*>(app);
-}
+#include "AppUtil.h"
 
 void AppNativeInterfaces::GotoScene(const std::string& sceneName, const std::string& sceneConfig)
 {
@@ -32,8 +26,24 @@ void AppNativeInterfaces::GotoScene(const std::string& sceneName, const std::str
 
 double AppNativeInterfaces::GetCurrentGameTime()
 {
-    AppDelegate* ad = BtGetApp();
+    AppDelegate* ad = AppUtil::GetApp();
     return ad ? ad->GetCurTime() : 0.0;
 }
 
+void AppNativeInterfaces::SetPlayerProperty(const std::string& playerProperty, int value, bool flush)
+{
+    BtTownScene* town = AppUtil::GetTownSceneIfIn();
+    if (town)
+    {
+        BtTownSceneUI* ui = town->GetUI();
+        ui->setPlayerProperty(playerProperty, value, flush);
+    }
+}
+
+void BtRegisterNativeInerfaces()
+{
+    BtLuaService::Get()->RegisterFunction("goto_scene", &AppNativeInterfaces::GotoScene);
+    BtLuaService::Get()->RegisterFunction("get_current_time", &AppNativeInterfaces::GetCurrentGameTime);
+    BtLuaService::Get()->RegisterFunction("set_player_property", &AppNativeInterfaces::SetPlayerProperty);
+}
 

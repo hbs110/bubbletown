@@ -53,3 +53,13 @@ BT_Deco     = "deco";
 BT_House    = "house";
 BT_Shop     = "shop";
 BT_Workshop = "workshop";
+
+
+-- player properties
+
+BTPL_Level    = "level";
+BTPL_Exp      = "exp";
+BTPL_Coins    = "coins";
+BTPL_Diamonds = "diamonds";
+BTPL_Energy   = "energy";
+

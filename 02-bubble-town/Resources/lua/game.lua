@@ -22,12 +22,13 @@ function game.init()
 
 	game_sanity.check_env()
 
+	util.goto_scene(BTSCN_start)
+
 	if not game.player.load(TEST_PLAYER_PROFILE) then
 		core.log_err("Player profile loading failed, possibly broken.")
 		return false
 	end
 
-	util.goto_scene(BTSCN_start)
 	core.checkpoint("game.init() done.")
 	return true
 end

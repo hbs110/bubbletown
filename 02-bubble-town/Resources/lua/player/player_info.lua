@@ -1,11 +1,11 @@
 
 player_info = {}
 
-player_info.level = 1
-player_info.exp = 0
-player_info.coins = 0
-player_info.diamonds = 0
-player_info.energy = 5
+player_info[BTPL_Level] = 1
+player_info[BTPL_Exp] = 0
+player_info[BTPL_Coins] = 0
+player_info[BTPL_Diamonds] = 0
+player_info[BTPL_Energy] = 5
 
 
 --[[ buildings
@@ -52,8 +52,6 @@ sample:
 ]] 
 
 player_info.in_progress_events = {}  
-
-
 
 return player_info
 
