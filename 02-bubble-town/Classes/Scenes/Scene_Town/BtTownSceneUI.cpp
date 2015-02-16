@@ -15,6 +15,8 @@
 
 #include "Services/BtLuaService.h"
 
+#include "Core/BtMsgDef.h"
+
 BtTownSceneUI::BtTownSceneUI() 
     : m_btBuild(nullptr)
     , m_btUpgrade(nullptr)
@@ -64,6 +66,16 @@ bool BtTownSceneUI::init(cocos2d::Node* parent)
     m_btMenuBuild->setVisible(false);
     m_btMenuBuild->setPosition(cocos2d::Vec2(0, m_btBuild->getSize().height + 50));
     m_btBuild->addChild(m_btMenuBuild, 1);
+
+    cocos2d::ui::Button* btNext = cocos2d::ui::Button::create("ui_test/next.png", "ui_test/next.png");
+    btNext->setPosition(cocos2d::Vec2(origin.x + visibleSize.width - btNext->getContentSize().width * 1.5 - spacing.x * 2, btNext->getContentSize().height / 2 + spacing.y));
+    BtSetButtonHandler(btNext, []() { BT_POST_LUA_AND_FLUSH(BtMsgID::GotoScene, BTSCN_bubble); });
+    parent->addChild(btNext, 1);
+
+    cocos2d::ui::Button* btWorld = cocos2d::ui::Button::create("ui_test/world.png", "ui_test/world.png");
+    btWorld->setPosition(cocos2d::Vec2(origin.x + visibleSize.width - btWorld->getContentSize().width / 2 - spacing.x, btWorld->getContentSize().height / 2 + spacing.y));
+    BtSetButtonHandler(btWorld, []() { BT_POST_LUA_AND_FLUSH(BtMsgID::GotoScene, BTSCN_world); });
+    parent->addChild(btWorld, 1);
 
     return true;
 }

@@ -13,9 +13,9 @@
 class BtMsg
 {
 public:
-    BtMsg() : BtMsg(BT_INVALID_ID) {}
+    BtMsg() : m_id(BT_INVALID_ID), m_info(""), m_creationTime(0.0f), m_delayTimer(0.0f), m_processed(false) {}
     BtMsg(int msgId, const std::string& info) : m_id(msgId), m_info(info), m_creationTime(0.0f), m_delayTimer(0.0f), m_processed(false) {}
-    explicit BtMsg(int msgId) : BtMsg(msgId, "") {}
+    explicit BtMsg(int msgId) : m_id(msgId), m_info(""), m_creationTime(0.0f), m_delayTimer(0.0f), m_processed(false) {}
     virtual ~BtMsg() {} // derive from this class is allowed (but not encouraged, use userdata for lightweight information delivering)
 
     void markAsReceived(float created, float deferred)
