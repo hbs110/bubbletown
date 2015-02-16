@@ -1,1 +1,0 @@
-python gen_btlua_bin_dist_2012.py
