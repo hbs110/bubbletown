@@ -3,7 +3,8 @@ Thumbs.db
 
 # bubbletown
 /02-bubble-town/Dependencies/BtLua-*
-/02-bubble-town/*.sublime-workspace
+/02-bubble-town/Resources/lua/*.sublime-project
+/02-bubble-town/Resources/lua/*.sublime-workspace
 
 # 本地的配置文件
 *.user
