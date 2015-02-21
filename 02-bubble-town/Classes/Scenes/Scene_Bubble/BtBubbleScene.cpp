@@ -9,13 +9,20 @@
 #include "stdafx.h"
 #include "BtBubbleScene.h"
 
+#include "Core/BtCoreUtil.h"
 #include "Core/BtGuiUtil.h"
-
 #include "Core/BtMsgDef.h"
 
 #include "Services/BtLuaService.h"
 
 #include "Core/tinyformat/tinyformat.h"
+#include "Core/json-parser/json.h"
+
+// for unexpected error when entering bubble scene: 
+//      when something is unexpectedly, seriously and horribly wrong, 
+//      we would try to recover from the situation and return to the town scene immediately
+static auto fnBackToTownScene = []() { BT_POST_LUA_AND_FLUSH(BtMsgID::GotoScene, BTSCN_town); };
+#define BT_EXPECT_BubbleSceneEnter(expr, errMsg)  BT_EXPECT_RET(expr, "entering bubble scene", errMsg, fnBackToTownScene)
 
 BtBubbleScene::BtBubbleScene() 
     : m_btLoot(nullptr)
@@ -62,17 +69,26 @@ bool BtBubbleScene::do_init()
 
 void BtBubbleScene::do_enter()
 {
-    // read 'battleConfig' below for current level
-    std::string battleConfig = m_preEnterConfig;
-    CCLOG(battleConfig.c_str());
-    // it would be cleared as soon as do_enter() ends
-
     showEndScreen(false);
 
-    // report the level id (should be available now)
-    // the game knows we are playing a level now
-    int currentLevel = 1; 
-    BT_POST_LUA_AND_FLUSH(BtMsgID::LevelEntered, "", currentLevel);
+    // read 'battleConfig' below for current level
+    std::string battleConfig = m_preEnterConfig;
+    BT_EXPECT_BubbleSceneEnter(battleConfig.size() > 0, "scene config is empty.");
+    // it would be cleared as soon as do_enter() ends
+
+    // parsing the json
+    char jsonErr[json_error_max];
+    json_settings settings = { 0 };
+    json_value* json = json_parse_ex(&settings, battleConfig.c_str(), battleConfig.size(), jsonErr);
+    BT_EXPECT_BubbleSceneEnter(json != 0, tfm::format("invalid scene config json: ('%s')", jsonErr));
+    BT_EXPECT_BubbleSceneEnter(json->type == json_object, 
+                               "invalid scene config json: (not a 'json_object').");
+
+    // extracting the level id and notify the game
+    const auto& levelObj = (*json)["level_id"];
+    BT_EXPECT_BubbleSceneEnter(levelObj.type == json_integer, 
+                               "invalid scene config json: (invalid 'level_id': not a 'json_integer').");
+    BT_POST_LUA_AND_FLUSH(BtMsgID::LevelEntered, "", (int)levelObj.u.integer); // report the level id, so that the game knows we are playing a level now
 }
 
 void BtBubbleScene::do_exit()

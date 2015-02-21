@@ -131,8 +131,13 @@
     <ClCompile Include="..\Classes\AppNativeInterfaces.cpp" />
     <ClCompile Include="..\Classes\AppStartScene.cpp" />
     <ClCompile Include="..\Classes\AppUtil.cpp" />
+    <ClCompile Include="..\Classes\Core\BtCoreUtil.cpp" />
     <ClCompile Include="..\Classes\Core\BtGuiUtil.cpp" />
     <ClCompile Include="..\Classes\Core\BtMsgDispatcher.cpp" />
+    <ClCompile Include="..\Classes\Core\json-parser\json.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\Classes\Scenes\BtBaseScene.cpp" />
     <ClCompile Include="..\Classes\Scenes\Scene_Bubble\BtBubbleScene.cpp" />
     <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTiledMap.cpp" />
@@ -156,10 +161,13 @@
     <ClInclude Include="..\Classes\AppStartScene.h" />
     <ClInclude Include="..\Classes\AppUtil.h" />
     <ClInclude Include="..\Classes\Core\BtCoreDef.h" />
+    <ClInclude Include="..\Classes\Core\BtCoreUtil.h" />
     <ClInclude Include="..\Classes\Core\BtGuiUtil.h" />
     <ClInclude Include="..\Classes\Core\BtMsgDef.h" />
     <ClInclude Include="..\Classes\Core\BtMsgDef_AUTOGEN.h" />
     <ClInclude Include="..\Classes\Core\BtMsgDispatcher.h" />
+    <ClInclude Include="..\Classes\Core\json-parser\json.h" />
+    <ClInclude Include="..\Classes\Core\tinyformat\tinyformat.h" />
     <ClInclude Include="..\Classes\Scenes\BtBaseScene.h" />
     <ClInclude Include="..\Classes\Scenes\Scene_Bubble\BtBubbleScene.h" />
     <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTiledMap.h" />

@@ -1,4 +1,6 @@
 
+require "tab_levels" 
+
 default_player_info = require "player_info"
 core = require "core"
 
@@ -36,11 +38,23 @@ function player.load(profileName)
 end
 
 function player.getNextLevel()
+	local curLevel = BT_Invalid
 	if player.current_level ~= nil then
-		return player.current_level + 1
+		curLevel = player.current_level
 	else
-		return 1
+		for k,v in pairs(player.info.level_stats) do
+			if k > curLevel then
+				curLevel = k
+			end
+		end
 	end
+
+	for _,v in ipairs(t_level_main_story) do
+		if v.id > curLevel then
+			return v.id
+		end
+	end
+	return BT_Invalid
 end
 
 function player.setCurrentLevel(currentLevel)

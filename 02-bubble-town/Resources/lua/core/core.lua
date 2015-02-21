@@ -15,6 +15,10 @@ function core.log_err(info)
 	print(string.format("[ERROR] '%s' at '%.3f'.", info, bt_native.get_current_time()))
 end	
 
+function core.log_dbg(info)
+	print(string.format("[DEBUG] '%s' at '%.3f'.", info, bt_native.get_current_time()))
+end	
+
 function core.build_profile_path(profileName)
 	return PLAYER_PROFILE_DIR..profileName..".json"
 end

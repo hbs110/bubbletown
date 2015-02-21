@@ -8,9 +8,11 @@ import fnmatch
 LuaSrcFile = "Resources/lua/shared/def.lua"
 CppDestFile = "Classes/Core/BtMsgDef_AUTOGEN.h"
 
-EnumName_MsgId = 'BtMsgID'
 
+Enums = ['BtMsgID', 'BtProb']
+Integers = ['BT_Invalid']
 StringPrefixes = ['BTSCN_', 'BT_', 'BTPL_']
+
 
 CppHeadingText = \
 u"""/*
@@ -27,6 +29,7 @@ u"""/*
 
 """.format(LuaSrcFile, __file__).encode('utf-8')
 
+
 def convert(src, dest):
     
     dest.write(CppHeadingText)
@@ -34,8 +37,15 @@ def convert(src, dest):
     for line in src:
         line = line.replace('--', '//')
 
-        if line.startswith(EnumName_MsgId):
-            line = "enum class " + EnumName_MsgId + "\n"
+        for integer in Integers:
+            if line.startswith(integer):
+                line = "const int " + line
+                break
+
+        for enum in Enums:
+            if line.startswith(enum):
+                line = "enum class " + enum + "\n"
+                break
 
         for prefix in StringPrefixes:
             if line.startswith(prefix):

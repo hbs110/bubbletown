@@ -1,3 +1,4 @@
+require "def"
 
 player_info = {}
 
@@ -28,16 +29,16 @@ player_info.items = {}
 
 --[[ heros
 sample: 
-	player_info.heros["name"] = { color=red, level=1, exp=0 }
+	player_info.heroes["name"] = { color=red, level=1, exp=0 }
 ]] 
 
-player_info.heros = {} 
+player_info.heroes = {} 
 
 
 
 --[[ level stats
 sample: 
-	player_info.level_stats["level_1"] = { stars=1, time_spent=12.0, highest_score=10000 }
+	player_info.level_stats[101] = { stars=1, time_spent=12.0, highest_score=10000 }
 ]] 
 
 player_info.level_stats = {}  

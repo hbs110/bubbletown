@@ -62,7 +62,7 @@ protected:
 
     std::string m_placingBuildingName;
     void onPlacingBuildingBegan(const std::string& buildingName);
-    bool isPlacingBuilding() const { return m_placingBuildingName.size(); }
+    bool isPlacingBuilding() const { return !m_placingBuildingName.empty(); }
 
     void selectBuilding(BtTownBuilding* building);
 };

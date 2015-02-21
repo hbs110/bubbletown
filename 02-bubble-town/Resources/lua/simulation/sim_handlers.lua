@@ -1,16 +1,32 @@
 
-level = require "level"
+JSON = require "JSON" 
 
 handlers = {}
 
 handlers.player = nil
+
+function prepareLevel(player, levelID)
+	local levelConfig = {
+		level_id = levelID,
+		items = player.info.items,
+		heroes = player.info.heroes,
+	} 
+
+	local succ, ret = pcall(function () return JSON:encode_pretty(levelConfig) end)
+	if not succ then 
+	 	core.log_err(string.format("Encoding Json failed while preparing level. (%s)", ret))
+	 	return ""
+	end
+
+	return ret
+end
 
 function onStartNextLevel(msg)
 	if handlers.player == nil then
 		return
 	end
 
-	local levelCfg = level.prepare(handlers.player, handlers.player.getNextLevel())
+	local levelCfg = prepareLevel(handlers.player, handlers.player.getNextLevel())
 	util.goto_scene(BTSCN_bubble, levelCfg) 
 end
 
@@ -19,7 +35,7 @@ function onRestartLevel(msg)
 		return
 	end
 
-	local levelCfg = level.prepare(handlers.player, handlers.player.current_level)
+	local levelCfg = prepareLevel(handlers.player, handlers.player.current_level)
 	util.goto_scene(BTSCN_bubble, levelCfg) 
 end
 
