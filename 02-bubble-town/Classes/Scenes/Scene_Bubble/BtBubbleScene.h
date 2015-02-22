@@ -35,5 +35,7 @@ protected:
 
     cocos2d::ui::Text* m_labelPlaying;
     cocos2d::ui::Text* m_labelEnd;
+
+    int m_curPlayingLevel;
 };
 

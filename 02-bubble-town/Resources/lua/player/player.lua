@@ -49,9 +49,9 @@ function player.getNextLevel()
 		end
 	end
 
-	for _,v in ipairs(t_level_main_story) do
-		if v.id > curLevel then
-			return v.id
+	for _,v in ipairs(t_level_id_list) do
+		if v > curLevel then
+			return v
 		end
 	end
 	return BT_Invalid

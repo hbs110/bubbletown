@@ -15,7 +15,7 @@ BtMsgID =
     StartNextLevel = 2,         
     LevelEntered = 3,
     LevelLeft = 4,
-    LevelRewards = 5,
+    LevelCompleted = 5,
 
     ----------------------------------------
     -- Town Building

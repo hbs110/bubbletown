@@ -30,6 +30,7 @@ BtBubbleScene::BtBubbleScene()
     , m_btNext(nullptr)
     , m_labelPlaying(nullptr)
     , m_labelEnd(nullptr)
+    , m_curPlayingLevel(BT_INVALID_ID)
 {
 
 }
@@ -88,20 +89,44 @@ void BtBubbleScene::do_enter()
     const auto& levelObj = (*json)["level_id"];
     BT_EXPECT_BubbleSceneEnter(levelObj.type == json_integer, 
                                "invalid scene config json: (invalid 'level_id': not a 'json_integer').");
-    BT_POST_LUA_AND_FLUSH(BtMsgID::LevelEntered, "", (int)levelObj.u.integer); // report the level id, so that the game knows we are playing a level now
+    m_curPlayingLevel = (int) levelObj.u.integer;
+    BT_POST_LUA_AND_FLUSH(BtMsgID::LevelEntered, "", m_curPlayingLevel); // report the level id, so that the game knows we are playing a level now
 }
 
 void BtBubbleScene::do_exit()
 {
+    m_curPlayingLevel = BT_INVALID_ID;
     // notify the game that we are leaving
     BT_POST_LUA_AND_FLUSH(BtMsgID::LevelLeft, "");
 }
 
 void BtBubbleScene::onButton_Loot()
 {
-    // sending test rewards data
-    std::string rewards = "{  \"coins\": 10, \"exp\": 5 }";
-    BT_POST_LUA_AND_FLUSH(BtMsgID::LevelRewards, rewards);
+    auto getter = [](const char* func, int levelID) {
+        btlua_ref ret = BT_CALL_LUA(func, levelID);
+        return !ret.isNil() ? ret.cast<int>() : 0;
+    };
+
+    // game-design hardcoded
+    int coins = getter("level_get_reward_coins", m_curPlayingLevel);
+    int exp = getter("level_get_reward_exp", m_curPlayingLevel);
+    int hero = getter("level_get_reward_hero", m_curPlayingLevel);
+
+    // player earned
+    int stars = 1;
+    int score = 1000;
+    float timeSpent = 12.5f;
+
+    // send rewards back to game
+    std::string rewards = tfm::format("{"
+        "  \"coins\": %d, "
+        "  \"exp\": %d, "
+        "  \"hero\": %d, "
+        "  \"stars\": %d, "
+        "  \"score\": %d, "
+        "  \"timeSpent\": %f, "
+        "}", coins, exp, hero, stars, score, timeSpent);
+    BT_POST_LUA_AND_FLUSH(BtMsgID::LevelCompleted, rewards);
 
     showEndScreen(true);
 }
