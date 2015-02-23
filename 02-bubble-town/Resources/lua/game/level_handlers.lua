@@ -37,8 +37,8 @@ local function gotoLevel(player, levelID)
 	local levelConfig = {
 		level_id = levelID,
 		level_stats = level_handlers.player.level_stats.getAt(levelID),		-- this might be nil
-		items = level_handlers.player.status.info.items,
-		heroes = level_handlers.player.status.info.heroes,
+		items = {}, -- not implemented yet
+		heroes = {}, -- not implemented yet
 	} 
 
 	local succ, ret = pcall(function () return JSON:encode_pretty(levelConfig) end)

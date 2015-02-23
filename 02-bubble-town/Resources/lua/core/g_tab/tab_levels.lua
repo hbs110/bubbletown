@@ -66,6 +66,15 @@ for k,_ in pairs(t_levels) do
 end
 table.sort(t_level_id_list)
 
+function level_get_first() return t_level_id_list[1] end
+function level_get_next(current) 
+    for _,v in ipairs(t_level_id_list) do
+        if v > current then
+            return v
+        end
+    end
+    return nil
+end
 
 function level_is_instance(levelID) return string.find(t_levels[levelID].tag, BTL_InstTag) end
 

@@ -1,13 +1,4 @@
 {
-  "buildings": [],
-  "coins": 2300,
-  "diamonds": 0,
-  "energy": 5,
-  "exp": 10,
-  "heroes": [],
-  "in_progress_events": [],
-  "items": [],
-  "level": 12,
   "level_stats": {
     "101": {
       "highest_score": 1041,
@@ -53,6 +44,38 @@
       "highest_score": 1478,
       "stars": 1,
       "time_spent": 19.5
+    },
+    "302": {
+      "highest_score": 1478,
+      "stars": 1,
+      "time_spent": 12.5
+    },
+    "303": {
+      "highest_score": 1462,
+      "stars": 1,
+      "time_spent": 16.5
+    },
+    "304": {
+      "highest_score": 1205,
+      "stars": 1,
+      "time_spent": 17.5
+    },
+    "305": {
+      "highest_score": 1041,
+      "stars": 1,
+      "time_spent": 19.5
+    },
+    "401": {
+      "highest_score": 1041,
+      "stars": 1,
+      "time_spent": 19.5
     }
+  },
+  "status": {
+    "coins": 800,
+    "diamonds": 0,
+    "energy": 5,
+    "exp": 20,
+    "level": 4
   }
 }

@@ -1,4 +1,7 @@
 
+require "g_constants"
+require "g_util"
+
 --[[ level stats
 sample: 
 	_data[102] = { stars=1, time_spent=12.0, highest_score=10000 }
@@ -28,6 +31,16 @@ function level_stats.save()
 	end
 	--g_print_table_pretty(stringIndexedTable)
 	return stringIndexedTable
+end
+
+function level_stats.getFarestLevelID()
+	local farest = BT_Invalid
+	for k,v in pairs(_data) do
+		if k > farest then
+			farest = k
+		end
+	end
+	return farest
 end
 
 function level_stats.getAt(levelID)

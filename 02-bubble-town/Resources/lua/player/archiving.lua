@@ -3,12 +3,20 @@ require "g_util"
 archiving = {}
 
 local _procs = {}
+local _activeProfileName = DEFAULT_PLAYER_PROFILE
+
 
 function archiving.register(sliceName, savingProc, loadingProc)
 	_procs[sliceName] = { save=savingProc, load=loadingProc }
 end
 
-function archiving.savefile(profileName)
+
+function archiving.savefile()
+	if _activeProfileName == DEFAULT_PLAYER_PROFILE then
+		print("profile not been correctly initialized, saving request ignored.")
+		return true
+	end
+
 	local function _save()
 		local chunk = {}
 		for k,v in pairs(_procs) do
@@ -33,13 +41,15 @@ function archiving.savefile(profileName)
 		return false
 	end
 
-	local profilePath = g_build_profile_path(profileName)
+	local profilePath = g_build_profile_path(_activeProfileName)
 	if not g_save_json(profilePath, chunk) then
 		return false
 	end
 
+ 	g_checkpoint(string.format("player profile ('%s') saved.", _activeProfileName))
 	return true
 end	
+
 
 function archiving.loadfile(profileName)
 	local function _load(chunk)
@@ -66,6 +76,8 @@ function archiving.loadfile(profileName)
 		return false
 	end
 
+	_activeProfileName = profileName
+ 	g_checkpoint(string.format("player profile ('%s') loaded.", _activeProfileName))
 	return true
 end
 

@@ -58,7 +58,7 @@ function game.destroy()
 	--]]
 
 	if not game.player.save() then
-		print("player profile saving failed.")
+		g_log_err("player profile saving failed.")
 	end
 
 	g_checkpoint("game.destroy() done.")
