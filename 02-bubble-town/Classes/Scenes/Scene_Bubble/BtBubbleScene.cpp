@@ -40,6 +40,7 @@ BtBubbleScene::BtBubbleScene()
     : m_btLoot(nullptr)
     , m_btRestart(nullptr)
     , m_btNext(nullptr)
+    , m_btBackToTown(nullptr)
     , m_labelPlaying(nullptr)
     , m_labelEnd(nullptr)
     , m_curPlayingLevel(BT_INVALID_ID)
@@ -79,8 +80,9 @@ bool BtBubbleScene::do_init()
     };
 
     m_btLoot    = makeTest("loot", center, std::bind(&BtBubbleScene::onButton_Loot, this));
-    m_btRestart = makeTest("restart", cocos2d::Vec2(center.x - 20.0f, center.y - 50), std::bind(&BtBubbleScene::onButton_Restart, this));
-    m_btNext = makeTest("next", cocos2d::Vec2(center.x + 20.0f, center.y - 50), std::bind(&BtBubbleScene::onButton_Next, this));
+    m_btBackToTown = makeTest("back", cocos2d::Vec2(center.x - 30.0f, center.y - 50), std::bind(&BtBubbleScene::onButton_BackToTown, this));
+    m_btRestart = makeTest("restart", cocos2d::Vec2(center.x, center.y - 50), std::bind(&BtBubbleScene::onButton_Restart, this));
+    m_btNext = makeTest("next", cocos2d::Vec2(center.x + 30.0f, center.y - 50), std::bind(&BtBubbleScene::onButton_Next, this));
 
     m_labelPlaying  = createLabel("Playing Screen");
     m_labelEnd      = createLabel("End Screen");
@@ -157,6 +159,11 @@ void BtBubbleScene::onButton_Next()
     BT_POST_LUA_AND_FLUSH(BtMsgID::StartNextLevel, "");
 }
 
+void BtBubbleScene::onButton_BackToTown()
+{
+    BT_POST_LUA_AND_FLUSH(BtMsgID::GotoScene, BTSCN_town);
+}
+
 void BtBubbleScene::showEndScreen(bool show)
 {
     m_labelPlaying->setVisible(!show);
@@ -165,5 +172,6 @@ void BtBubbleScene::showEndScreen(bool show)
     m_labelEnd->setVisible(show);
     m_btRestart->setVisible(show);
     m_btNext->setVisible(show);
+    m_btBackToTown->setVisible(show);
 }
 
