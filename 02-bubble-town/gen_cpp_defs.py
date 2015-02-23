@@ -5,7 +5,7 @@ import shutil
 import os
 import fnmatch
 
-LuaSrcFile = "Resources/lua/shared/def.lua"
+LuaSrcFile = "Resources/lua/core/g_shared.lua"
 CppDestFile = "Classes/Core/BtMsgDef_AUTOGEN.h"
 
 

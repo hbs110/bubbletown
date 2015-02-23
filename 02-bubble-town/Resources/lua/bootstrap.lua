@@ -20,7 +20,8 @@ hostcall_tick = game.tick
 hostcall_destroy = game.destroy
 
 -- 消息处理
-hostcall_post = game.simulation.inbox.post
+g_post = game.simulation.inbox.post
+hostcall_post = g_post	-- two-phases assignment, 'g_post' is called by lua and 'hostcall_post' is called by cpp
 hostcall_flush = game.simulation.process_messages
 
 -- UI 刷新

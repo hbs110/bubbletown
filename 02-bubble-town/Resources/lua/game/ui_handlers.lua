@@ -1,5 +1,5 @@
 
-require "g_def_shared"
+require "g_shared"
 
 ui_handlers = {}
 ui_handlers.simulation = nil

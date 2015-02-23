@@ -1,7 +1,7 @@
 
 JSON = require "JSON" 
 
-require "g_def_shared" 
+require "g_shared" 
 require "g_util"
 
 level_handlers = {}
@@ -12,7 +12,13 @@ function level_handlers.init(player)
 end
 
 function level_handlers.onLevelCompleted(msg)
-	print("rewards: "..msg.info)
+	packed = g_load_json_from_string(msg.info)
+	--g_print_table_pretty(packed)
+	if packed == nil or packed.level_rewards == nil or packed.level_stats == nil then
+		error("bad json received, ignored.")
+	end
+
+	level_handlers.player.onLevelCompleted(packed.level_rewards, packed.level_stats)
 end
 
 function level_handlers.onLevelEntered(msg)

@@ -2,7 +2,7 @@
     !!! GENERATED FROM LUA !!!
 
     For editing, 
-        1. modify the file 'Resources/lua/shared/def.lua'
+        1. modify the file 'Resources/lua/core/g_shared.lua'
         2. run 'gen_cpp_defs.py' to regenerate this file
 */
 

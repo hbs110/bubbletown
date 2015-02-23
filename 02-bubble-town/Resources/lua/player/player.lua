@@ -38,6 +38,9 @@ function player.load(profileName)
 		player.info[k] = v 
 	end
 
+	-- print("player.info.[post loading]")
+	-- g_print_table_pretty(player.info)
+
 	player.profile_name = profileName
 	g_checkpoint(string.format("player profile ('%s') loaded.", player.profile_name))
 	return true
@@ -49,8 +52,8 @@ function player.getNextLevel()
 		curLevel = player.current_level
 	else
 		for k,v in pairs(player.info.level_stats) do
-			if k > curLevel then
-				curLevel = k
+			if tonumber(k) > curLevel then
+				curLevel = tonumber(k)
 			end
 		end
 	end
@@ -70,6 +73,48 @@ function player.setCurrentLevel(currentLevel)
 	else
 		print("player is now out of level.")
 	end
+end
+
+function player.onLevelCompleted(level_rewards, level_stats)
+	print(string.format("player completes level '%d'.", player.current_level))
+	print(string.format("player gets rewards: coins=%d, exp=%d, heroes=%d.", level_rewards.coins, level_rewards.exp, level_rewards.heroes))
+	print(string.format("level_stats: stars=%d, score=%d, time_spent=%.2f.", level_stats.stars, level_stats.score, level_stats.time_spent))
+
+	-- apply rewards
+	player.info[BTPL_Coins] = player.info[BTPL_Coins] + level_rewards.coins
+	player.info[BTPL_Exp] = player.info[BTPL_Exp] + level_rewards.exp
+	print(string.format("player info (coins='%d', exp='%d')", player.info[BTPL_Coins], player.info[BTPL_Exp]))
+
+	if player.info[BTPL_Exp] > 20 then
+		player.info[BTPL_Level] = player.info[BTPL_Level] + 1
+		print(string.format("player level up! (now '%d')", player.info[BTPL_Level]))
+
+		player.info[BTPL_Exp] = player.info[BTPL_Exp] - 20
+		print(string.format("player exp changed to '%d'.", player.info[BTPL_Exp]))
+	end
+
+	-- refreshing level stats
+	local saved_stats = player.info.level_stats[tostring(player.current_level)]
+	if saved_stats == nil then
+		print(string.format("player completes level '%d' for the first time.", player.current_level))
+		player.info.level_stats[tostring(player.current_level)] = { stars=level_stats.stars, highest_score=level_stats.score, time_spent=level_stats.time_spent }
+	else
+		if level_stats.stars > saved_stats.stars then
+			print(string.format("player refreshes star count: new='%d', old='%d'.", level_stats.stars, saved_stats.stars))
+			saved_stats.stars = level_stats.stars
+		end
+		if level_stats.score > saved_stats.highest_score then
+			print(string.format("player refreshes score: new='%d', old='%d'.", level_stats.score, saved_stats.highest_score))
+			saved_stats.highest_score = level_stats.score
+		end
+		if level_stats.time_spent < saved_stats.time_spent then
+			print(string.format("player refreshes time_spent: new='%.2f', old='%.2f'.", level_stats.time_spent, saved_stats.time_spent))
+			saved_stats.stars = level_stats.stars
+		end
+		player.info.level_stats[tostring(player.current_level)] = saved_stats
+	end
+
+	player.refresh_ui()
 end
 
 function player.refresh_ui()

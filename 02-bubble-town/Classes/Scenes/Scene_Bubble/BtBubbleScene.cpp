@@ -21,7 +21,7 @@
 #include "json/writer.h"
 #include "json/stringbuffer.h"
 
-static std::string _to_string(const rapidjson::Document& doc)
+static std::string _json_doc_to_string(const rapidjson::Document& doc)
 {
     using namespace rapidjson;
     StringBuffer buffer;
@@ -124,27 +124,25 @@ void BtBubbleScene::onButton_Loot()
     // get level rewards from lua
     int coins = getter("level_get_reward_coins", m_curPlayingLevel);
     int exp = getter("level_get_reward_exp", m_curPlayingLevel);
-    int hero = getter("level_get_reward_hero", m_curPlayingLevel);
-
+    int heroes = getter("level_get_reward_heroes", m_curPlayingLevel);
 
     // send rewards and stats back to game
-    using namespace rapidjson;
-    Document doc;
+    rapidjson::Document doc;
     doc.SetObject();
     {
-        Value rewards(kObjectType); 
+        rapidjson::Value rewards(rapidjson::kObjectType);
         rewards.AddMember("coins", coins, doc.GetAllocator());
         rewards.AddMember("exp", exp, doc.GetAllocator());
-        rewards.AddMember("hero", hero, doc.GetAllocator());
+        rewards.AddMember("heroes", heroes, doc.GetAllocator());
         doc.AddMember("level_rewards", rewards, doc.GetAllocator());
 
-        Value stats(kObjectType); // faked data
+        rapidjson::Value stats(rapidjson::kObjectType); // faked data
         stats.AddMember("stars", 1, doc.GetAllocator());
         stats.AddMember("score", 1000 + rand() % 500, doc.GetAllocator());
         stats.AddMember("time_spent", 12.5f + (float) (rand() % 20), doc.GetAllocator());
         doc.AddMember("level_stats", stats, doc.GetAllocator());
     }
-    BT_POST_LUA_AND_FLUSH(BtMsgID::LevelCompleted, _to_string(doc));
+    BT_POST_LUA_AND_FLUSH(BtMsgID::LevelCompleted, _json_doc_to_string(doc));
 
     showEndScreen(true);
 }

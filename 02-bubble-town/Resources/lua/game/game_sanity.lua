@@ -11,4 +11,10 @@ function game_sanity.check_env()
 	end
 end
 
+function game_sanity.check_post_init()
+	if g_post == nil then
+		error("'g_post' hasn't been set.")
+	end
+end
+
 return game_sanity

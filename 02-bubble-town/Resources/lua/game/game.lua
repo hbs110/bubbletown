@@ -1,5 +1,5 @@
 
-require "g_def_shared"
+require "g_shared"
 require "g_constants"
 require "g_util"
 
@@ -34,6 +34,8 @@ function game.init()
 		return false
 	end
 
+	game_sanity.check_post_init()
+	
 	g_goto_scene(BTSCN_start)
 
 	g_checkpoint("game.init() done.")

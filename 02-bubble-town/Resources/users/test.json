@@ -1,12 +1,23 @@
 {
   "buildings": [],
-  "coins": 0,
+  "coins": 900,
   "diamonds": 0,
   "energy": 5,
-  "exp": 0,
+  "exp": 10,
   "heroes": [],
   "in_progress_events": [],
   "items": [],
-  "level": 1,
-  "level_stats": []
+  "level": 5,
+  "level_stats": {
+    "101": {
+      "highest_score": 1041,
+      "stars": 1,
+      "time_spent": 19.5
+    },
+    "102": {
+      "highest_score": 1334,
+      "stars": 1,
+      "time_spent": 19.5
+    }
+  }
 }

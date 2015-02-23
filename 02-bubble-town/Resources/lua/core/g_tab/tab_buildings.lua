@@ -1,5 +1,5 @@
 
-require "g_def_shared"
+require "g_shared"
 
 t_buildings = {}
 t_buildings[BT_Hall]         = { arrawScale = 0.4, sizeInTile = { x = 3, y = 3 } }

@@ -1,5 +1,5 @@
 
-require "g_def_shared"
+require "g_shared"
 
 BTL_Storytag = "story"
 BTL_InstTag = "inst"
@@ -19,37 +19,37 @@ BTL_InstBase = 10000
 t_levels = {}
 
 -- tutorial levels
-t_levels[101] = { name = "_", group = "tutorial",     tag = BTL_StoryTag, rewards = { coins = 100, exp = 10, hero = 1 } }
-t_levels[102] = { name = "_", group = "tutorial",     tag = BTL_StoryTag, rewards = { coins = 100, exp = 10, hero = 1 } }
-t_levels[103] = { name = "_", group = "tutorial",     tag = BTL_StoryTag, rewards = { coins = 100, exp = 10, hero = 1 } }
+t_levels[101] = { name = "_", group = "tutorial",     tag = BTL_StoryTag, rewards = { coins = 100, exp = 10, heroes = 1 } }
+t_levels[102] = { name = "_", group = "tutorial",     tag = BTL_StoryTag, rewards = { coins = 100, exp = 10, heroes = 1 } }
+t_levels[103] = { name = "_", group = "tutorial",     tag = BTL_StoryTag, rewards = { coins = 100, exp = 10, heroes = 1 } }
 
 -- bring-it-on
 t_levels[201] = { name = "_", group = "bring-it-on",  tag = BTL_StoryTag, rewards = { coins = 100, exp = 10 } }
 t_levels[202] = { name = "_", group = "bring-it-on",  tag = BTL_StoryTag, rewards = { coins = 100, exp = 10 } }
 t_levels[203] = { name = "_", group = "bring-it-on",  tag = BTL_StoryTag, rewards = { coins = 100, exp = 10 } }
 t_levels[204] = { name = "_", group = "bring-it-on",  tag = BTL_StoryTag, rewards = { coins = 100, exp = 10 } }
-t_levels[205] = { name = "_", group = "bring-it-on",  tag = BTL_StoryTag, rewards = { coins = 100, exp = 10, hero = 1 } }
+t_levels[205] = { name = "_", group = "bring-it-on",  tag = BTL_StoryTag, rewards = { coins = 100, exp = 10, heroes = 1 } }
 
 -- hardcore
 t_levels[301] = { name = "_", group = "hardcore",     tag = BTL_StoryTag, rewards = { coins = 100, exp = 10 } }
 t_levels[302] = { name = "_", group = "hardcore",     tag = BTL_StoryTag, rewards = { coins = 100, exp = 10 } }
 t_levels[303] = { name = "_", group = "hardcore",     tag = BTL_StoryTag, rewards = { coins = 100, exp = 10 } }
 t_levels[304] = { name = "_", group = "hardcore",     tag = BTL_StoryTag, rewards = { coins = 100, exp = 10 } }
-t_levels[305] = { name = "_", group = "hardcore",     tag = BTL_StoryTag, rewards = { coins = 100, exp = 10, hero = 1 } }
+t_levels[305] = { name = "_", group = "hardcore",     tag = BTL_StoryTag, rewards = { coins = 100, exp = 10, heroes = 1 } }
 
 -- nightmare
 t_levels[401] = { name = "_", group = "nightmare",    tag = BTL_StoryTag, rewards = { coins = 100, exp = 10 } }
 t_levels[402] = { name = "_", group = "nightmare",    tag = BTL_StoryTag, rewards = { coins = 100, exp = 10 } }
 t_levels[403] = { name = "_", group = "nightmare",    tag = BTL_StoryTag, rewards = { coins = 100, exp = 10 } }
 t_levels[404] = { name = "_", group = "nightmare",    tag = BTL_StoryTag, rewards = { coins = 100, exp = 10 } }
-t_levels[405] = { name = "_", group = "nightmare",    tag = BTL_StoryTag, rewards = { coins = 100, exp = 10, hero = 1 } }
+t_levels[405] = { name = "_", group = "nightmare",    tag = BTL_StoryTag, rewards = { coins = 100, exp = 10, heroes = 1 } }
 
 -- epic
 t_levels[501] = { name = "_", group = "epic",         tag = BTL_StoryTag, rewards = { coins = 100, exp = 10 } }
 t_levels[502] = { name = "_", group = "epic",         tag = BTL_StoryTag, rewards = { coins = 100, exp = 10 } }
 t_levels[503] = { name = "_", group = "epic",         tag = BTL_StoryTag, rewards = { coins = 100, exp = 10 } }
 t_levels[504] = { name = "_", group = "epic",         tag = BTL_StoryTag, rewards = { coins = 100, exp = 10 } }
-t_levels[505] = { name = "_", group = "epic",         tag = BTL_StoryTag, rewards = { coins = 100, exp = 10, hero = 1 } }
+t_levels[505] = { name = "_", group = "epic",         tag = BTL_StoryTag, rewards = { coins = 100, exp = 10, heroes = 1 } }
 
 --[[
     这里是所有的副本定义
@@ -62,7 +62,7 @@ t_levels[BTL_InstBase + 3] = { name = "inst_c",       tag = BTL_InstTag, rewards
 -- id list
 t_level_id_list = {}
 for k,_ in pairs(t_levels) do
-    table.insert(t_level_id_list, k)
+    table.insert(t_level_id_list, tonumber(k))
 end
 table.sort(t_level_id_list)
 
@@ -77,6 +77,6 @@ function level_get_reward_exp(levelID)
     if t_levels[levelID] ~= nil then return t_levels[levelID].rewards.exp else return nil end
 end
 function level_get_reward_hero(levelID)
-    if t_levels[levelID] ~= nil then return t_levels[levelID].rewards.hero else return nil end
+    if t_levels[levelID] ~= nil then return t_levels[levelID].rewards.heroes else return nil end
 end
 
