@@ -38,7 +38,7 @@ player_info.heroes = {}
 
 --[[ level stats
 sample: 
-	player_info.level_stats[101] = { stars=1, time_spent=12.0, highest_score=10000 }
+	player_info.level_stats["101"] = { stars=1, time_spent=12.0, highest_score=10000 }
 ]] 
 
 player_info.level_stats = {}  
