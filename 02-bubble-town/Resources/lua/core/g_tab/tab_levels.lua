@@ -76,7 +76,7 @@ end
 function level_get_reward_exp(levelID)
     if t_levels[levelID] ~= nil then return t_levels[levelID].rewards.exp else return nil end
 end
-function level_get_reward_hero(levelID)
+function level_get_reward_heroes(levelID)
     if t_levels[levelID] ~= nil then return t_levels[levelID].rewards.heroes else return nil end
 end
 

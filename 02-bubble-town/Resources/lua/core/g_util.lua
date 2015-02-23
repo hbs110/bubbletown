@@ -50,8 +50,8 @@ function g_load_json(file)
     return g_load_json_from_string(content)
 end
 
-function g_save_json(file)
-    local succ, ret = pcall(function () return JSON:encode_pretty(player.info) end)
+function g_save_json(file, tbl)
+    local succ, ret = pcall(function () return JSON:encode_pretty(tbl) end)
     if not succ then 
         g_log_err(string.format("Encoding Json failed. (%s)", ret))
         return false

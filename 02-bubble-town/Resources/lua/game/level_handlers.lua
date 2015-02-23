@@ -36,9 +36,9 @@ local function gotoLevel(player, levelID)
 
 	local levelConfig = {
 		level_id = levelID,
-		level_stats = level_handlers.player.info.level_stats[levelID],		-- this might be nil
-		items = level_handlers.player.info.items,
-		heroes = level_handlers.player.info.heroes,
+		level_stats = level_handlers.player.status.info.level_stats[levelID],		-- this might be nil
+		items = level_handlers.player.status.info.items,
+		heroes = level_handlers.player.status.info.heroes,
 	} 
 
 	local succ, ret = pcall(function () return JSON:encode_pretty(levelConfig) end)
@@ -53,7 +53,7 @@ end
 level_handlers.handlerSet = {}
 level_handlers.handlerSet[BtMsgID.GotoScene] 		= function (msg) g_goto_scene(msg.info) end
 level_handlers.handlerSet[BtMsgID.StartNextLevel] 	= function (msg) gotoLevel(level_handlers.player, level_handlers.player.getNextLevel()) end
-level_handlers.handlerSet[BtMsgID.RestartLevel]		= function (msg) gotoLevel(level_handlers.player, level_handlers.player.current_level) end
+level_handlers.handlerSet[BtMsgID.RestartLevel]		= function (msg) gotoLevel(level_handlers.player, level_handlers.player.getCurrentLevel()) end
 level_handlers.handlerSet[BtMsgID.LevelCompleted]	= level_handlers.onLevelCompleted
 level_handlers.handlerSet[BtMsgID.LevelEntered]		= level_handlers.onLevelEntered
 level_handlers.handlerSet[BtMsgID.LevelLeft]		= level_handlers.onLevelLeft
