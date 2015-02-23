@@ -7,7 +7,7 @@ package.path=package.path
 	..';lua/tab/?.lua'
 	..';lua/player/?.lua'
 	..';lua/simulation/?.lua'
-	..';lua/game_handlers/?.lua'
+	..';lua/game/?.lua'
 
 -- 数据表
 require "tab_buildings"
