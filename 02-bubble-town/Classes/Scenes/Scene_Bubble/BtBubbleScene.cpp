@@ -16,7 +16,19 @@
 #include "Services/BtLuaService.h"
 
 #include "Core/tinyformat/tinyformat.h"
-#include "Core/json-parser/json.h"
+
+#include "json/document.h"
+#include "json/writer.h"
+#include "json/stringbuffer.h"
+
+static std::string _to_string(const rapidjson::Document& doc)
+{
+    using namespace rapidjson;
+    StringBuffer buffer;
+    Writer<StringBuffer> writer(buffer);
+    doc.Accept(writer);
+    return buffer.GetString();
+}
 
 // for unexpected error when entering bubble scene: 
 //      when something is unexpectedly, seriously and horribly wrong, 
@@ -77,19 +89,14 @@ void BtBubbleScene::do_enter()
     BT_EXPECT_BubbleSceneEnter(battleConfig.size() > 0, "scene config is empty.");
     // it would be cleared as soon as do_enter() ends
 
-    // parsing the json
-    char jsonErr[json_error_max];
-    json_settings settings = { 0 };
-    json_value* json = json_parse_ex(&settings, battleConfig.c_str(), battleConfig.size(), jsonErr);
-    BT_EXPECT_BubbleSceneEnter(json != 0, tfm::format("invalid scene config json: ('%s')", jsonErr));
-    BT_EXPECT_BubbleSceneEnter(json->type == json_object, 
-                               "invalid scene config json: (not a 'json_object').");
+    // parsing the json and extracting the level id
+    rapidjson::Document doc;
+    doc.Parse<0>(battleConfig.c_str());
+    BT_EXPECT_BubbleSceneEnter(doc.IsObject(), "invalid scene config json: (not a 'json_object').");
+    BT_EXPECT_BubbleSceneEnter(doc["level_id"].IsInt(), "invalid scene config json: (invalid 'level_id': not a 'json_integer').");
+    m_curPlayingLevel = doc["level_id"].GetInt();
 
-    // extracting the level id and notify the game
-    const auto& levelObj = (*json)["level_id"];
-    BT_EXPECT_BubbleSceneEnter(levelObj.type == json_integer, 
-                               "invalid scene config json: (invalid 'level_id': not a 'json_integer').");
-    m_curPlayingLevel = (int) levelObj.u.integer;
+    // notify the game
     BT_POST_LUA_AND_FLUSH(BtMsgID::LevelEntered, "", m_curPlayingLevel); // report the level id, so that the game knows we are playing a level now
 }
 
@@ -106,27 +113,30 @@ void BtBubbleScene::onButton_Loot()
         btlua_ref ret = BT_CALL_LUA(func, levelID);
         return !ret.isNil() ? ret.cast<int>() : 0;
     };
-
-    // game-design hardcoded
+    // get level rewards from lua
     int coins = getter("level_get_reward_coins", m_curPlayingLevel);
     int exp = getter("level_get_reward_exp", m_curPlayingLevel);
     int hero = getter("level_get_reward_hero", m_curPlayingLevel);
 
-    // player earned
-    int stars = 1;
-    int score = 1000;
-    float timeSpent = 12.5f;
 
-    // send rewards back to game
-    std::string rewards = tfm::format("{"
-        "  \"coins\": %d, "
-        "  \"exp\": %d, "
-        "  \"hero\": %d, "
-        "  \"stars\": %d, "
-        "  \"score\": %d, "
-        "  \"timeSpent\": %f, "
-        "}", coins, exp, hero, stars, score, timeSpent);
-    BT_POST_LUA_AND_FLUSH(BtMsgID::LevelCompleted, rewards);
+    // send rewards and stats back to game
+    using namespace rapidjson;
+    Document doc;
+    doc.SetObject();
+    {
+        Value rewards(kObjectType); 
+        rewards.AddMember("coins", coins, doc.GetAllocator());
+        rewards.AddMember("exp", exp, doc.GetAllocator());
+        rewards.AddMember("hero", hero, doc.GetAllocator());
+        doc.AddMember("level_rewards", rewards, doc.GetAllocator());
+
+        Value stats(kObjectType); // faked data
+        stats.AddMember("stars", 1, doc.GetAllocator());
+        stats.AddMember("score", 1000 + rand() % 500, doc.GetAllocator());
+        stats.AddMember("time_spent", 12.5f + (float) (rand() % 20), doc.GetAllocator());
+        doc.AddMember("level_stats", stats, doc.GetAllocator());
+    }
+    BT_POST_LUA_AND_FLUSH(BtMsgID::LevelCompleted, _to_string(doc));
 
     showEndScreen(true);
 }

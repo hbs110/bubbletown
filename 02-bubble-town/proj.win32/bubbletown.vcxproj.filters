@@ -30,9 +30,6 @@
     <Filter Include="Classes\Services">
       <UniqueIdentifier>{281ea409-9714-40eb-9ab8-631cb1d830b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Classes\Core\json-parser">
-      <UniqueIdentifier>{28429502-95dc-430a-9d00-6a4d7c0e9715}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Classes\Core\tinyformat">
       <UniqueIdentifier>{3d8b48b2-e2a4-4d2a-8d3a-b863a5b308b4}</UniqueIdentifier>
     </Filter>
@@ -91,9 +88,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\AppUtil.cpp">
       <Filter>Classes\App</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Core\json-parser\json.c">
-      <Filter>Classes\Core\json-parser</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Core\BtCoreUtil.cpp">
       <Filter>Classes\Core</Filter>
@@ -165,9 +159,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\AppUtil.h">
       <Filter>Classes\App</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Core\json-parser\json.h">
-      <Filter>Classes\Core\json-parser</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Core\tinyformat\tinyformat.h">
       <Filter>Classes\Core\tinyformat</Filter>
