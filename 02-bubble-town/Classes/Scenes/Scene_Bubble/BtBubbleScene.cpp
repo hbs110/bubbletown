@@ -34,7 +34,7 @@ static std::string _to_string(const rapidjson::Document& doc)
 //      when something is unexpectedly, seriously and horribly wrong, 
 //      we would try to recover from the situation and return to the town scene immediately
 static auto fnBackToTownScene = []() { BT_POST_LUA_AND_FLUSH(BtMsgID::GotoScene, BTSCN_town); };
-#define BT_EXPECT_BubbleSceneEnter(expr, errMsg)  BT_EXPECT_RET(expr, "entering bubble scene", errMsg, fnBackToTownScene)
+#define BT_EXPECT_BubbleSceneEnter(expr, errMsg)  BT_EXPECT_RET(expr, errMsg, fnBackToTownScene)
 
 BtBubbleScene::BtBubbleScene() 
     : m_btLoot(nullptr)
@@ -56,8 +56,16 @@ bool BtBubbleScene::do_init()
         auto bt = cocos2d::ui::Button::create(res, res);
         if (bt)
         {
+            bt->setName(text);
             bt->setPosition(position);
-            BtSetButtonHandler(bt, handler);
+            if (handler)
+            {
+                BtSetButtonHandler(bt, handler);
+            }
+            else
+            {
+                registerLuaHandler(bt);
+            }
             m_uiRoot->addChild(bt, 1);
         }
         return bt;
@@ -72,8 +80,8 @@ bool BtBubbleScene::do_init()
 
     m_btLoot    = makeTest("loot", center, std::bind(&BtBubbleScene::onButton_Loot, this));
     m_btRestart = makeTest("restart", cocos2d::Vec2(center.x - 20.0f, center.y - 50), std::bind(&BtBubbleScene::onButton_Restart, this));
-    m_btNext    = makeTest("next", cocos2d::Vec2(center.x + 20.0f, center.y - 50), std::bind(&BtBubbleScene::onButton_Next, this));
-    
+    m_btNext = makeTest("next", cocos2d::Vec2(center.x + 20.0f, center.y - 50), std::bind(&BtBubbleScene::onButton_Next, this));
+
     m_labelPlaying  = createLabel("Playing Screen");
     m_labelEnd      = createLabel("End Screen");
 

@@ -1,5 +1,6 @@
 
 require "tab_levels" 
+require "g_constants"
 
 default_player_info = require "player_info"
 core = require "core"
@@ -9,10 +10,15 @@ JSON = require "JSON"
 player = {}
 
 player.info = default_player_info
-player.profile_name = "__unnamed__"
+player.profile_name = DEFAULT_PLAYER_PROFILE
 player.current_level = nil
 
 function player.save()
+	if player.profile_name == DEFAULT_PLAYER_PROFILE then
+		print("profile not been correctly initialized, saving request ignored.")
+		return true
+	end
+
 	local profilePath = core.build_profile_path(player.profile_name)
 	if not core.save_json(profilePath) then
 		return false

@@ -1,11 +1,13 @@
 
 require "def"
+require "g_constants"
 
 core = require "core"
 util = require "util"
 
 game_sanity = require "game_sanity"
 level_handlers = require "level_handlers"
+ui_handlers = require "ui_handlers"
 
 game = {}
 
@@ -13,17 +15,21 @@ game = {}
 game.simulation = require "simulation"
 game.player = require "player"
 
--- test vars
-TEST_PLAYER_PROFILE = "test"
 
 function game.init() 
 	core.checkpoint("game.init() started.")
 
 	game_sanity.check_env()
 
-	-- registering handlers
+	-- init components
 	level_handlers.init(game.player)
+	ui_handlers.init(game.simulation)
+
+	-- registering handlers
 	game.simulation.register_handlers(level_handlers.handlerSet)
+	for _,v in ipairs(ui_handlers.handlerSet) do
+		game.simulation.register_ui_handler(v.scene, v.ctrl, v.msgID, v.handler)
+	end
 
 	if not game.player.load(TEST_PLAYER_PROFILE) then
 		core.log_err("Player profile loading failed, possibly broken.")

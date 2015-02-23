@@ -2,12 +2,30 @@
 simulation = {}
 
 simulation.inbox    = require "sim_inbox"
-simulation.handlers_ui = require "sim_handlers_ui"
-simulation.handlers = {}
+
+local handlers = {}
+local ui_handlers = {}
 
 function simulation.register_handlers(handlerSet)
 	for k,v in pairs(handlerSet) do
-		simulation.handlers[k] = v
+		handlers[k] = v
+	end
+end
+
+function simulation.register_ui_handler(sceneName, ctrlName, msgID, handlerFunc)
+	local k = sceneName.."|"..ctrlName.."|"..msgID
+	ui_handlers[k] = handlerFunc
+end
+
+local function is_ui_msg(msg)
+    return msg.id == BtMsgID.UI_ButtonPressed
+end
+
+local function execute_ui_msg(msg)
+	local k = msg.info.."|"..msg.args[1].."|"..msg.id
+	local handler = ui_handlers[k]
+	if handler ~= nil then
+		handler(msg)
 	end
 end
 
@@ -24,10 +42,10 @@ function simulation.process_messages()
 
 		--print("msg processed. id: "..msg.id.." info: "..msg.info.." arg_count: "..#msg.args)
 
-        if simulation.handlers_ui.is_ui_msg(msg) then
-            simulation.handlers_ui.execute(msg)
+        if is_ui_msg(msg) then
+            execute_ui_msg(msg)
         else
-			local handler = simulation.handlers[msg.id]
+			local handler = handlers[msg.id]
 			if handler ~= nil then
 				handler(msg)
 			end
