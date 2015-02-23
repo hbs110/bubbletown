@@ -1,8 +1,8 @@
 
-require "def" 
-
 JSON = require "JSON" 
-util = require "util"
+
+require "g_def_shared" 
+require "g_util"
 
 level_handlers = {}
 level_handlers.player = nil
@@ -37,15 +37,15 @@ local function gotoLevel(player, levelID)
 
 	local succ, ret = pcall(function () return JSON:encode_pretty(levelConfig) end)
 	if not succ then 
-	 	core.log_err(string.format("Encoding Json failed while preparing level. (%s)", ret))
+	 	g_log_err(string.format("Encoding Json failed while preparing level. (%s)", ret))
 	 	return
 	end
 
-	util.goto_scene(BTSCN_bubble, ret) 
+	g_goto_scene(BTSCN_bubble, ret) 
 end
 
 level_handlers.handlerSet = {}
-level_handlers.handlerSet[BtMsgID.GotoScene] 		= function (msg) util.goto_scene(msg.info) end
+level_handlers.handlerSet[BtMsgID.GotoScene] 		= function (msg) g_goto_scene(msg.info) end
 level_handlers.handlerSet[BtMsgID.StartNextLevel] 	= function (msg) gotoLevel(level_handlers.player, level_handlers.player.getNextLevel()) end
 level_handlers.handlerSet[BtMsgID.RestartLevel]		= function (msg) gotoLevel(level_handlers.player, level_handlers.player.current_level) end
 level_handlers.handlerSet[BtMsgID.LevelCompleted]	= level_handlers.onLevelCompleted

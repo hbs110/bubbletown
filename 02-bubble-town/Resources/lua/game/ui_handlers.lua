@@ -1,7 +1,5 @@
 
-require "def"
-
-util = require "util"
+require "g_def_shared"
 
 ui_handlers = {}
 ui_handlers.simulation = nil

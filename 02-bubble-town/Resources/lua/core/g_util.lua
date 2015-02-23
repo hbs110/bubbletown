@@ -1,38 +1,35 @@
-
 -- this library is found here
 -- 		http://regex.info/blog/lua/json
 JSON = require "JSON" 
 
-core = {}
+require "g_constants"
 
-PLAYER_PROFILE_DIR = "users/"
-
-function core.checkpoint(name)
+function g_checkpoint(name)
 	print(string.format("[CP] '%s' reached at '%.3f'.", name, bt_native.get_current_time()))
 end	
 
-function core.log_err(info)
+function g_log_err(info)
 	print(string.format("[ERROR] '%s' at '%.3f'.", info, bt_native.get_current_time()))
 end	
 
-function core.log_dbg(info)
+function g_log_dbg(info)
 	print(string.format("[DEBUG] '%s' at '%.3f'.", info, bt_native.get_current_time()))
 end	
 
-function core.build_profile_path(profileName)
+function g_build_profile_path(profileName)
 	return PLAYER_PROFILE_DIR..profileName..".json"
 end
 
-function core.load_json(file)
+function g_load_json(file)
 	local f, err = io.open(file, "r")
 	if f == nil then
-	 	core.log_err(string.format("Opening file '%s' failed. (%s)", file, err))
+	 	g_log_err(string.format("Opening file '%s' failed. (%s)", file, err))
 		return nil
 	end
 
 	local content = f:read("*all")
 	if not content then
-	 	core.log_err(string.format("Reading file '%s' content failed.", file))
+	 	g_log_err(string.format("Reading file '%s' content failed.", file))
 		f:close()
 		return nil
 	end
@@ -40,29 +37,29 @@ function core.load_json(file)
 
 	local succ, ret = pcall(function () return JSON:decode(content) end)
 	if not succ then 
-	 	core.log_err(string.format("Decoding Json '%s' failed. (%s) (%s)", file, ret, content))
+	 	g_log_err(string.format("Decoding Json '%s' failed. (%s) (%s)", file, ret, content))
 	 	return nil
 	end
 
 	return ret
 end
 
-function core.save_json(file)
+function g_save_json(file)
 	local succ, ret = pcall(function () return JSON:encode_pretty(player.info) end)
 	if not succ then 
-	 	core.log_err(string.format("Encoding Json failed. (%s)", ret))
+	 	g_log_err(string.format("Encoding Json failed. (%s)", ret))
 	 	return false
 	end
 
 	local f, err = io.open(file, "w")
 	if not f then
-	 	core.log_err(string.format("Opening file '%s' failed. (%s)", file, err))
+	 	g_log_err(string.format("Opening file '%s' failed. (%s)", file, err))
 		return false
 	end
 
     succ, ret = f:write(ret)
 	if not succ then 
-	 	core.log_err(string.format("Writing Json '%s' failed. (%s)", file, ret))
+	 	g_log_err(string.format("Writing Json '%s' failed. (%s)", file, ret))
 		f:close()
 	 	return false
 	end
@@ -71,4 +68,18 @@ function core.save_json(file)
 	return true
 end
 
-return core
+function g_goto_scene(sceneName, sceneConfig) 
+	local config = sceneConfig
+	if config == nil then
+		config = ""
+	end
+
+	print(string.format("goto_scene('%s', '...')", sceneName))
+	bt_native.goto_scene(sceneName, config)
+end
+
+function g_split(s, p)
+    local rt= {}
+    string.gsub(s, '[^'..p..']+', function(w) table.insert(rt, w) end )
+    return rt
+end

@@ -1,4 +1,4 @@
-require "def"
+require "g_def_shared"
 
 player_info = {}
 

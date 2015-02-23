@@ -1,9 +1,7 @@
 
-require "def"
+require "g_def_shared"
 require "g_constants"
-
-core = require "core"
-util = require "util"
+require "g_util"
 
 game_sanity = require "game_sanity"
 level_handlers = require "level_handlers"
@@ -17,7 +15,7 @@ game.player = require "player"
 
 
 function game.init() 
-	core.checkpoint("game.init() started.")
+	g_checkpoint("game.init() started.")
 
 	game_sanity.check_env()
 
@@ -32,23 +30,23 @@ function game.init()
 	end
 
 	if not game.player.load(TEST_PLAYER_PROFILE) then
-		core.log_err("Player profile loading failed, possibly broken.")
+		g_log_err("Player profile loading failed, possibly broken.")
 		return false
 	end
 
-	util.goto_scene(BTSCN_start)
+	g_goto_scene(BTSCN_start)
 
-	core.checkpoint("game.init() done.")
+	g_checkpoint("game.init() done.")
 	return true
 end
 
 function game.tick(deltaSeconds) 
-	-- core.checkpoint(string.format("game.tick(%.3f).", deltaSeconds))
+	-- g_checkpoint(string.format("game.tick(%.3f).", deltaSeconds))
 	game.simulation.tick(deltaSeconds)
 end
 
 function game.destroy() 
-	core.checkpoint("game.destroy() started.")
+	g_checkpoint("game.destroy() started.")
 
 	--[[ the saving procedure should be much more reliable than it looks now, including:
 		- error-handling while saving
@@ -61,7 +59,7 @@ function game.destroy()
 		print("player profile saving failed.")
 	end
 
-	core.checkpoint("game.destroy() done.")
+	g_checkpoint("game.destroy() done.")
 end
 
 return game

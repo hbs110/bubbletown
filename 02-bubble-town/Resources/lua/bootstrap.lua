@@ -1,13 +1,12 @@
 
 package.path=package.path
-	..';lua/?.lua'
-	..';lua/JSON/?.lua'
-	..';lua/shared/?.lua'
+	..';lua/external/JSON/?.lua'
 	..';lua/core/?.lua'
-	..';lua/tab/?.lua'
+	..';lua/core/g_tab/?.lua'
 	..';lua/player/?.lua'
 	..';lua/simulation/?.lua'
 	..';lua/game/?.lua'
+	..';lua/?.lua'
 
 -- 数据表
 require "tab_buildings"

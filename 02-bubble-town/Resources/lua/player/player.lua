@@ -1,11 +1,10 @@
 
+JSON = require "JSON" 
+
 require "tab_levels" 
 require "g_constants"
 
 default_player_info = require "player_info"
-core = require "core"
-
-JSON = require "JSON" 
 
 player = {}
 
@@ -19,8 +18,8 @@ function player.save()
 		return true
 	end
 
-	local profilePath = core.build_profile_path(player.profile_name)
-	if not core.save_json(profilePath) then
+	local profilePath = g_build_profile_path(player.profile_name)
+	if not g_save_json(profilePath) then
 		return false
 	end
 
@@ -29,7 +28,7 @@ function player.save()
 end
 
 function player.load(profileName)
-	local data = core.load_json(core.build_profile_path(profileName))
+	local data = g_load_json(g_build_profile_path(profileName))
 	if data == nil then 
 		return false
 	end
@@ -40,7 +39,7 @@ function player.load(profileName)
 	end
 
 	player.profile_name = profileName
-	core.checkpoint(string.format("player profile ('%s') loaded.", player.profile_name))
+	g_checkpoint(string.format("player profile ('%s') loaded.", player.profile_name))
 	return true
 end
 

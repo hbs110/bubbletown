@@ -1,5 +1,5 @@
 
-require "def"
+require "g_def_shared"
 
 BTL_Storytag = "story"
 BTL_InstTag = "inst"
