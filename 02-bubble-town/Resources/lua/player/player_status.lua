@@ -78,10 +78,6 @@ function status.setCurrentLevel(currentLevel)
 end
 
 function status.onLevelCompleted(level_rewards, level_stats)
-	print(string.format("player completes level '%d'.", status.current_level))
-	print(string.format("player gets rewards: coins=%d, exp=%d, heroes=%d.", level_rewards.coins, level_rewards.exp, level_rewards.heroes))
-	print(string.format("level_stats: stars=%d, score=%d, time_spent=%.2f.", level_stats.stars, level_stats.score, level_stats.time_spent))
-
 	-- apply rewards
 	status.info[BTPL_Coins] = status.info[BTPL_Coins] + level_rewards.coins
 	status.info[BTPL_Exp] = status.info[BTPL_Exp] + level_rewards.exp

@@ -30,6 +30,10 @@ function level_stats.save()
 	return stringIndexedTable
 end
 
+function level_stats.getAt(levelID)
+	return _data[levelID]
+end
+
 function level_stats.refresh(levelID, levelData)
 	local saved = _data[levelID]
 	if saved == nil then

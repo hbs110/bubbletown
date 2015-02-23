@@ -36,7 +36,7 @@ local function gotoLevel(player, levelID)
 
 	local levelConfig = {
 		level_id = levelID,
-		level_stats = level_handlers.player.status.info.level_stats[levelID],		-- this might be nil
+		level_stats = level_handlers.player.level_stats.getAt(levelID),		-- this might be nil
 		items = level_handlers.player.status.info.items,
 		heroes = level_handlers.player.status.info.heroes,
 	} 

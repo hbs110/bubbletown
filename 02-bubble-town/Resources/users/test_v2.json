@@ -4,6 +4,18 @@
       "highest_score": 1334,
       "stars": 1,
       "time_spent": 19.5
+    },
+    "301": {
+      "highest_score": 1478,
+      "stars": 1,
+      "time_spent": 12.5
     }
+  },
+  "status": {
+    "coins": 400,
+    "diamonds": 0,
+    "energy": 5,
+    "exp": 20,
+    "level": 2
   }
 }
