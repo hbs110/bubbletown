@@ -34,6 +34,7 @@ function player.load(profileName)
 	end
 
 	player.profile_name = profileName
+	core.checkpoint(string.format("player profile ('%s') loaded.", player.profile_name))
 	return true
 end
 

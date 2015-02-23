@@ -1,11 +1,15 @@
 
-
-
 simulation = {}
 
 simulation.inbox    = require "sim_inbox"
-simulation.handlers = require "sim_handlers"
 simulation.handlers_ui = require "sim_handlers_ui"
+simulation.handlers = {}
+
+function simulation.register_handlers(handlerSet)
+	for k,v in pairs(handlerSet) do
+		simulation.handlers[k] = v
+	end
+end
 
 function simulation.process_messages()
 	if simulation.inbox == nil or simulation.inbox.is_empty() then

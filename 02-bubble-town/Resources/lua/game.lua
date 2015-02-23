@@ -5,29 +5,32 @@ core = require "core"
 util = require "util"
 
 game_sanity = require "game_sanity"
+level_handlers = require "level_handlers"
 
--- install components
 game = {}
+
+-- installed components
 game.simulation = require "simulation"
 game.player = require "player"
 
-game.simulation.handlers.player = game.player
-
 -- test vars
 TEST_PLAYER_PROFILE = "test"
-
 
 function game.init() 
 	core.checkpoint("game.init() started.")
 
 	game_sanity.check_env()
 
-	util.goto_scene(BTSCN_start)
+	-- registering handlers
+	level_handlers.init(game.player)
+	game.simulation.register_handlers(level_handlers.handlerSet)
 
 	if not game.player.load(TEST_PLAYER_PROFILE) then
 		core.log_err("Player profile loading failed, possibly broken.")
 		return false
 	end
+
+	util.goto_scene(BTSCN_start)
 
 	core.checkpoint("game.init() done.")
 	return true
