@@ -33,6 +33,9 @@
     <Filter Include="Classes\Core\tinyformat">
       <UniqueIdentifier>{3d8b48b2-e2a4-4d2a-8d3a-b863a5b308b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\Tests">
+      <UniqueIdentifier>{bc667ad1-c48a-4ac3-82d6-659617fa9891}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -94,6 +97,12 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Core\BtCoreUtil.cpp">
       <Filter>Classes\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Tests\TestGui_utouch.cpp">
+      <Filter>Classes\Tests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Services\BtTestServices.cpp">
+      <Filter>Classes\Services</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,5 +181,20 @@
     <ClInclude Include="..\Classes\Core\BtCoreUtil.h">
       <Filter>Classes\Core</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Tests\TestGui_utouch.h">
+      <Filter>Classes\Tests</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Services\BtTestDef.h">
+      <Filter>Classes\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Services\BtTestServices.h">
+      <Filter>Classes\Services</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="bubble-town.rc" />
   </ItemGroup>
 </Project>

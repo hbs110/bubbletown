@@ -26,8 +26,7 @@ void AppNativeInterfaces::GotoScene(const std::string& sceneName, const std::str
 
 double AppNativeInterfaces::GetCurrentGameTime()
 {
-    AppDelegate* ad = AppUtil::GetApp();
-    return ad ? ad->GetCurTime() : 0.0;
+    return GAppCurrentTime;
 }
 
 void AppNativeInterfaces::SetPlayerProperty(const std::string& playerProperty, int value, bool flush)

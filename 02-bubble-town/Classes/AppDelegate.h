@@ -1,6 +1,7 @@
 #ifndef  _APP_DELEGATE_H_
 #define  _APP_DELEGATE_H_
 
+#include "Core/BtCoreUtil.h"
 #include "Core/BtMsgDispatcher.h"
 
 #include "Services/BtLuaService.h"
@@ -35,8 +36,6 @@ public:
     */
     virtual void applicationWillEnterForeground();
 
-    double GetStartTime() const { return m_startTime; }
-    double GetCurTime() const { return cocos2d::utils::gettime() - m_startTime; }
 
 protected:
     bool OnMsg_GotoScene(BtMsg& msg);
@@ -69,9 +68,7 @@ protected:
     void CallLua_Tick(float deltaSeconds);
     void CallLua_Destroy();
 
-    void TickMsgDispatcher(float deltaSeconds);
-
-    double m_startTime;
+    void TickPerFrame(float deltaSeconds);
 };
 
 #endif // _APP_DELEGATE_H_

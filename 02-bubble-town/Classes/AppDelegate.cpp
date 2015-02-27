@@ -7,28 +7,43 @@
 #include "Scenes/Scene_Town/BtTownScene.h"
 #include "Scenes/Scene_World/BtWorldScene.h"
 
+#include "Core/BtCoreUtil.h"
 #include "Core/BtMsgDef.h"
 #include "Core/BtMsgDispatcher.h"
 
 #include "Services/BtLuaService.h"
+#include "Services/BtTestServices.h"
+
+#include "Tests/TestGui_utouch.h"
 
 #include "AppNativeInterfaces.h"
 
 AppDelegate::AppDelegate()
-    : m_startTime(0.0)
 {
 
 }
 
 AppDelegate::~AppDelegate() 
 {
-    CallLua_Destroy();
-    BtLuaService::DestroyInst();
+    if (BT_L)
+    {
+        CallLua_Destroy();
+        BtLuaService::DestroyInst();
+    }
+
     BtMsgDispatcher::DestroyInst();
+    BtTestServices::DestroyInst();
 }
 
 bool AppDelegate::applicationDidFinishLaunching() 
 {
+    BtTestServices::CreateInst();
+
+    BtRegisterGuiTests_utouch();
+
+    if (!BtTestServices::Get()->RunTestsOnStage(BtTestStage::PreInit))
+        return false;
+
     // message handling
     BtMsgDispatcher::CreateInst();
     BtMsgDispatcher::Get()->subscribe((int)BtMsgID::GotoScene, std::bind(&AppDelegate::OnMsg_GotoScene, this, std::placeholders::_1));
@@ -91,7 +106,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 60);
 
-    m_startTime = cocos2d::utils::gettime();
+    GAppStartTime = cocos2d::utils::gettime();
     
     BtLuaService::CreateInst();
     if (!BtLuaService::Get()->Init())
@@ -107,10 +122,13 @@ bool AppDelegate::applicationDidFinishLaunching()
     auto luaTick = std::bind(&AppDelegate::CallLua_Tick, this, std::placeholders::_1);
     cocos2d::Director::getInstance()->getScheduler()->schedule(luaTick, this, 1.0f, false, "AppDelegate::TickLua_PerSecond");
 
-    auto msgTick = std::bind(&AppDelegate::TickMsgDispatcher, this, std::placeholders::_1);
-    cocos2d::Director::getInstance()->getScheduler()->schedule(msgTick, this, 0.0f, false, "AppDelegate::TickMsgDispatcher_PerFrame");
+    auto frameTick = std::bind(&AppDelegate::TickPerFrame, this, std::placeholders::_1);
+    cocos2d::Director::getInstance()->getScheduler()->schedule(frameTick, this, 0.0f, false, "AppDelegate::TickPerFrame");
 
     if (!CallLua_Init())
+        return false;
+
+    if (!BtTestServices::Get()->RunTestsOnStage(BtTestStage::PostInit))
         return false;
 
     return true;
@@ -197,7 +215,8 @@ void AppDelegate::CallLua_Destroy()
     BT_CALL_LUA("hostcall_destroy");
 }
 
-void AppDelegate::TickMsgDispatcher(float deltaSeconds)
+void AppDelegate::TickPerFrame(float deltaSeconds)
 {
-    BtMsgDispatcher::Get()->tick(GetCurTime(), deltaSeconds);
+    GAppCurrentTime = cocos2d::utils::gettime() - GAppStartTime;
+    BtMsgDispatcher::Get()->tick(GAppCurrentTime, deltaSeconds);
 }

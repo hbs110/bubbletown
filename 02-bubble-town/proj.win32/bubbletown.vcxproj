@@ -145,10 +145,12 @@
     <ClCompile Include="..\Classes\Services\BtGui_utouch.cpp" />
     <ClCompile Include="..\Classes\Services\BtGuiService.cpp" />
     <ClCompile Include="..\Classes\Services\BtLuaService.cpp" />
+    <ClCompile Include="..\Classes\Services\BtTestServices.cpp" />
     <ClCompile Include="..\Classes\stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\Classes\Tests\TestGui_utouch.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -175,13 +177,20 @@
     <ClInclude Include="..\Classes\Services\BtGui_utouch.h" />
     <ClInclude Include="..\Classes\Services\BtGuiService.h" />
     <ClInclude Include="..\Classes\Services\BtLuaService.h" />
+    <ClInclude Include="..\Classes\Services\BtTestDef.h" />
+    <ClInclude Include="..\Classes\Services\BtTestServices.h" />
     <ClInclude Include="..\Classes\stdafx.h" />
+    <ClInclude Include="..\Classes\Tests\TestGui_utouch.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\cocos\2d\libcocos2d.vcxproj">
       <Project>{98a51ba8-fc3a-415b-ac8f-8c7bd464e93e}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="bubble-town.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
