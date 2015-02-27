@@ -30,6 +30,9 @@
     <Filter Include="Classes\Services">
       <UniqueIdentifier>{281ea409-9714-40eb-9ab8-631cb1d830b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\Core\tinyformat">
+      <UniqueIdentifier>{3d8b48b2-e2a4-4d2a-8d3a-b863a5b308b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -85,6 +88,12 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Services\BtGui_utouch.cpp">
       <Filter>Classes\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AppUtil.cpp">
+      <Filter>Classes\App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Core\BtCoreUtil.cpp">
+      <Filter>Classes\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +162,15 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Services\BtGui_utouch.h">
       <Filter>Classes\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppUtil.h">
+      <Filter>Classes\App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Core\tinyformat\tinyformat.h">
+      <Filter>Classes\Core\tinyformat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Core\BtCoreUtil.h">
+      <Filter>Classes\Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

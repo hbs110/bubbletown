@@ -54,15 +54,15 @@ bool BtTownScene::do_init()
     listener->onTouchesMoved = CC_CALLBACK_2(BtTownScene::onTouchesMoved, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
-    cocos2d::ui::Button* btWorld = cocos2d::ui::Button::create("treasure-map-icon.png", "treasure-map-icon.png");
-    btWorld->setPosition(cocos2d::Vec2(origin.x + visibleSize.width - btWorld->getContentSize().width / 2, btWorld->getContentSize().height / 2));
-    BtSetButtonHandler(btWorld, []() { BT_POST_LUA_AND_FLUSH(BtMsgID::GotoScene, BTSCN_world); });
-    m_uiRoot->addChild(btWorld, 1);
-
     if (!m_widgets.init(m_tiledMap.GetSpriteRoot()))
         return false;
 
     return true;
+}
+
+void BtTownScene::do_enter()
+{
+    BT_CALL_LUA("hostcall_refresh_ui");
 }
 
 void BtTownScene::onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event *event)

@@ -12,6 +12,7 @@
 #include "Core/BtMsgDef.h"
 #include "Core/BtMsgDispatcher.h"
 #include "Core/BtGuiUtil.h"
+#include "Core/BtCoreUtil.h"
 
 #include "Services/BtLuaService.h"
 
@@ -66,4 +67,17 @@ void BtBaseScene::onExit()
     cocos2d::Layer::onExit();
 
     do_exit();
+}
+
+void BtBaseScene::registerLuaHandler(cocos2d::ui::Button* widget, const std::string& name /*= ""*/)
+{
+    BT_EXPECT_RET(widget, "invalid widget.", [](){});
+    BT_EXPECT_RET(name.size() || widget->getName().size(), "widget name not specified.", [](){});
+
+    std::string scnName = getSceneName();
+    std::string regName = name;
+    if (regName.empty())
+        regName = widget->getName();
+
+    BtSetButtonHandler(widget, [scnName, regName]() { BT_POST_LUA_AND_FLUSH(BtMsgID::UI_ButtonPressed, scnName, regName); });
 }

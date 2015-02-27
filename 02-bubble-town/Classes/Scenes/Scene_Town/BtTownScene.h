@@ -31,8 +31,11 @@ public:
     virtual ~BtTownScene() {}
     BT_DEF_SCENE(BtTownScene, BTSCN_town);
 
+    BtTownSceneUI* GetUI() { return &m_ui; }
+
 protected:
     virtual bool do_init();
+    virtual void do_enter();
 
     void onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event  *event);
     void onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event  *event);
@@ -59,7 +62,7 @@ protected:
 
     std::string m_placingBuildingName;
     void onPlacingBuildingBegan(const std::string& buildingName);
-    bool isPlacingBuilding() const { return m_placingBuildingName.size(); }
+    bool isPlacingBuilding() const { return !m_placingBuildingName.empty(); }
 
     void selectBuilding(BtTownBuilding* building);
 };

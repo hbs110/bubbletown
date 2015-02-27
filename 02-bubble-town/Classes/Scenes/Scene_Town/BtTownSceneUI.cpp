@@ -15,10 +15,15 @@
 
 #include "Services/BtLuaService.h"
 
+#include "Core/BtMsgDef.h"
+
+#include "Core/tinyformat/tinyformat.h"
+
 BtTownSceneUI::BtTownSceneUI() 
     : m_btBuild(nullptr)
     , m_btUpgrade(nullptr)
     , m_btMenuBuild(nullptr)
+    , m_playerInfo(nullptr)
 {
 
 }
@@ -65,6 +70,21 @@ bool BtTownSceneUI::init(cocos2d::Node* parent)
     m_btMenuBuild->setPosition(cocos2d::Vec2(0, m_btBuild->getSize().height + 50));
     m_btBuild->addChild(m_btMenuBuild, 1);
 
+    cocos2d::ui::Button* btNext = cocos2d::ui::Button::create("ui_test/next.png", "ui_test/next.png");
+    btNext->setPosition(cocos2d::Vec2(origin.x + visibleSize.width - btNext->getContentSize().width * 1.5 - spacing.x * 2, btNext->getContentSize().height / 2 + spacing.y));
+    BtSetButtonHandler(btNext, []() { BT_POST_LUA_AND_FLUSH(BtMsgID::StartNextLevel, ""); });
+    parent->addChild(btNext, 1);
+
+    cocos2d::ui::Button* btWorld = cocos2d::ui::Button::create("ui_test/world.png", "ui_test/world.png");
+    btWorld->setPosition(cocos2d::Vec2(origin.x + visibleSize.width - btWorld->getContentSize().width / 2 - spacing.x, btWorld->getContentSize().height / 2 + spacing.y));
+    BtSetButtonHandler(btWorld, []() { BT_POST_LUA_AND_FLUSH(BtMsgID::GotoScene, BTSCN_world); });
+    parent->addChild(btWorld, 1);
+
+    m_playerInfo = cocos2d::ui::Text::create("test", "Arial", 6);
+    m_playerInfo->setAnchorPoint(cocos2d::Vec2(0.0f, 1.0f));
+    m_playerInfo->setPosition(origin + cocos2d::Vec2(spacing.x, visibleSize.height - 50));
+    parent->addChild(m_playerInfo, 1);
+
     return true;
 }
 
@@ -90,4 +110,22 @@ void BtTownSceneUI::onMenu_Build(const std::string& buildingName)
     {
         m_onPlacingBuildingBegan(buildingName);
     }
+}
+
+void BtTownSceneUI::setPlayerProperty(const std::string& playerProperty, int value, bool refresh /*= true*/)
+{
+    m_displayedPlayerProperties[playerProperty] = value;
+
+    if (refresh)
+    {
+        refreshDisplayedPlayerProperties();
+    }
+}
+
+void BtTownSceneUI::refreshDisplayedPlayerProperties()
+{
+    std::string composed;
+    for (auto& p : m_displayedPlayerProperties)
+        composed += tfm::format("%s: %d  ", p.first, p.second);
+    m_playerInfo->setText(composed);
 }

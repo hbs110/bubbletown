@@ -37,7 +37,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     auto director = cocos2d::Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
-        glview = cocos2d::GLViewImpl::createWithRect("bubbletown", cocos2d::Rect(0, 0, 720, 1280), 0.5);
+        glview = cocos2d::GLViewImpl::createWithRect("bubbletown", cocos2d::Rect(0, 0, 720, 1280), 0.7f);
         director->setOpenGLView(glview);
     }
 
@@ -97,8 +97,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     if (!BtLuaService::Get()->Init())
         return false;
 
-    BtLuaService::Get()->RegisterFunction("goto_scene", &AppNativeInterfaces::GotoScene);
-    BtLuaService::Get()->RegisterFunction("get_current_time", &AppNativeInterfaces::GetCurrentGameTime);
+    BtRegisterNativeInerfaces();
 
     RegisterSceneCreator<AppStartScene>();
     RegisterSceneCreator<BtBubbleScene>();

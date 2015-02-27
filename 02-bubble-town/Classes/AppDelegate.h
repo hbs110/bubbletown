@@ -47,7 +47,7 @@ protected:
     template <typename T>
     void RegisterSceneCreator()
     {
-        m_sceneCreators[T::getSceneName()] = std::bind(&AppDelegate::CreateScene < T >, this);
+        m_sceneCreators[T::getSceneNameStatic()] = std::bind(&AppDelegate::CreateScene < T >, this);
     }
 
     template <typename T>
@@ -56,7 +56,7 @@ protected:
         T *layer = T::create(); // create() should guarantee the layer pointer is autoreleased 
         if (!layer)
             return nullptr;
-        layer->setName(T::getSceneName());
+        layer->setName(T::getSceneNameStatic());
 
         auto scene = cocos2d::Scene::create();  // Scene::create() ensures creating autorelease object
         if (!scene)
