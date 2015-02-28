@@ -70,7 +70,7 @@ bool BtTestServices::RunTestsOnStage(BtTestStage stage)
         BT_VERB("running test '%s'...", test.name);
         if (!test.func())
         {
-            BT_UNEXPECTED(tfm::format("test '%s' failed!", test.name), BT_DUMMY_FUNC);
+            BT_UNEXPECTED(tfm::format("test '%s' failed!", test.name));
             BT_ERROR("test stage '%d' aborted.", (int)stage);
             return false;
         }

@@ -26,26 +26,9 @@
                     <int>-1</int>
                 </QSize>
             </struct>
-            <struct type="AutoSDSettings">
-                <key>scale</key>
-                <double>1</double>
-                <key>extension</key>
-                <string></string>
-                <key>spriteFilter</key>
-                <string></string>
-                <key>acceptFractionalValues</key>
-                <false/>
-                <key>maxTextureSize</key>
-                <QSize>
-                    <key>width</key>
-                    <int>-1</int>
-                    <key>height</key>
-                    <int>-1</int>
-                </QSize>
-            </struct>
         </array>
         <key>allowRotation</key>
-        <false/>
+        <true/>
         <key>premultiplyAlpha</key>
         <false/>
         <key>shapeDebug</key>
@@ -53,7 +36,7 @@
         <key>dpi</key>
         <uint>72</uint>
         <key>dataFormat</key>
-        <string>unity</string>
+        <string>cocos2d</string>
         <key>textureFileName</key>
         <filename>titlescreen_tiles.png</filename>
         <key>flipPVR</key>
@@ -127,7 +110,7 @@
             <key>forceSquared</key>
             <false/>
             <key>forceWordAligned</key>
-            <false/>
+            <true/>
             <key>maxRects</key>
             <struct type="AlgorithmMaxRectsSettings">
                 <key>heuristic</key>
@@ -162,7 +145,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>titlescreen_tiles.txt</filename>
+                <filename>titlescreen.plist</filename>
             </struct>
             <key>java</key>
             <struct type="DataFile">

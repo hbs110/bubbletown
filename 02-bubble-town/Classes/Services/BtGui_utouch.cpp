@@ -9,81 +9,75 @@
 #include "stdafx.h"
 #include "BtGui_utouch.h"
 
-#include "json/document.h"
-
 #include "Core/BtCoreDef.h"
 #include "Core/BtCoreUtil.h"
 
-int BtValueMapUtil::GetPropertyAsInt(const cocos2d::ValueMap& vm, const std::string& propName)
+int BtValueMapUtil::GetPropertyAsInt(const rapidjson::Value& vm, const char* propName)
 {
-    auto it = vm.find(propName);
-    if (it == vm.end())
-    {
+    if (!vm.HasMember(propName))
         return BT_INVALID_ID;
-    }
 
-    return it->second.asInt();
+    const auto& val = vm[propName];
+    if (!val.IsInt())
+        return BT_INVALID_ID;
+
+    return val.IsInt();
 }
 
-std::string BtValueMapUtil::GetPropertyAsString(const cocos2d::ValueMap& vm, const std::string& propName)
+std::string BtValueMapUtil::GetPropertyAsString(const rapidjson::Value& vm, const char* propName)
 {
-    auto it = vm.find(propName);
-    if (it == vm.end())
-    {
+    if (!vm.HasMember(propName))
         return "";
-    }
 
-    return it->second.asString();
+    const auto& val = vm[propName];
+    if (!val.IsString())
+        return "";
+
+    return val.GetString();
 }
 
-creatorMap_t  BtUINodeBuilder::s_creators{ 
+using fnCreateNode = std::function < cocos2d::Node* () > ;
+using fnBuildNode = std::function < void(cocos2d::Node* destNode, const rapidjson::Value& desc) > ;
+
+using creatorMap_t = std::map < std::string, fnCreateNode > ;
+using builderMap_t = std::map < std::string, fnBuildNode > ;
+
+creatorMap_t  s_uiNodeCreators{
     { "RootNode", [](){ return cocos2d::Node::create(); } },
     { "Image", [](){ return cocos2d::ui::ImageView::create(); } },
 };
 
-cocos2d::Node* BtUINodeBuilder::BuildNode(const cocos2d::ValueMap& layoutNode)
+builderMap_t  s_uiNodeBuilders{
+    { "RootNode", BtUINodeBuilder::BuildRootNode },
+    { "Image", BtUINodeBuilder::BuildImage },
+};
+
+cocos2d::Node* BtUINodeBuilder::BuildNode(const rapidjson::Value& layoutNode)
 {
     std::string ctrlType = BtValueMapUtil::GetPropertyAsString(layoutNode, "__type_info__");
-    BT_EXPECT_RET_VAL(ctrlType.empty(), "layout node type not specified.", BT_DUMMY_FUNC, nullptr);
+    BT_EXPECT_RET_VAL(ctrlType.size(), "layout node type not specified.", BT_DUMMY_FUNC, nullptr);
 
-    auto it = s_creators.find(ctrlType);
-    BT_EXPECT_RET_VAL(it != s_creators.end(), tfm::format("layout node type '%s' unrecoganized.", ctrlType), BT_DUMMY_FUNC, nullptr);
+    auto it = s_uiNodeCreators.find(ctrlType);
+    BT_EXPECT_RET_VAL(it != s_uiNodeCreators.end(), tfm::format("the *creator* of layout node type '%s' is unregistored.", ctrlType), BT_DUMMY_FUNC, nullptr);
 
     auto node = it->second();
+    BT_EXPECT_RET_VAL(node, tfm::format("ui node creation failed using layout node type '%s'.", ctrlType), BT_DUMMY_FUNC, nullptr);
+
+    auto it_b = s_uiNodeBuilders.find(ctrlType);
+    BT_EXPECT_RET_VAL(it_b != s_uiNodeBuilders.end(), tfm::format("the *builder* of layout node type '%s' is unregistored.", ctrlType), BT_DUMMY_FUNC, nullptr);
+
+    it_b->second(node, layoutNode);
     return node;
 }
 
-
-std::string BtGui_utouch::LoadAtlas(const char* atlasLutFile, const char* atlasTextureFile)
+void BtUINodeBuilder::BuildRootNode(cocos2d::Node* destNode, const rapidjson::Value& desc)
 {
-    //cocos2d::SpriteFrame* sf = cocos2d::SpriteFrame::create(atlasTextureFile);
+    BT_LOG("root node '%s' is being created.", BtValueMapUtil::GetPropertyAsString(desc, "Name"));
+}
 
-    //std::string str = cocos2d::FileUtils::getInstance()->getStringFromFile(atlasLutFile);
-    //BT_EXPECT_RET_VAL(str.size(), tfm::format("Atlas lookup-table loading failed. ('%s')", atlasLutFile), BT_DUMMY_FUNC, atlasLut());
-
-    //cocos2d::ValueMap dict = cocos2d::FileUtils::getInstance()->getValueMapFromFile(atlasLutFile);
-
-    //rapidjson::Document doc;
-    //doc.Parse<0>(str.c_str());
-    //BT_EXPECT_RET_VAL(doc.IsObject(), tfm::format("invalid atlas file content. ('%s')", atlasLutFile), BT_DUMMY_FUNC, atlasLut());
-    //
-    //auto& frames = doc["frames"];
-    //BT_EXPECT_RET_VAL(frames.IsObject(), tfm::format("'frames' node not found in atlas file. ('%s')", atlasLutFile), BT_DUMMY_FUNC, atlasLut());
-
-    //for (auto it = frames.MemberonBegin(); it != frames.MemberonEnd(); ++it)
-    //{
-    //    BT_VERB("reading atlas element '%s'...", (*it).name.GetString());
-    //    if (it->name.IsString() && it->value.IsObject())
-    //    {
-    //        auto& frame = it->value["frame"];
-    //        if (frame.IsObject())
-    //        {
-
-    //        }
-    //    }
-    //}
-
-    return atlasLutFile;
+void BtUINodeBuilder::BuildImage(cocos2d::Node* destNode, const rapidjson::Value& desc)
+{
+    BT_LOG("image node '%s' is being created.", BtValueMapUtil::GetPropertyAsString(desc, "Name"));
 }
 
 cocos2d::Node* BtGui_utouch::LoadLayout(const std::string& layoutFile)
@@ -93,36 +87,50 @@ cocos2d::Node* BtGui_utouch::LoadLayout(const std::string& layoutFile)
     std::string layoutFilename = layoutFile + ".ui_layout";
 
     auto sfc = cocos2d::SpriteFrameCache::getInstance();
-    BT_EXPECT_RET_VAL(sfc, tfm::format("cocos2d::SpriteFrameCache not available. (while loading '%s')", layoutFile), BT_DUMMY_FUNC, nullptr);
+    BT_EXPECT_RET_V2(sfc, tfm::format("cocos2d::SpriteFrameCache not available. (while loading '%s')", layoutFile), nullptr);
     sfc->addSpriteFramesWithFile(atlasFile, atlasTexture);
 
-    cocos2d::ValueMap layoutDict = cocos2d::FileUtils::getInstance()->getValueMapFromFile(layoutFilename);
-    BT_EXPECT_RET_VAL(layoutDict.size(), tfm::format("invalid layout file. ('%s')", layoutFilename), BT_DUMMY_FUNC, nullptr);
-    return LoadLayoutRecursively(layoutDict);
+    std::string layoutContent = cocos2d::FileUtils::getInstance()->getStringFromFile(layoutFilename);
+    BT_EXPECT_RET_V2(layoutContent.size(), tfm::format("layout file reading failed. ('%s')", layoutFilename), nullptr);
+
+    rapidjson::Document doc;
+    doc.Parse<0>(layoutContent.c_str());
+    BT_EXPECT_RET_V2(doc.IsObject(), tfm::format("layout file parsing (as a json doc) failed. ('%s')", layoutFilename), nullptr);
+
+    auto node = LoadLayoutRecursively(doc);
+    BT_EXPECT_RET_V2(node, tfm::format("layout file parsing (recursively) failed. ('%s')", layoutFilename), nullptr);
+
+    return node;
 }
 
-cocos2d::Node* BtGui_utouch::LoadLayoutRecursively(const cocos2d::ValueMap& layoutNode)
+cocos2d::Node* BtGui_utouch::LoadLayoutRecursively(const rapidjson::Value& jsonNode)
 {
-    cocos2d::Node* node = BtUINodeBuilder::BuildNode(layoutNode);
+    cocos2d::Node* node = BtUINodeBuilder::BuildNode(jsonNode);
     if (!node)
     {
-        BT_ERROR("node '%s' loading failed.", BtValueMapUtil::GetPropertyAsString(layoutNode, "Name").c_str());
+        BT_ERROR("node '%s' loading failed.", BtValueMapUtil::GetPropertyAsString(jsonNode, "Name"));
         return nullptr;
     }
 
-    auto it = layoutNode.find("Children");
-    if (it != layoutNode.end())
+    auto& children = jsonNode["Children"];
+    if (children.IsArray())
     {
-        const auto& children = it->second.asValueVector();
-        for (const auto& child : children)
+        for (auto it = children.onBegin(); it != children.onEnd(); ++it)
         {
-            auto subNode = LoadLayoutRecursively(child.asValueMap());
-            if (subNode)
+            if (it->IsObject())
             {
-                node->addChild(subNode);
+                const rapidjson::Value& name = (*it)["Name"];
+                BT_VERB("reading layout element '%s'...", name.IsString() ? name.GetString() : "<null>" );
+                
+                auto subNode = LoadLayoutRecursively(*it);
+                if (subNode)
+                {
+                    node->addChild(subNode);
+                }
             }
         }
     }
+
     return node;
 }
 

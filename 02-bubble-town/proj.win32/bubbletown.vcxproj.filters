@@ -184,17 +184,11 @@
     <ClInclude Include="..\Classes\Tests\TestGui_utouch.h">
       <Filter>Classes\Tests</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>win32</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Services\BtTestDef.h">
       <Filter>Classes\Services</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Services\BtTestServices.h">
       <Filter>Classes\Services</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="bubble-town.rc" />
   </ItemGroup>
 </Project>

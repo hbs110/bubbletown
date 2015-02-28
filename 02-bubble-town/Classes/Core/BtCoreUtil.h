@@ -43,14 +43,15 @@ void BtSetLogMode(BtLogMode mode);
 
 #define BT_DUMMY_FUNC   [](){}          
 
-void BtLogUnexpect(const char* exprStr, const std::string& errContext, const std::string& errMsg);
+void BtLogUnexpected(const char* exprStr, const std::string& errContext, const std::string& errMsg);
 
-#define BT_UNEXPECTED(errMsg, callback)                     { BtLogUnexpect("unexpected error", __FUNCTION__, errMsg); callback(); }
-
-#define BT_EXPECT(expr, errMsg, callback)                   if (!(expr)) { BtLogUnexpect(#expr, __FUNCTION__, errMsg); callback(); }
-#define BT_EXPECT_RET(expr, errMsg, callback)               if (!(expr)) { BtLogUnexpect(#expr, __FUNCTION__, errMsg); callback(); return; }
-#define BT_EXPECT_RET_VAL(expr, errMsg, callback, retVal)   if (!(expr)) { BtLogUnexpect(#expr, __FUNCTION__, errMsg); callback(); return retVal; }
-#define BT_EXPECT_RET_BOOL(expr, errMsg, callback)          if (!(expr)) { BtLogUnexpect(#expr, __FUNCTION__, errMsg); callback(); return false; }
+#define BT_EXPECT(expr, errMsg, callback)                   if (!(expr)) { BtLogUnexpected(#expr, __FUNCTION__, errMsg); callback(); }
+#define BT_EXPECT_RET(expr, errMsg, callback)               if (!(expr)) { BtLogUnexpected(#expr, __FUNCTION__, errMsg); callback(); return; }
+#define BT_EXPECT_RET_VAL(expr, errMsg, callback, retVal)   if (!(expr)) { BtLogUnexpected(#expr, __FUNCTION__, errMsg); callback(); return retVal; }
+#define BT_EXPECT_RET_BOOL(expr, errMsg, callback)          if (!(expr)) { BtLogUnexpected(#expr, __FUNCTION__, errMsg); callback(); return false; }
 //TODO: add debugger checking inside these macros (break immediately on failure if a debugger is attached)
 
+#define BT_EXPECT_V2(expr, errMsg)                      if (!(expr)) { BtLogUnexpected(#expr, __FUNCTION__, errMsg); }
+#define BT_EXPECT_RET_V2(expr, errMsg, ret)             if (!(expr)) { BtLogUnexpected(#expr, __FUNCTION__, errMsg); return ret; }
 
+#define BT_UNEXPECTED(errMsg)                           { BtLogUnexpected("<null>", __FUNCTION__, errMsg); }

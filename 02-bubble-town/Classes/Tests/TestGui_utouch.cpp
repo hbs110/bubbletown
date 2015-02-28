@@ -19,8 +19,8 @@
 
 bool BtTestGui_utouch_LoadAtlas()
 {
-    //auto node = BtGui_utouch::LoadLayout("ui/titlescreen");
-    //BT_EXPECT_RET_BOOL(node, "", BT_DUMMY_FUNC);
+    auto node = BtGui_utouch::LoadLayout("ui/titlescreen");
+    BT_EXPECT_RET_BOOL(node, "", BT_DUMMY_FUNC);
 
     return true;
 }

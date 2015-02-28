@@ -51,7 +51,7 @@ void BtSetLogMode(BtLogMode mode)
 
 static int s_unexpectedCnt = 0;
 
-void BtLogUnexpect(const char* exprStr, const std::string& errContext, const std::string& errMsg)
+void BtLogUnexpected(const char* exprStr, const std::string& errContext, const std::string& errMsg)
 {
     BT_ERROR("[BT_UNEXPECTED] unexpected error '#%d' occurred: \n"
              "    Expression : %s\n"
