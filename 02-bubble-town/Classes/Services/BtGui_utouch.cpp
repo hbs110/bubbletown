@@ -62,8 +62,8 @@ cocos2d::Node* BtGui_utouch::LoadLayoutRecursively(BtUINodeBuilder_utouch* build
             if (it->IsObject())
             {
                 const rapidjson::Value& name = (*it)["Name"];
-                BT_VERB("reading layout element '%s'...", name.IsString() ? name.GetString() : "<null>" );
-                
+                BT_VERB("reading layout element '%s'...", name.IsString() ? name.GetString() : "<null>");
+
                 auto subNode = LoadLayoutRecursively(builder, *it);
                 if (subNode)
                 {

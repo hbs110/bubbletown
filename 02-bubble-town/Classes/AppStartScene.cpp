@@ -15,6 +15,7 @@
 #include "Core/BtMsgDispatcher.h"
 
 #include "Services/BtLuaService.h"
+#include "Services/BtGui_utouch.h"
 
 const char* const MENU_Bubble  = "Bubble";
 const char* const MENU_Town    = "Town";
@@ -76,6 +77,13 @@ bool AppStartScene::init()
         menuPos.y = origin.y + visibleSize.height / 4;
         menuMain->setPosition(menuPos);
         root->addChild(menuMain, 1);
+    }
+
+    {
+        auto node = BtGui_utouch::LoadLayout("ui/titlescreen");
+        node->setAnchorPoint(cocos2d::Vec2::ZERO);
+        node->setPosition(origin);
+        root->addChild(node, 1);
     }
 
     addChild(root, 1);

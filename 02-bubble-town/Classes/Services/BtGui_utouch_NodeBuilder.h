@@ -25,11 +25,14 @@ public:
 
 private:
     float m_scaleRatio;
+    cocos2d::Vec2 m_designRes;
+    cocos2d::Vec2 m_runtimeRes;
 
     creatorMap_t  m_creators;
     builderMap_t  m_builders;
 
     bool BuildNode(cocos2d::Node* destNode, const rapidjson::Value& desc);
-    bool BuildRootNode(cocos2d::Node* destNode, const rapidjson::Value& desc);
     bool BuildImage(cocos2d::Node* destNode, const rapidjson::Value& desc);
+
+    cocos2d::Vec2 GetScaled(const rapidjson::Value& desc, const char* prop);
 };

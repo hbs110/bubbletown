@@ -20,7 +20,9 @@ class BtJsonValue
 public:
     static int GetIntProp(const rapidjson::Value& vm, const char* propName);
     static std::string GetStrProp(const rapidjson::Value& vm, const char* propName);
+
     static cocos2d::Vec2 GetVec2Prop(const rapidjson::Value& vm, const char* propName);
+    static std::string GetResProp(const rapidjson::Value& vm, const char* propName);
 
     static bool IsRootNode(const rapidjson::Value& val);
 };

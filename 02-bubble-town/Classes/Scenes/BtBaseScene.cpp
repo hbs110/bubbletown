@@ -71,8 +71,8 @@ void BtBaseScene::onExit()
 
 void BtBaseScene::registerLuaHandler(cocos2d::ui::Button* widget, const std::string& name /*= ""*/)
 {
-    BT_EXPECT_RET(widget, "invalid widget.", [](){});
-    BT_EXPECT_RET(name.size() || widget->getName().size(), "widget name not specified.", [](){});
+    BT_EXPECT_RET_V2(widget, "invalid widget.");
+    BT_EXPECT_RET_V2(name.size() || widget->getName().size(), "widget name not specified.");
 
     std::string scnName = getSceneName();
     std::string regName = name;

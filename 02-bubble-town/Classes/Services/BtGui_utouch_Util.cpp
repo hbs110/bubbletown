@@ -48,6 +48,18 @@ cocos2d::Vec2 BtJsonValue::GetVec2Prop(const rapidjson::Value& vm, const char* p
     return v;
 }
 
+std::string BtJsonValue::GetResProp(const rapidjson::Value& vm, const char* propName)
+{
+    std::string val = GetStrProp(vm, propName);
+    BT_EXPECT_RET_V2(val.size(), tfm::format("property (%s) not found.", propName), "");
+
+    size_t pos = val.rfind(":"); 
+    BT_EXPECT_RET_V2(pos != std::string::npos, tfm::format("the value (%s) of property (%s) is invalid.", val, propName), "");
+
+    std::string ret = val.substr(pos + 1);
+    return ret;
+}
+
 bool BtJsonValue::IsRootNode(const rapidjson::Value& val)
 {
     std::string typeInfo = BtJsonValue::GetStrProp(val, "__type_info__");

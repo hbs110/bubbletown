@@ -19,16 +19,19 @@ BtUINodeBuilder_utouch::BtUINodeBuilder_utouch(const cocos2d::Vec2& designRes, c
 {
     if (designRes.x > 0 && designRes.y > 0 && runtimeRes.x > 0 && runtimeRes.y > 0)
     {
-        float widthScale = designRes.x / runtimeRes.x;
-        float heightScale = designRes.y / runtimeRes.y;
+        float widthScale = runtimeRes.x / designRes.x;
+        float heightScale = runtimeRes.y / designRes.y;
         m_scaleRatio = std::min(widthScale, heightScale);   // for safety we choose the smaller ratio
+
+        m_designRes = designRes;
+        m_runtimeRes = runtimeRes;
     }
 
     m_creators[BtStr_RootNode]  = [](){ return cocos2d::Node::create(); };
     m_creators[BtStr_ImageNode] = [](){ return cocos2d::ui::ImageView::create(); };
 
     using namespace std::placeholders;
-    m_builders[BtStr_RootNode]  = std::bind(&BtUINodeBuilder_utouch::BuildRootNode, this, _1, _2);
+    m_builders[BtStr_RootNode]  = std::bind(&BtUINodeBuilder_utouch::BuildNode, this, _1, _2);
     m_builders[BtStr_ImageNode] = std::bind(&BtUINodeBuilder_utouch::BuildImage, this, _1, _2);
 }
 
@@ -49,26 +52,46 @@ cocos2d::Node* BtUINodeBuilder_utouch::Create(const std::string& nodeType, const
     return node;
 }
 
+cocos2d::Vec2 BtUINodeBuilder_utouch::GetScaled(const rapidjson::Value& desc, const char* prop)
+{
+    auto v = BtJsonValue::GetVec2Prop(desc, prop);
+    if (!BtIsValid(v))
+        return v;
+
+    return cocos2d::Vec2(v.x * m_scaleRatio, v.y * m_scaleRatio);
+}
+
 bool BtUINodeBuilder_utouch::BuildNode(cocos2d::Node* destNode, const rapidjson::Value& desc)
 {
     BT_EXPECT_RET_V2(destNode, "invalid cc node.", false);
 
-    cocos2d::Vec2 pos = BtJsonValue::GetVec2Prop(desc, "Position");
-    cocos2d::Vec2 size = BtJsonValue::GetVec2Prop(desc, "Size");
+    cocos2d::ui::Widget* widget = dynamic_cast<cocos2d::ui::Widget*>(destNode);
+    if (widget)
+        widget->ignoreContentAdaptWithSize(false);
+
+    cocos2d::Vec2 pos = GetScaled(desc, "Position");
+    cocos2d::Vec2 size = GetScaled(desc, "Size");
     BT_EXPECT_RET_V2(BtIsValid(pos) && BtIsValid(size), "property parsing failed.", false);
 
+    destNode->setAnchorPoint(cocos2d::Vec2(0.0f, 1.0f)); // use upper-left corner for alignment
+    destNode->setContentSize(cocos2d::Size(size));
+    destNode->setPosition(pos.x, m_runtimeRes.y - pos.y);
 
-    return true;
-}
-
-bool BtUINodeBuilder_utouch::BuildRootNode(cocos2d::Node* destNode, const rapidjson::Value& desc)
-{
-    BT_LOG("root node '%s' is being created.", BtJsonValue::GetStrProp(desc, "Name"));
     return true;
 }
 
 bool BtUINodeBuilder_utouch::BuildImage(cocos2d::Node* destNode, const rapidjson::Value& desc)
 {
+    if (!BuildNode(destNode, desc))
+        return false;
+    
+    std::string tileName = BtJsonValue::GetResProp(desc, "Res");
+    BT_EXPECT_RET_V2(tileName.size(), "resource of the image not found or not specified", false);
+
+    cocos2d::ui::ImageView* imageView = dynamic_cast<cocos2d::ui::ImageView*>(destNode);
+    BT_EXPECT_RET_V2(imageView, "node type is not ImageView when calling BuildImage()", false);
+    imageView->loadTexture(tileName, cocos2d::ui::Widget::TextureResType::PLIST);
+
     BT_LOG("image node '%s' is being created.", BtJsonValue::GetStrProp(desc, "Name"));
     return true;
 }

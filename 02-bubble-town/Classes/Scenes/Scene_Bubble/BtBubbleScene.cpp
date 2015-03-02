@@ -33,8 +33,9 @@ static std::string _json_doc_to_string(const rapidjson::Document& doc)
 // for unexpected error when entering bubble scene: 
 //      when something is unexpectedly, seriously and horribly wrong, 
 //      we would try to recover from the situation and return to the town scene immediately
-static auto fnBackToTownScene = []() { BT_POST_LUA_AND_FLUSH(BtMsgID::GotoScene, BTSCN_town); };
-#define BT_EXPECT_BubbleSceneEnter(expr, errMsg)  BT_EXPECT_RET(expr, errMsg, fnBackToTownScene)
+static auto fnBackToTown = []() { BT_POST_LUA_AND_FLUSH(BtMsgID::GotoScene, BTSCN_town); };
+#define BT_EXPECT_BubbleSceneEnter(expr, errMsg)  \
+    BT_EXPECT_RET_V2(expr, errMsg, fnBackToTown())   // fnBackToTown() is called immediately so BT_EXPECT_RET_V2() still returns nothing
 
 BtBubbleScene::BtBubbleScene() 
     : m_btLoot(nullptr)
