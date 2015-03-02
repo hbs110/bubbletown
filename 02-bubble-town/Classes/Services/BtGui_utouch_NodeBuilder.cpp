@@ -92,7 +92,7 @@ bool BtUINodeBuilder_utouch::BuildImage(cocos2d::Node* destNode, const rapidjson
     BT_EXPECT_RET_V2(imageView, "node type is not ImageView when calling BuildImage()", false);
     imageView->loadTexture(tileName, cocos2d::ui::Widget::TextureResType::PLIST);
 
-    BT_LOG("image node '%s' is being created.", BtJsonValue::GetStrProp(desc, "Name"));
+    BT_LOG("image node '%s' (res '%s') is being created.", BtJsonValue::GetStrProp(desc, "Name"), tileName);
     return true;
 }
 

@@ -67,6 +67,7 @@ cocos2d::Node* BtGui_utouch::LoadLayoutRecursively(BtUINodeBuilder_utouch* build
                 auto subNode = LoadLayoutRecursively(builder, *it);
                 if (subNode)
                 {
+                    BT_VERB("attaching element '%s'...", name.IsString() ? name.GetString() : "<null>");
                     node->addChild(subNode);
                 }
             }

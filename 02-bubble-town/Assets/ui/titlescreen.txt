@@ -1,0 +1,84 @@
+{"frames": {
+
+"01-01.png":
+{
+	"frame": {"x":3,"y":3,"w":720,"h":1280},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":720,"h":1280},
+	"sourceSize": {"w":720,"h":1280}
+},
+"01-02.png":
+{
+	"frame": {"x":3,"y":1287,"w":500,"h":314},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":7,"y":31,"w":500,"h":314},
+	"sourceSize": {"w":512,"h":400}
+},
+"01-03.png":
+{
+	"frame": {"x":507,"y":1287,"w":310,"h":132},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":310,"h":132},
+	"sourceSize": {"w":312,"h":136}
+},
+"01-04.png":
+{
+	"frame": {"x":643,"y":1487,"w":70,"h":72},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":4,"w":70,"h":72},
+	"sourceSize": {"w":80,"h":80}
+},
+"01-05.png":
+{
+	"frame": {"x":719,"y":1487,"w":70,"h":72},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":4,"w":70,"h":72},
+	"sourceSize": {"w":80,"h":80}
+},
+"01-06.png":
+{
+	"frame": {"x":767,"y":1363,"w":70,"h":72},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":3,"w":70,"h":72},
+	"sourceSize": {"w":80,"h":80}
+},
+"01-07.png":
+{
+	"frame": {"x":643,"y":1363,"w":120,"h":120},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":5,"w":120,"h":120},
+	"sourceSize": {"w":128,"h":128}
+},
+"01-08.png":
+{
+	"frame": {"x":507,"y":1601,"w":216,"h":156},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":2,"w":216,"h":156},
+	"sourceSize": {"w":220,"h":160}
+},
+"01-09.png":
+{
+	"frame": {"x":643,"y":1287,"w":142,"h":72},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":3,"w":142,"h":72},
+	"sourceSize": {"w":148,"h":80}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "titlescreen.png",
+	"format": "RGBA8888",
+	"size": {"w":1024,"h":2048},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:dd3dbed8d5148c48f94c8247801ba184:545daf08e2643f5d23696671c471aaae:ab1c2a96cf17751afb11296d8e5b6b18$"
+}
+}

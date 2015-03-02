@@ -1,3 +1,3 @@
 
-UserAtlasName 	= "titlescreen_tiles"
+UserAtlasName 	= "titlescreen"
 
