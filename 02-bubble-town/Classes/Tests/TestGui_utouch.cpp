@@ -14,22 +14,24 @@
 
 #include "Services/BtGui_utouch.h"
 
-#define REG_PRE_INIT_TEST(testFunc)  BtTestServices::Get()->RegisterTest(BtTest(BtTestStage::PreInit, #testFunc, testFunc))
-#define BT_EXPECT_REG_TEST(testFunc) BT_EXPECT_RET_BOOL(REG_PRE_INIT_TEST(testFunc), "register test failed.", BT_DUMMY_FUNC);
+#define BT_REGISTER_TEST(stage, func)    BT_EXPECT_RET_V2( \
+    BtTestServices::Get()->RegisterTest(BtTest(stage, #func, func)), \
+    tfm::format("registering test '%s' failed.", #func), \
+    false);
 
 bool BtTestGui_utouch_LoadAtlas()
 {
     auto node = BtGui_utouch::LoadLayout("ui/titlescreen");
-    BT_EXPECT_RET_BOOL(node, "", BT_DUMMY_FUNC);
+    BT_EXPECT_RET_V2(node, "", false);
 
     return true;
 }
 
 bool BtRegisterGuiTests_utouch()
 {
-    BT_EXPECT_RET_BOOL(BtTestServices::Get(), "test service not available.", BT_DUMMY_FUNC);
+    BT_EXPECT_RET_V2(BtTestServices::Get(), "test service not available.", false);
 
-    BT_EXPECT_REG_TEST(BtTestGui_utouch_LoadAtlas);
+    BT_REGISTER_TEST(BtTestStage::PostInit, BtTestGui_utouch_LoadAtlas);
 
     return true;
 }

@@ -22,9 +22,15 @@ typedef const char* const   BtConstStr;
 // invalid id
 const int BT_INVALID_ID = -1;
 
+// invalid float
+const float BT_INVALID_FLOAT = -100007.0f;
+
 // invalid id
 const cocos2d::Vec2 BT_INVALID_VEC2 = cocos2d::Vec2(-1000123.0f, -1000123.0f);
 
+inline bool BtIsValid(int v) { return v != BT_INVALID_ID; }
+inline bool BtIsValid(float v) { return v != BT_INVALID_FLOAT; }
+inline bool BtIsValid(const cocos2d::Vec2& v) { return v != BT_INVALID_VEC2; }
 
 template <typename T> void BtDeletePointer(T& ptr)  {if (ptr)    { delete ptr; ptr = nullptr; } }
 template <typename T> void BtDeleteArray(T& pArray) {if (pArray) { delete [] pArray; pArray = nullptr; } }

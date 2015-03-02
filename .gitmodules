@@ -7,3 +7,6 @@
 [submodule "02-bubble-town/Classes/Core/tinyformat"]
 	path = 02-bubble-town/Classes/Core/tinyformat
 	url = https://github.com/c42f/tinyformat.git
+[submodule "02-bubble-town/Classes/Core/strtk"]
+	path = 02-bubble-town/Classes/Core/strtk
+	url = https://github.com/ArashPartow/strtk.git

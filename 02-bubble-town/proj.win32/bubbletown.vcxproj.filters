@@ -36,6 +36,9 @@
     <Filter Include="Classes\Tests">
       <UniqueIdentifier>{bc667ad1-c48a-4ac3-82d6-659617fa9891}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\Core\strtk">
+      <UniqueIdentifier>{6114e59c-6957-456e-afe1-2dd3b5090b02}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -102,6 +105,12 @@
       <Filter>Classes\Tests</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Services\BtTestServices.cpp">
+      <Filter>Classes\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Services\BtGui_utouch_NodeBuilder.cpp">
+      <Filter>Classes\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Services\BtGui_utouch_Util.cpp">
       <Filter>Classes\Services</Filter>
     </ClCompile>
   </ItemGroup>
@@ -188,6 +197,15 @@
       <Filter>Classes\Services</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Services\BtTestServices.h">
+      <Filter>Classes\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Core\strtk\strtk.hpp">
+      <Filter>Classes\Core\strtk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Services\BtGui_utouch_NodeBuilder.h">
+      <Filter>Classes\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Services\BtGui_utouch_Util.h">
       <Filter>Classes\Services</Filter>
     </ClInclude>
   </ItemGroup>

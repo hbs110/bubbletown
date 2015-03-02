@@ -144,6 +144,8 @@
     <ClCompile Include="..\Classes\Scenes\Scene_World\BtWorldScene.cpp" />
     <ClCompile Include="..\Classes\Services\BtGui_utouch.cpp" />
     <ClCompile Include="..\Classes\Services\BtGuiService.cpp" />
+    <ClCompile Include="..\Classes\Services\BtGui_utouch_NodeBuilder.cpp" />
+    <ClCompile Include="..\Classes\Services\BtGui_utouch_Util.cpp" />
     <ClCompile Include="..\Classes\Services\BtLuaService.cpp" />
     <ClCompile Include="..\Classes\Services\BtTestServices.cpp" />
     <ClCompile Include="..\Classes\stdafx.cpp">
@@ -165,6 +167,7 @@
     <ClInclude Include="..\Classes\Core\BtMsgDef.h" />
     <ClInclude Include="..\Classes\Core\BtMsgDef_AUTOGEN.h" />
     <ClInclude Include="..\Classes\Core\BtMsgDispatcher.h" />
+    <ClInclude Include="..\Classes\Core\strtk\strtk.hpp" />
     <ClInclude Include="..\Classes\Core\tinyformat\tinyformat.h" />
     <ClInclude Include="..\Classes\Scenes\BtBaseScene.h" />
     <ClInclude Include="..\Classes\Scenes\Scene_Bubble\BtBubbleScene.h" />
@@ -176,6 +179,8 @@
     <ClInclude Include="..\Classes\Scenes\Scene_World\BtWorldScene.h" />
     <ClInclude Include="..\Classes\Services\BtGui_utouch.h" />
     <ClInclude Include="..\Classes\Services\BtGuiService.h" />
+    <ClInclude Include="..\Classes\Services\BtGui_utouch_NodeBuilder.h" />
+    <ClInclude Include="..\Classes\Services\BtGui_utouch_Util.h" />
     <ClInclude Include="..\Classes\Services\BtLuaService.h" />
     <ClInclude Include="..\Classes\Services\BtTestDef.h" />
     <ClInclude Include="..\Classes\Services\BtTestServices.h" />
