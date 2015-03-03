@@ -128,13 +128,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
+    <ClCompile Include="..\Classes\AppMsgHandlers.cpp" />
     <ClCompile Include="..\Classes\AppNativeInterfaces.cpp" />
     <ClCompile Include="..\Classes\AppStartScene.cpp" />
     <ClCompile Include="..\Classes\AppUtil.cpp" />
     <ClCompile Include="..\Classes\Core\BtCoreUtil.cpp" />
     <ClCompile Include="..\Classes\Core\BtGuiUtil.cpp" />
     <ClCompile Include="..\Classes\Core\BtMsgDispatcher.cpp" />
+    <ClCompile Include="..\Classes\Core\BtMsgHandlerSet.cpp" />
     <ClCompile Include="..\Classes\Scenes\BtBaseScene.cpp" />
+    <ClCompile Include="..\Classes\Scenes\BtSceneFactory.cpp" />
     <ClCompile Include="..\Classes\Scenes\Scene_Bubble\BtBubbleScene.cpp" />
     <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTiledMap.cpp" />
     <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTownBuilding.cpp" />
@@ -158,6 +161,7 @@
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\AppMacros.h" />
+    <ClInclude Include="..\Classes\AppMsgHandlers.h" />
     <ClInclude Include="..\Classes\AppNativeInterfaces.h" />
     <ClInclude Include="..\Classes\AppStartScene.h" />
     <ClInclude Include="..\Classes\AppUtil.h" />
@@ -167,9 +171,11 @@
     <ClInclude Include="..\Classes\Core\BtMsgDef.h" />
     <ClInclude Include="..\Classes\Core\BtMsgDef_AUTOGEN.h" />
     <ClInclude Include="..\Classes\Core\BtMsgDispatcher.h" />
+    <ClInclude Include="..\Classes\Core\BtMsgHandlerSet.h" />
     <ClInclude Include="..\Classes\Core\strtk\strtk.hpp" />
     <ClInclude Include="..\Classes\Core\tinyformat\tinyformat.h" />
     <ClInclude Include="..\Classes\Scenes\BtBaseScene.h" />
+    <ClInclude Include="..\Classes\Scenes\BtSceneFactory.h" />
     <ClInclude Include="..\Classes\Scenes\Scene_Bubble\BtBubbleScene.h" />
     <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTiledMap.h" />
     <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTownBuilding.h" />

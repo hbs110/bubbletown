@@ -69,13 +69,28 @@
       "highest_score": 1041,
       "stars": 1,
       "time_spent": 19.5
+    },
+    "402": {
+      "highest_score": 1041,
+      "stars": 1,
+      "time_spent": 19.5
+    },
+    "403": {
+      "highest_score": 1334,
+      "stars": 1,
+      "time_spent": 12.5
+    },
+    "404": {
+      "highest_score": 1169,
+      "stars": 1,
+      "time_spent": 16.5
     }
   },
   "status": {
-    "coins": 800,
+    "coins": 1100,
     "diamonds": 0,
     "energy": 5,
-    "exp": 20,
-    "level": 4
+    "exp": 10,
+    "level": 6
   }
 }

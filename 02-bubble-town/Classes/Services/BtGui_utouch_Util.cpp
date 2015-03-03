@@ -12,6 +12,9 @@
 #include "Core/BtCoreDef.h"
 #include "Core/BtCoreUtil.h"
 
+#include "Core/BtMsgDef.h"
+#include "Core/BtMsgDispatcher.h"
+
 int BtJsonValue::GetIntProp(const rapidjson::Value& vm, const char* propName)
 {
     if (!vm.HasMember(propName))
@@ -63,6 +66,20 @@ std::string BtJsonValue::GetResProp(const rapidjson::Value& vm, const char* prop
 bool BtJsonValue::IsRootNode(const rapidjson::Value& val)
 {
     std::string typeInfo = BtJsonValue::GetStrProp(val, "__type_info__");
-    return typeInfo == BtStr_RootNode;
+    return typeInfo == BtUI_RootNode;
 }
 
+void BtUIStdHandlers::onButtonTouch(cocos2d::Ref *pSender, cocos2d::ui::Widget::TouchEventType type)
+{
+    cocos2d::ui::Button* button = dynamic_cast<cocos2d::ui::Button*>(pSender);
+    BT_EXPECT_RET_V2(button, "a non-button control emits a button event, ignored.", ;);
+
+    if (type == cocos2d::ui::Widget::TouchEventType::BEGAN)
+    {
+        BtMsgDispatcher::Get()->notify(BtMsg((int) BtMsgID::UI_ButtonPressed, button->getName()));
+    }
+    else if (type == cocos2d::ui::Widget::TouchEventType::ENDED)
+    {
+        BtMsgDispatcher::Get()->notify(BtMsg((int) BtMsgID::UI_ButtonReleased, button->getName()));
+    }
+}

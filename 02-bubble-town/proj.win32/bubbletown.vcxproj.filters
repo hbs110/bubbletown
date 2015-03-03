@@ -9,35 +9,35 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Classes\Scenes">
-      <UniqueIdentifier>{a279ef03-9648-4116-86d4-35f518e0893d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\Core">
-      <UniqueIdentifier>{194f8a3b-de92-4047-80ce-35a36b9eca85}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\Scenes\Scene_Town">
-      <UniqueIdentifier>{9b0bb853-3a3e-4048-adea-6027d86de0ef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\Scenes\Scene_Bubble">
-      <UniqueIdentifier>{89053a60-29ff-4151-a362-baa2ec31e53a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\Scenes\Scene_World">
-      <UniqueIdentifier>{70c8bed9-d954-4909-8f6f-f8a6a5c89a59}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\App">
-      <UniqueIdentifier>{eb896cb1-beb1-4aea-9d36-44bf2a53763d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\Services">
-      <UniqueIdentifier>{281ea409-9714-40eb-9ab8-631cb1d830b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\Core\tinyformat">
-      <UniqueIdentifier>{3d8b48b2-e2a4-4d2a-8d3a-b863a5b308b4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Classes\Tests">
       <UniqueIdentifier>{bc667ad1-c48a-4ac3-82d6-659617fa9891}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Classes\Core\strtk">
+    <Filter Include="Classes\1. Core">
+      <UniqueIdentifier>{194f8a3b-de92-4047-80ce-35a36b9eca85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\1. Core\tinyformat">
+      <UniqueIdentifier>{3d8b48b2-e2a4-4d2a-8d3a-b863a5b308b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\1. Core\strtk">
       <UniqueIdentifier>{6114e59c-6957-456e-afe1-2dd3b5090b02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\2. Services">
+      <UniqueIdentifier>{281ea409-9714-40eb-9ab8-631cb1d830b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\3. Scenes">
+      <UniqueIdentifier>{a279ef03-9648-4116-86d4-35f518e0893d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\3. Scenes\Scene_Town">
+      <UniqueIdentifier>{9b0bb853-3a3e-4048-adea-6027d86de0ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\3. Scenes\Scene_Bubble">
+      <UniqueIdentifier>{89053a60-29ff-4151-a362-baa2ec31e53a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\3. Scenes\Scene_World">
+      <UniqueIdentifier>{70c8bed9-d954-4909-8f6f-f8a6a5c89a59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes\4. App">
+      <UniqueIdentifier>{eb896cb1-beb1-4aea-9d36-44bf2a53763d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -45,73 +45,82 @@
       <Filter>win32</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Core\BtMsgDispatcher.cpp">
-      <Filter>Classes\Core</Filter>
+      <Filter>Classes\1. Core</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Core\BtGuiUtil.cpp">
-      <Filter>Classes\Core</Filter>
+      <Filter>Classes\1. Core</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Scenes\BtBaseScene.cpp">
-      <Filter>Classes\Scenes</Filter>
+      <Filter>Classes\3. Scenes</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Scenes\Scene_Bubble\BtBubbleScene.cpp">
-      <Filter>Classes\Scenes\Scene_Bubble</Filter>
+      <Filter>Classes\3. Scenes\Scene_Bubble</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTownScene.cpp">
-      <Filter>Classes\Scenes\Scene_Town</Filter>
+      <Filter>Classes\3. Scenes\Scene_Town</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Scenes\Scene_World\BtWorldScene.cpp">
-      <Filter>Classes\Scenes\Scene_World</Filter>
+      <Filter>Classes\3. Scenes\Scene_World</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\AppDelegate.cpp">
-      <Filter>Classes\App</Filter>
+      <Filter>Classes\4. App</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\AppStartScene.cpp">
-      <Filter>Classes\App</Filter>
+      <Filter>Classes\4. App</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\stdafx.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTiledMap.cpp">
-      <Filter>Classes\Scenes\Scene_Town</Filter>
+      <Filter>Classes\3. Scenes\Scene_Town</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTownBuilding.cpp">
-      <Filter>Classes\Scenes\Scene_Town</Filter>
+      <Filter>Classes\3. Scenes\Scene_Town</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Services\BtLuaService.cpp">
-      <Filter>Classes\Services</Filter>
+      <Filter>Classes\2. Services</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTownSceneWidgets.cpp">
-      <Filter>Classes\Scenes\Scene_Town</Filter>
+      <Filter>Classes\3. Scenes\Scene_Town</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Services\BtGuiService.cpp">
-      <Filter>Classes\Services</Filter>
+      <Filter>Classes\2. Services</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\AppNativeInterfaces.cpp">
-      <Filter>Classes\App</Filter>
+      <Filter>Classes\4. App</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTownSceneUI.cpp">
-      <Filter>Classes\Scenes\Scene_Town</Filter>
+      <Filter>Classes\3. Scenes\Scene_Town</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Services\BtGui_utouch.cpp">
-      <Filter>Classes\Services</Filter>
+      <Filter>Classes\2. Services</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\AppUtil.cpp">
-      <Filter>Classes\App</Filter>
+      <Filter>Classes\4. App</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Core\BtCoreUtil.cpp">
-      <Filter>Classes\Core</Filter>
+      <Filter>Classes\1. Core</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Tests\TestGui_utouch.cpp">
       <Filter>Classes\Tests</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Services\BtTestServices.cpp">
-      <Filter>Classes\Services</Filter>
+      <Filter>Classes\2. Services</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Services\BtGui_utouch_NodeBuilder.cpp">
-      <Filter>Classes\Services</Filter>
+      <Filter>Classes\2. Services</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Services\BtGui_utouch_Util.cpp">
-      <Filter>Classes\Services</Filter>
+      <Filter>Classes\2. Services</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Core\BtMsgHandlerSet.cpp">
+      <Filter>Classes\1. Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AppMsgHandlers.cpp">
+      <Filter>Classes\4. App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scenes\BtSceneFactory.cpp">
+      <Filter>Classes\3. Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -119,94 +128,103 @@
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Core\BtCoreDef.h">
-      <Filter>Classes\Core</Filter>
+      <Filter>Classes\1. Core</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Core\BtMsgDef.h">
-      <Filter>Classes\Core</Filter>
+      <Filter>Classes\1. Core</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Core\BtMsgDispatcher.h">
-      <Filter>Classes\Core</Filter>
+      <Filter>Classes\1. Core</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Core\BtGuiUtil.h">
-      <Filter>Classes\Core</Filter>
+      <Filter>Classes\1. Core</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Scenes\BtBaseScene.h">
-      <Filter>Classes\Scenes</Filter>
+      <Filter>Classes\3. Scenes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Scenes\Scene_Bubble\BtBubbleScene.h">
-      <Filter>Classes\Scenes\Scene_Bubble</Filter>
+      <Filter>Classes\3. Scenes\Scene_Bubble</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTownScene.h">
-      <Filter>Classes\Scenes\Scene_Town</Filter>
+      <Filter>Classes\3. Scenes\Scene_Town</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Scenes\Scene_World\BtWorldScene.h">
-      <Filter>Classes\Scenes\Scene_World</Filter>
+      <Filter>Classes\3. Scenes\Scene_World</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\AppDelegate.h">
-      <Filter>Classes\App</Filter>
+      <Filter>Classes\4. App</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\AppMacros.h">
-      <Filter>Classes\App</Filter>
+      <Filter>Classes\4. App</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\AppStartScene.h">
-      <Filter>Classes\App</Filter>
+      <Filter>Classes\4. App</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\stdafx.h">
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTiledMap.h">
-      <Filter>Classes\Scenes\Scene_Town</Filter>
+      <Filter>Classes\3. Scenes\Scene_Town</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTownBuilding.h">
-      <Filter>Classes\Scenes\Scene_Town</Filter>
+      <Filter>Classes\3. Scenes\Scene_Town</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Services\BtLuaService.h">
-      <Filter>Classes\Services</Filter>
+      <Filter>Classes\2. Services</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTownSceneWidgets.h">
-      <Filter>Classes\Scenes\Scene_Town</Filter>
+      <Filter>Classes\3. Scenes\Scene_Town</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Services\BtGuiService.h">
-      <Filter>Classes\Services</Filter>
+      <Filter>Classes\2. Services</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\AppNativeInterfaces.h">
-      <Filter>Classes\App</Filter>
+      <Filter>Classes\4. App</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Core\BtMsgDef_AUTOGEN.h">
-      <Filter>Classes\Core</Filter>
+      <Filter>Classes\1. Core</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTownSceneUI.h">
-      <Filter>Classes\Scenes\Scene_Town</Filter>
+      <Filter>Classes\3. Scenes\Scene_Town</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Services\BtGui_utouch.h">
-      <Filter>Classes\Services</Filter>
+      <Filter>Classes\2. Services</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\AppUtil.h">
-      <Filter>Classes\App</Filter>
+      <Filter>Classes\4. App</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Core\tinyformat\tinyformat.h">
-      <Filter>Classes\Core\tinyformat</Filter>
+      <Filter>Classes\1. Core\tinyformat</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Core\BtCoreUtil.h">
-      <Filter>Classes\Core</Filter>
+      <Filter>Classes\1. Core</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Tests\TestGui_utouch.h">
       <Filter>Classes\Tests</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Services\BtTestDef.h">
-      <Filter>Classes\Services</Filter>
+      <Filter>Classes\2. Services</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Services\BtTestServices.h">
-      <Filter>Classes\Services</Filter>
+      <Filter>Classes\2. Services</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Core\strtk\strtk.hpp">
-      <Filter>Classes\Core\strtk</Filter>
+      <Filter>Classes\1. Core\strtk</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Services\BtGui_utouch_NodeBuilder.h">
-      <Filter>Classes\Services</Filter>
+      <Filter>Classes\2. Services</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Services\BtGui_utouch_Util.h">
-      <Filter>Classes\Services</Filter>
+      <Filter>Classes\2. Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Core\BtMsgHandlerSet.h">
+      <Filter>Classes\1. Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppMsgHandlers.h">
+      <Filter>Classes\4. App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scenes\BtSceneFactory.h">
+      <Filter>Classes\3. Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

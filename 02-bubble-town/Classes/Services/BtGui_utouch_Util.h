@@ -12,8 +12,9 @@
 
 #include "Core/BtCoreDef.h"
 
-BtConstStr BtStr_RootNode = "RootNode";
-BtConstStr BtStr_ImageNode = "Image";
+BtConstStr BtUI_RootNode = "RootNode";
+BtConstStr BtUI_Image = "Image";
+BtConstStr BtUI_Button = "Button";
 
 class BtJsonValue
 {
@@ -25,4 +26,10 @@ public:
     static std::string GetResProp(const rapidjson::Value& vm, const char* propName);
 
     static bool IsRootNode(const rapidjson::Value& val);
+};
+
+class BtUIStdHandlers
+{
+public:
+    static void onButtonTouch(cocos2d::Ref *pSender, cocos2d::ui::Widget::TouchEventType type);
 };

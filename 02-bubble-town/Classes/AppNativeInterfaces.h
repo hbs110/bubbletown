@@ -10,12 +10,14 @@
 
 class AppNativeInterfaces 
 {
-public: 
+public:
+    static void registerGlobally();
+
+    // native interfaces are intended to be private, so that the only way to call them is from lua
+private:
     static double GetCurrentGameTime();
     static void GotoScene(const std::string& sceneName, const std::string& sceneConfig);
-
     static void SetPlayerProperty(const std::string& playerProperty, int value, bool flush);
 };
 
-void BtRegisterNativeInerfaces();
 

@@ -34,19 +34,20 @@ enum class BtMsgID
 
     // construction 
     ConstructBuilding = 20,
-    CancelConstructing = 23,
-    ConstructingFinished = 26,
+    CancelConstructing = 21,
+    ConstructingFinished = 22,
     // moving 
-    MoveBuilding = 21,          // "cancel last move" would be "move to original position" 
+    MoveBuilding = 23,          // "cancel last move" would be "move to original position" 
     // upgrading
-    UpgradeBuilding = 22,
+    UpgradeBuilding = 24,
     CancelUpgrading = 25,
-    UpgradingFinished = 27,
+    UpgradingFinished = 26,
 
     ////////////////////////////////////////
     // UI events
     
     UI_ButtonPressed = 100,     
+    UI_ButtonReleased = 101,     
 };
 
 

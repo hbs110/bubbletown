@@ -16,6 +16,14 @@
 // C-style string constant
 typedef const char* const   BtConstStr;
 
+// flags
+typedef unsigned int btflags;
+
+// flag operations
+template <typename T> inline bool BtHasFlag(btflags flags, T targetFlags) { return flags & (btflags) targetFlags; }
+template <typename T> inline void BtMarkFlag(btflags& flags, T targetFlags) { flags |= (btflags) targetFlags; }
+template <typename T> inline void BtClearFlag(btflags& flags, T targetFlags) { flags &= ~((btflags) targetFlags); }
+
 // array size
 #define BT_ARRAY_SIZE(arr)  ( sizeof(arr) / sizeof(arr[0]) )
 

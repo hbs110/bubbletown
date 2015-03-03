@@ -17,5 +17,6 @@ public:
     static AppDelegate* GetApp();
 
     static BtTownScene* GetTownSceneIfIn();
+    static std::string GetCurrentSceneName();
 };
 

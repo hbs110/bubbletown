@@ -6,6 +6,7 @@
 #include "Scenes/Scene_Bubble/BtBubbleScene.h"
 #include "Scenes/Scene_Town/BtTownScene.h"
 #include "Scenes/Scene_World/BtWorldScene.h"
+#include "Scenes/BtSceneFactory.h"
 
 #include "Core/BtCoreUtil.h"
 #include "Core/BtMsgDef.h"
@@ -17,6 +18,7 @@
 #include "Tests/TestGui_utouch.h"
 
 #include "AppNativeInterfaces.h"
+#include "AppMsgHandlers.h"
 
 AppDelegate::AppDelegate()
 {
@@ -25,12 +27,14 @@ AppDelegate::AppDelegate()
 
 AppDelegate::~AppDelegate() 
 {
+    BtSceneFactory::DestroyInst();
+
     if (BT_L)
     {
         CallLua_Destroy();
         BtLuaService::DestroyInst();
     }
-
+    
     BtMsgDispatcher::DestroyInst();
     BtTestServices::DestroyInst();
 }
@@ -46,13 +50,12 @@ bool AppDelegate::applicationDidFinishLaunching()
 
     // message handling
     BtMsgDispatcher::CreateInst();
-    BtMsgDispatcher::Get()->subscribe((int)BtMsgID::GotoScene, std::bind(&AppDelegate::OnMsg_GotoScene, this, std::placeholders::_1));
 
     // initialize director
     auto director = cocos2d::Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
-        glview = cocos2d::GLViewImpl::createWithRect("bubbletown", cocos2d::Rect(0, 0, 720, 1280), 0.7f);
+        glview = cocos2d::GLViewImpl::createWithRect("bubbletown", cocos2d::Rect(0, 0, 720, 1280), 0.6f);
         director->setOpenGLView(glview);
     }
 
@@ -112,12 +115,15 @@ bool AppDelegate::applicationDidFinishLaunching()
     if (!BtLuaService::Get()->Init())
         return false;
 
-    BtRegisterNativeInerfaces();
+    AppNativeInterfaces::registerGlobally();
 
-    RegisterSceneCreator<AppStartScene>();
-    RegisterSceneCreator<BtBubbleScene>();
-    RegisterSceneCreator<BtTownScene>();
-    RegisterSceneCreator<BtWorldScene>();
+    AppMsgHandlers::registerGlobally();
+
+    BtSceneFactory::CreateInst();
+    BtSceneFactory::Get()->RegisterSceneCreator<AppStartScene>();
+    BtSceneFactory::Get()->RegisterSceneCreator<BtBubbleScene>();
+    BtSceneFactory::Get()->RegisterSceneCreator<BtTownScene>();
+    BtSceneFactory::Get()->RegisterSceneCreator<BtWorldScene>();
 
     auto luaTick = std::bind(&AppDelegate::CallLua_Tick, this, std::placeholders::_1);
     cocos2d::Director::getInstance()->getScheduler()->schedule(luaTick, this, 1.0f, false, "AppDelegate::TickLua_PerSecond");
@@ -148,46 +154,6 @@ void AppDelegate::applicationWillEnterForeground() {
 
     // if you use SimpleAudioEngine, it must resume here
     // SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
-}
-
-bool AppDelegate::OnMsg_GotoScene(BtMsg& msg)
-{
-    auto director = cocos2d::Director::getInstance();
-    if (!director)
-        return false;
-
-    if (msg.m_extraParams.size() != 1)
-        return false;
-
-    auto it = m_sceneCreators.find(msg.m_info);
-    if (it == m_sceneCreators.end())
-        return false;
-
-    cocos2d::Scene* scene = it->second();
-    if (!scene)
-    {
-        CCLOGERROR("The creator of scene ('%s') not found, scene creation failed.", msg.m_info.c_str());
-        return false;
-    }
-
-    for (auto c : scene->getChildren())
-    {
-        BtBaseScene* scene = dynamic_cast<BtBaseScene*>(c);
-        if (scene)
-        {
-            scene->preEnter(msg.m_extraParams[0]);
-        }
-    }
-
-    if (director->getRunningScene())
-    {
-        director->replaceScene(scene);
-    }
-    else
-    {
-        director->runWithScene(scene);
-    }
-    return true;
 }
 
 void AppDelegate::CallLua_Tick(float deltaSeconds)

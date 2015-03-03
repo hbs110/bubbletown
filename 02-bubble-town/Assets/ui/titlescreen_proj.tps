@@ -28,7 +28,7 @@
             </struct>
         </array>
         <key>allowRotation</key>
-        <true/>
+        <false/>
         <key>premultiplyAlpha</key>
         <false/>
         <key>shapeDebug</key>
@@ -36,9 +36,9 @@
         <key>dpi</key>
         <uint>72</uint>
         <key>dataFormat</key>
-        <string>cocos2d</string>
+        <string>unity</string>
         <key>textureFileName</key>
-        <filename>titlescreen_tiles.png</filename>
+        <filename>titlescreen.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrCompressionQuality</key>
@@ -145,7 +145,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>titlescreen.plist</filename>
+                <filename>titlescreen.txt</filename>
             </struct>
             <key>java</key>
             <struct type="DataFile">

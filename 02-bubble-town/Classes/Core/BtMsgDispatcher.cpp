@@ -9,6 +9,10 @@
 #include "stdafx.h"
 #include "BtMsgDispatcher.h"
 
+#include "BtCoreUtil.h"
+
+const float BT_UnhandledMsgRemovalTime = 3.0f;
+
 BT_SINGLETON_IMPL(BtMsgDispatcher);
 
 BtMsgDispatcher::BtMsgDispatcher()
@@ -21,50 +25,28 @@ BtMsgDispatcher::~BtMsgDispatcher()
 
 }
 
-bool BtMsgDispatcher::subscribe(int msgID, msgHandler_t h)
+bool BtMsgDispatcher::subscribe(int msgID, msgHandler_t h, btflags flags)
 {
-    auto it = m_handlers.find(msgID);
-    if (it == m_handlers.end())
-    {
-        auto result = m_handlers.insert(std::make_pair(msgID, msgHandlerList_t()));
-        if (!result.second)
-        {
-            CCLOGERROR("%s failed: cannot insert '%d' into m_handlers.", __FUNCTION__, msgID);
-            return false;
-        }
+    bool exclusively = BtHasFlag(flags, BtMsgFlag::Exclusively);
 
-        it = result.first;
+    if (BtHasFlag(flags, BtMsgFlag::User))
+    {
+        return m_userHandlers.subscribe(msgID, h, exclusively);
+    }
+    if (BtHasFlag(flags, BtMsgFlag::Sys))
+    {
+        return m_sysHandlers.subscribe(msgID, h, exclusively);
     }
 
-    msgHandlerList_t& handlerList = it->second;
-    for (auto handler : handlerList)
-    {
-        if (handler == h)
-        {
-            CCLOG("inserting a handler (%d) which is already in the handler list, ignored.", msgID);
-            return true;
-        }
-    }
-
-    handlerList.push_back(h);
-    return true;
+    BT_ERROR("subscribe handler failed: neither 'Sys' nor 'User' is marked. (msg: %d).", msgID);
+    return false;
 }
 
-bool BtMsgDispatcher::subscribeExclusively(int msgID, msgHandler_t h)
-{
-    // 'exclusively' means there would be only one handler at most (would fail if there is alrady a handler)
-    auto it = m_handlers.find(msgID);
-    if (it != m_handlers.end() && !it->second.empty())
-        return false;
-
-    return subscribe(msgID, h);
-}
-
-bool BtMsgDispatcher::receive(BtMsg& msg, float deferred /*= 0.0f*/)
+bool BtMsgDispatcher::notify(BtMsg& msg, float deferred /*= 0.0f*/)
 {
     BtMsg added(msg);
     added.markAsReceived(m_curTime, deferred);
-    m_deferredMsgs.push_back(added);
+    m_incomingMsgs.push_back(added);
     return false;
 }
 
@@ -72,44 +54,44 @@ void BtMsgDispatcher::tick(float currentTime, float deltaSeconds)
 {
     m_curTime = currentTime;
 
+    for (auto& msg : m_incomingMsgs)
+        m_deferredMsgs.push_back(msg);
+
+    m_incomingMsgs.clear();
+
     for (auto& msg : m_deferredMsgs)
     {
         if (currentTime - msg.m_creationTime >= msg.m_delayTimer)
         {
-            auto it = m_handlers.find(msg.m_id);
-            if (it != m_handlers.end())
+            BtMsgHandlingResult resultSys = m_sysHandlers.process(msg);
+            BtMsgHandlingResult resultUser = m_userHandlers.process(msg);
+
+            msg.m_processed = true;
+
+            if (!BtMsgHandled(resultSys) && !BtMsgHandled(resultUser))
             {
-                processMessage(msg, it->second);
+                BT_VERB("warn: message (%d) is unhandled.", msg.m_id);
+                m_unhandledMsgs.push_back(msg);
             }
         }
     }
 
     if (m_deferredMsgs.size())
     {
-        m_deferredMsgs.erase(std::remove_if(m_deferredMsgs.begin(), m_deferredMsgs.end(), [](BtMsg& msg) { return msg.m_processed; }));
-    }
-}
-
-bool BtMsgDispatcher::processMessage(BtMsg& msg, msgHandlerList_t& handlers)
-{
-    bool handled = false;
-    for (auto& handler : handlers)
-    {
-        if (handler && handler(msg))
+        auto it = std::remove_if(m_deferredMsgs.begin(), m_deferredMsgs.end(), [](BtMsg& msg) { return msg.m_processed; });
+        if (it != m_deferredMsgs.end())
         {
-            handled = true;
+            m_deferredMsgs.erase(it);
         }
     }
 
-    msg.m_processed = true;
-    return handled;
+    if (m_unhandledMsgs.size())
+    {
+        auto it = std::remove_if(m_unhandledMsgs.begin(), m_unhandledMsgs.end(), [currentTime](BtMsg& msg) { return currentTime - msg.m_creationTime > BT_UnhandledMsgRemovalTime; });
+        if (it != m_unhandledMsgs.end())
+        {
+            m_unhandledMsgs.erase(it);
+        }
+    }
 }
 
-void BtEmitMessage(int msgId, const std::string& msgInfo /*= ""*/, float deferred /*= 0.0f*/)
-{
-    if (!BtMsgDispatcher::Get())
-        return;
-
-    BtMsg msg(msgId, msgInfo);
-    BtMsgDispatcher::Get()->receive(msg, deferred);
-}

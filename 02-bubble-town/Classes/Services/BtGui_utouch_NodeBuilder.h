@@ -31,6 +31,7 @@ private:
 
     bool BuildNode(cocos2d::Node* destNode, const rapidjson::Value& desc, const cocos2d::Rect& parentRect);
     bool BuildImage(cocos2d::Node* destNode, const rapidjson::Value& desc, const cocos2d::Rect& parentRect);
+    bool BuildButton(cocos2d::Node* destNode, const rapidjson::Value& desc, const cocos2d::Rect& parentRect);
 
     cocos2d::Vec2 GetScaled(const rapidjson::Value& desc, const char* prop);
 };
