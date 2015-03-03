@@ -35,7 +35,7 @@ bool AppMsgHandlers::onGotoScene(BtMsg& msg)
         return false;
 
     cocos2d::Scene* scene = BtSceneFactory::Get()->Create(msg.m_info);
-    BT_EXPECT_RET_V2(scene, tfm::format("scene ('%s') creation failed.", msg.m_info), false);
+    BT_EXPECT_RET(scene, tfm::format("scene ('%s') creation failed.", msg.m_info), false);
 
     for (auto c : scene->getChildren())
     {

@@ -24,19 +24,19 @@ cocos2d::Node* BtGui_utouch::LoadLayout(const std::string& layoutFile)
     std::string layoutFilename = layoutFile + ".ui_layout";
 
     auto sfc = cocos2d::SpriteFrameCache::getInstance();
-    BT_EXPECT_RET_V2(sfc, tfm::format("cocos2d::SpriteFrameCache not available. (while loading '%s')", layoutFile), nullptr);
+    BT_EXPECT_RET(sfc, tfm::format("cocos2d::SpriteFrameCache not available. (while loading '%s')", layoutFile), nullptr);
     sfc->addSpriteFramesWithFile(atlasFile, atlasTexture);
 
     std::string layoutContent = cocos2d::FileUtils::getInstance()->getStringFromFile(layoutFilename);
-    BT_EXPECT_RET_V2(layoutContent.size(), tfm::format("layout file reading failed. ('%s')", layoutFilename), nullptr);
+    BT_EXPECT_RET(layoutContent.size(), tfm::format("layout file reading failed. ('%s')", layoutFilename), nullptr);
 
     rapidjson::Document doc;
     doc.Parse<0>(layoutContent.c_str());
-    BT_EXPECT_RET_V2(doc.IsObject(), tfm::format("layout file parsing (as a json doc) failed. ('%s')", layoutFilename), nullptr);
+    BT_EXPECT_RET(doc.IsObject(), tfm::format("layout file parsing (as a json doc) failed. ('%s')", layoutFilename), nullptr);
 
-    BT_EXPECT_RET_V2(BtJsonValue::IsRootNode(doc), "root node not found.", nullptr);
+    BT_EXPECT_RET(BtJsonValue::IsRootNode(doc), "root node not found.", nullptr);
     cocos2d::Vec2 designRes = BtJsonValue::GetVec2Prop(doc, "DesignTimeResolution");
-    BT_EXPECT_RET_V2(BtIsValid(designRes) && !designRes.isZero(), "design time resolution is not set.", false);
+    BT_EXPECT_RET(BtIsValid(designRes) && !designRes.isZero(), "design time resolution is not set.", false);
 
     cocos2d::Rect runtimeRect;
     runtimeRect.origin = cocos2d::Director::getInstance()->getVisibleOrigin();
@@ -44,7 +44,7 @@ cocos2d::Node* BtGui_utouch::LoadLayout(const std::string& layoutFile)
     BtUINodeBuilder_utouch builder(designRes, runtimeRect.size);
 
     auto node = LoadLayoutRecursively(&builder, doc, runtimeRect);
-    BT_EXPECT_RET_V2(node, tfm::format("layout file parsing (recursively) failed. ('%s')", layoutFilename), nullptr);
+    BT_EXPECT_RET(node, tfm::format("layout file parsing (recursively) failed. ('%s')", layoutFilename), nullptr);
     
     node->setAnchorPoint(cocos2d::Vec2::ZERO);
     node->setPosition(runtimeRect.origin);
@@ -54,10 +54,10 @@ cocos2d::Node* BtGui_utouch::LoadLayout(const std::string& layoutFile)
 cocos2d::Node* BtGui_utouch::LoadLayoutRecursively(BtUINodeBuilder_utouch* builder, const rapidjson::Value& jsonNode, const cocos2d::Rect& parentRect)
 {
     std::string ctrlType = BtJsonValue::GetStrProp(jsonNode, "__type_info__");
-    BT_EXPECT_RET_V2(ctrlType.size(), "layout node type not specified.", nullptr);
+    BT_EXPECT_RET(ctrlType.size(), "layout node type not specified.", nullptr);
 
     auto node = builder->Create(ctrlType, jsonNode, parentRect);
-    BT_EXPECT_RET_V2(node, tfm::format("ui node '%s' creation failed using layout node type '%s'.", BtJsonValue::GetStrProp(jsonNode, "Name"), ctrlType), nullptr);
+    BT_EXPECT_RET(node, tfm::format("ui node '%s' creation failed using layout node type '%s'.", BtJsonValue::GetStrProp(jsonNode, "Name"), ctrlType), nullptr);
 
     cocos2d::Rect currentRect;
     currentRect.origin = parentRect.origin + node->getPosition();

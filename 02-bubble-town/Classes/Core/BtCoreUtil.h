@@ -44,7 +44,7 @@ void BtSetLogMode(BtLogMode mode);
 void BtLogUnexpected(const char* exprStr, const std::string& errContext, const std::string& errMsg);
 
 //TODO: add debugger checking inside these macros (break immediately on failure if a debugger is attached)
-#define BT_EXPECT_V2(expr, errMsg)              if (!(expr)) { BtLogUnexpected(#expr, __FUNCTION__, errMsg); }
-#define BT_EXPECT_RET_V2(expr, errMsg, ret)     if (!(expr)) { BtLogUnexpected(#expr, __FUNCTION__, errMsg); return ret; }  // 'ret' could be ignored, in this case the function returns void
-#define BT_UNEXPECTED(errMsg)                   { BtLogUnexpected("<null>", __FUNCTION__, errMsg); }
+#define BT_EXPECT(expr, errMsg)              if (!(expr)) { BtLogUnexpected(#expr, __FUNCTION__, errMsg); }
+#define BT_EXPECT_RET(expr, errMsg, ret)     if (!(expr)) { BtLogUnexpected(#expr, __FUNCTION__, errMsg); return ret; }  // 'ret' could be ignored, in this case the function returns void
+#define BT_UNEXPECTED(errMsg)                { BtLogUnexpected("<null>", __FUNCTION__, errMsg); }
 

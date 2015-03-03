@@ -42,11 +42,11 @@ std::string BtJsonValue::GetStrProp(const rapidjson::Value& vm, const char* prop
 cocos2d::Vec2 BtJsonValue::GetVec2Prop(const rapidjson::Value& vm, const char* propName)
 {
     std::string val = GetStrProp(vm, propName);
-    BT_EXPECT_RET_V2(val.size(), tfm::format("property (%s) not found.", propName), BT_INVALID_VEC2);
+    BT_EXPECT_RET(val.size(), tfm::format("property (%s) not found.", propName), BT_INVALID_VEC2);
 
     cocos2d::Vec2 v;
     int cnt = sscanf_s(val.c_str(), "%f, %f", &v.x, &v.y);
-    BT_EXPECT_RET_V2(cnt == 2, tfm::format("bad format for property (%s).", propName), BT_INVALID_VEC2);
+    BT_EXPECT_RET(cnt == 2, tfm::format("bad format for property (%s).", propName), BT_INVALID_VEC2);
 
     return v;
 }
@@ -54,10 +54,10 @@ cocos2d::Vec2 BtJsonValue::GetVec2Prop(const rapidjson::Value& vm, const char* p
 std::string BtJsonValue::GetResProp(const rapidjson::Value& vm, const char* propName)
 {
     std::string val = GetStrProp(vm, propName);
-    BT_EXPECT_RET_V2(val.size(), tfm::format("property (%s) not found.", propName), "");
+    BT_EXPECT_RET(val.size(), tfm::format("property (%s) not found.", propName), "");
 
     size_t pos = val.rfind(":"); 
-    BT_EXPECT_RET_V2(pos != std::string::npos, tfm::format("the value (%s) of property (%s) is invalid.", val, propName), "");
+    BT_EXPECT_RET(pos != std::string::npos, tfm::format("the value (%s) of property (%s) is invalid.", val, propName), "");
 
     std::string ret = val.substr(pos + 1);
     return ret;
@@ -72,7 +72,7 @@ bool BtJsonValue::IsRootNode(const rapidjson::Value& val)
 void BtUIStdHandlers::onButtonTouch(cocos2d::Ref *pSender, cocos2d::ui::Widget::TouchEventType type)
 {
     cocos2d::ui::Button* button = dynamic_cast<cocos2d::ui::Button*>(pSender);
-    BT_EXPECT_RET_V2(button, "a non-button control emits a button event, ignored.", ;);
+    BT_EXPECT_RET(button, "a non-button control emits a button event, ignored.", ;);
 
     if (type == cocos2d::ui::Widget::TouchEventType::BEGAN)
     {

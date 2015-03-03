@@ -17,7 +17,7 @@ enum class BtMsgHandlingResult
     Failed,         // every possible handler returns false
 };
 
-inline bool BtMsgHandled(BtMsgHandlingResult result)  {    return result == BtMsgHandlingResult::Successfully; }
+inline bool BtMsgHandled(BtMsgHandlingResult result)  { return result == BtMsgHandlingResult::Successfully; }
 
 
 class BtMsg

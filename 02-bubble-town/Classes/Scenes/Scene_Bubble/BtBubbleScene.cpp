@@ -34,8 +34,8 @@ static std::string _json_doc_to_string(const rapidjson::Document& doc)
 //      when something is unexpectedly, seriously and horribly wrong, 
 //      we would try to recover from the situation and return to the town scene immediately
 static auto fnBackToTown = []() { BT_POST_LUA_AND_FLUSH(BtMsgID::GotoScene, BTSCN_town); };
-#define BT_EXPECT_BubbleSceneEnter(expr, errMsg)  \
-    BT_EXPECT_RET_V2(expr, errMsg, fnBackToTown())   // fnBackToTown() is called immediately so BT_EXPECT_RET_V2() still returns nothing
+#define BT_BubbleSceneValidate(expr, errMsg)  \
+    BT_EXPECT_RET(expr, errMsg, fnBackToTown())   // fnBackToTown() is called immediately so BT_EXPECT_RET() still returns nothing
 
 BtBubbleScene::BtBubbleScene() 
     : m_btLoot(nullptr)
@@ -97,14 +97,14 @@ void BtBubbleScene::do_enter()
 
     // read 'battleConfig' below for current level
     std::string battleConfig = m_preEnterConfig;
-    BT_EXPECT_BubbleSceneEnter(battleConfig.size() > 0, "scene config is empty.");
+    BT_BubbleSceneValidate(battleConfig.size() > 0, "scene config is empty.");
     // it would be cleared as soon as do_enter() ends
 
     // parsing the json and extracting the level id
     rapidjson::Document doc;
     doc.Parse<0>(battleConfig.c_str());
-    BT_EXPECT_BubbleSceneEnter(doc.IsObject(), "invalid scene config json: (not a 'json_object').");
-    BT_EXPECT_BubbleSceneEnter(doc["level_id"].IsInt(), "invalid scene config json: (invalid 'level_id': not a 'json_integer').");
+    BT_BubbleSceneValidate(doc.IsObject(), "invalid scene config json: (not a 'json_object').");
+    BT_BubbleSceneValidate(doc["level_id"].IsInt(), "invalid scene config json: (invalid 'level_id': not a 'json_integer').");
     m_curPlayingLevel = doc["level_id"].GetInt();
 
     // notify the game

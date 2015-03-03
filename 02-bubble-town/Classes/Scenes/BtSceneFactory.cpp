@@ -41,7 +41,7 @@ cocos2d::Scene* BtSceneFactory::Create(const std::string& sceneName)
         return false;
 
     cocos2d::Scene* scene = it->second();
-    BT_EXPECT_RET_V2(scene, tfm::format("The creator of scene ('%s') not found, scene creation failed.", sceneName), nullptr);
+    BT_EXPECT_RET(scene, tfm::format("The creator of scene ('%s') not found, scene creation failed.", sceneName), nullptr);
 
     return scene;
 }

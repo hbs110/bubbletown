@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "AppDelegate.h"
 #include "AppMacros.h"
-#include "AppStartScene.h"
 
+#include "Scenes/Scene_Start/BtStartScene.h"
 #include "Scenes/Scene_Bubble/BtBubbleScene.h"
 #include "Scenes/Scene_Town/BtTownScene.h"
 #include "Scenes/Scene_World/BtWorldScene.h"
@@ -120,7 +120,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     AppMsgHandlers::registerGlobally();
 
     BtSceneFactory::CreateInst();
-    BtSceneFactory::Get()->RegisterSceneCreator<AppStartScene>();
+    BtSceneFactory::Get()->RegisterSceneCreator<BtStartScene>();
     BtSceneFactory::Get()->RegisterSceneCreator<BtBubbleScene>();
     BtSceneFactory::Get()->RegisterSceneCreator<BtTownScene>();
     BtSceneFactory::Get()->RegisterSceneCreator<BtWorldScene>();

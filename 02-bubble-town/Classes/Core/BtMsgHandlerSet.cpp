@@ -23,7 +23,7 @@ bool BtMsgHandlerSet::subscribe(int msgID, msgHandler_t h, bool exclusively)
     else
     {
         auto result = m_handlers.insert(std::make_pair(msgID, msgHandlerList_t()));
-        BT_EXPECT_RET_V2(result.second, tfm::format("subscribe handler failed (msg: %d).", msgID), false);
+        BT_EXPECT_RET(result.second, tfm::format("subscribe handler failed (msg: %d).", msgID), false);
 
         it = result.first;
     }

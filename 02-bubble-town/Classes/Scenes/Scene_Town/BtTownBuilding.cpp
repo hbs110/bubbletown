@@ -34,7 +34,7 @@ BtTownBuilding* BtTownBuilding::create(const std::string& name, const std::strin
         rect.size.width -= borderPixels * 2;
         rect.size.height -= borderPixels * 2;
         frame->setRectInPixels(rect);
-        sprite->setDisplayFrame(frame);
+        sprite->setSpriteFrame(frame);
     }
 
     cocos2d::Size size = sprite->getContentSize();

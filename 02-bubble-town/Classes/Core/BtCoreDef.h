@@ -20,7 +20,7 @@ typedef const char* const   BtConstStr;
 typedef unsigned int btflags;
 
 // flag operations
-template <typename T> inline bool BtHasFlag(btflags flags, T targetFlags) { return flags & (btflags) targetFlags; }
+template <typename T> inline bool BtHasFlag(btflags flags, T targetFlags) { return (flags & (btflags) targetFlags) != 0; }
 template <typename T> inline void BtMarkFlag(btflags& flags, T targetFlags) { flags |= (btflags) targetFlags; }
 template <typename T> inline void BtClearFlag(btflags& flags, T targetFlags) { flags &= ~((btflags) targetFlags); }
 

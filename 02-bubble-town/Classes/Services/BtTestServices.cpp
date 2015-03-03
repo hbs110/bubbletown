@@ -37,8 +37,8 @@ void BtTestServices::Destroy()
 
 bool BtTestServices::RegisterTest(const BtTest& test)
 {
-    BT_EXPECT_RET_V2(test.name.size(), "invalid test name", false);
-    BT_EXPECT_RET_V2(test.func, "no test func specified", false);
+    BT_EXPECT_RET(test.name.size(), "invalid test name", false);
+    BT_EXPECT_RET(test.func, "no test func specified", false);
 
     // prerequisite checking
     auto& testList = m_tests[test.stage];
@@ -54,7 +54,7 @@ bool BtTestServices::RegisterTest(const BtTest& test)
             }
         }
 
-        BT_EXPECT_RET_V2(found, tfm::format("test has a prerequisite '%s' but not found in existing test list.", test.prerequisite), false);
+        BT_EXPECT_RET(found, tfm::format("test has a prerequisite '%s' but not found in existing test list.", test.prerequisite), false);
     }
 
     // always append the test at the tail so that it always runs after its prerequisite

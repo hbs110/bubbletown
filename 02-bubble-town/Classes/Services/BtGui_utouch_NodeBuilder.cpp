@@ -40,16 +40,16 @@ BtUINodeBuilder_utouch::BtUINodeBuilder_utouch(const cocos2d::Vec2& designRes, c
 
 cocos2d::Node* BtUINodeBuilder_utouch::Create(const std::string& nodeType, const rapidjson::Value& layoutNode, const cocos2d::Rect& parentRect)
 {
-    BT_EXPECT_RET_V2(m_scaleRatio > 0, "trying to parse a node before a valid scale ratio is set.", false);
+    BT_EXPECT_RET(m_scaleRatio > 0, "trying to parse a node before a valid scale ratio is set.", false);
 
     auto it = m_creators.find(nodeType);
-    BT_EXPECT_RET_V2(it != m_creators.end(), tfm::format("the *creator* of layout node type '%s' is unregistored.", nodeType), nullptr);
+    BT_EXPECT_RET(it != m_creators.end(), tfm::format("the *creator* of layout node type '%s' is unregistored.", nodeType), nullptr);
 
     auto node = it->second();
-    BT_EXPECT_RET_V2(node, tfm::format("ui node creation failed using layout node type '%s'.", nodeType), nullptr);
+    BT_EXPECT_RET(node, tfm::format("ui node creation failed using layout node type '%s'.", nodeType), nullptr);
 
     auto it_b = m_builders.find(nodeType);
-    BT_EXPECT_RET_V2(it_b != m_builders.end(), tfm::format("the *builder* of layout node type '%s' is unregistored.", nodeType), nullptr);
+    BT_EXPECT_RET(it_b != m_builders.end(), tfm::format("the *builder* of layout node type '%s' is unregistored.", nodeType), nullptr);
 
     it_b->second(node, layoutNode, parentRect);
     return node;
@@ -66,7 +66,7 @@ cocos2d::Vec2 BtUINodeBuilder_utouch::GetScaled(const rapidjson::Value& desc, co
 
 bool BtUINodeBuilder_utouch::BuildNode(cocos2d::Node* destNode, const rapidjson::Value& desc, const cocos2d::Rect& parentRect)
 {
-    BT_EXPECT_RET_V2(destNode, "invalid cc node.", false);
+    BT_EXPECT_RET(destNode, "invalid cc node.", false);
 
     // name (optional)
     std::string name = BtJsonValue::GetStrProp(desc, "Name");
@@ -81,7 +81,7 @@ bool BtUINodeBuilder_utouch::BuildNode(cocos2d::Node* destNode, const rapidjson:
 
     cocos2d::Vec2 pos = GetScaled(desc, "Position");
     cocos2d::Vec2 size = GetScaled(desc, "Size");
-    BT_EXPECT_RET_V2(BtIsValid(pos) && BtIsValid(size), "property parsing failed.", false);
+    BT_EXPECT_RET(BtIsValid(pos) && BtIsValid(size), "property parsing failed.", false);
 
     destNode->setAnchorPoint(cocos2d::Vec2(0.0f, 1.0f)); // use upper-left corner for alignment
     destNode->setContentSize(cocos2d::Size(size));
@@ -96,10 +96,10 @@ bool BtUINodeBuilder_utouch::BuildImage(cocos2d::Node* destNode, const rapidjson
         return false;
 
     std::string tileName = BtJsonValue::GetResProp(desc, "Res");
-    BT_EXPECT_RET_V2(tileName.size(), "resource of the image not found or not specified", false);
+    BT_EXPECT_RET(tileName.size(), "resource of the image not found or not specified", false);
 
     cocos2d::ui::ImageView* imageView = dynamic_cast<cocos2d::ui::ImageView*>(destNode);
-    BT_EXPECT_RET_V2(imageView, "node type is not ImageView when calling BuildImage()", false);
+    BT_EXPECT_RET(imageView, "node type is not ImageView when calling BuildImage()", false);
     imageView->loadTexture(tileName, cocos2d::ui::Widget::TextureResType::PLIST);
 
     BT_VERB("image node '%s' (res '%s') is created.", BtJsonValue::GetStrProp(desc, "Name"), tileName);
@@ -113,7 +113,7 @@ bool BtUINodeBuilder_utouch::BuildButton(cocos2d::Node* destNode, const rapidjso
         return false;
 
     cocos2d::ui::Button* button = dynamic_cast<cocos2d::ui::Button*>(destNode);
-    BT_EXPECT_RET_V2(button, "node type is not ImageView when calling BuildImage()", false);
+    BT_EXPECT_RET(button, "node type is not ImageView when calling BuildImage()", false);
 
     // button text
     std::string btText = BtJsonValue::GetResProp(desc, "ButtonText");
@@ -127,11 +127,11 @@ bool BtUINodeBuilder_utouch::BuildButton(cocos2d::Node* destNode, const rapidjso
 
     // button appearance
     std::string resNormal = BtJsonValue::GetResProp(desc, "Res_Normal");
-    BT_EXPECT_RET_V2(resNormal.size(), "'Res_Normal' of the button not found or not specified", false);
+    BT_EXPECT_RET(resNormal.size(), "'Res_Normal' of the button not found or not specified", false);
     button->loadTextureNormal(resNormal, cocos2d::ui::Widget::TextureResType::PLIST);
 
     std::string resPressed = BtJsonValue::GetResProp(desc, "Res_Pressed");
-    BT_EXPECT_RET_V2(resPressed.size(), "'Res_Pressed' of the button not found or not specified", false);
+    BT_EXPECT_RET(resPressed.size(), "'Res_Pressed' of the button not found or not specified", false);
     button->loadTexturePressed(resPressed, cocos2d::ui::Widget::TextureResType::PLIST);
 
     BT_VERB("button node '%s' (text: '%s', resNormal: '%s', resPressed: '%s') is created.",
