@@ -81,8 +81,6 @@ bool AppStartScene::init()
 
     {
         auto node = BtGui_utouch::LoadLayout("ui/titlescreen");
-        node->setAnchorPoint(cocos2d::Vec2::ZERO);
-        node->setPosition(origin);
         root->addChild(node, 1);
     }
 

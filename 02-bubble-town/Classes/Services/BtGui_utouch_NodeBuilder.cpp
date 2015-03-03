@@ -22,20 +22,17 @@ BtUINodeBuilder_utouch::BtUINodeBuilder_utouch(const cocos2d::Vec2& designRes, c
         float widthScale = runtimeRes.x / designRes.x;
         float heightScale = runtimeRes.y / designRes.y;
         m_scaleRatio = std::min(widthScale, heightScale);   // for safety we choose the smaller ratio
-
-        m_designRes = designRes;
-        m_runtimeRes = runtimeRes;
     }
 
     m_creators[BtStr_RootNode]  = [](){ return cocos2d::Node::create(); };
     m_creators[BtStr_ImageNode] = [](){ return cocos2d::ui::ImageView::create(); };
 
     using namespace std::placeholders;
-    m_builders[BtStr_RootNode]  = std::bind(&BtUINodeBuilder_utouch::BuildNode, this, _1, _2);
-    m_builders[BtStr_ImageNode] = std::bind(&BtUINodeBuilder_utouch::BuildImage, this, _1, _2);
+    m_builders[BtStr_RootNode]  = std::bind(&BtUINodeBuilder_utouch::BuildNode, this, _1, _2, _3);
+    m_builders[BtStr_ImageNode] = std::bind(&BtUINodeBuilder_utouch::BuildImage, this, _1, _2, _3);
 }
 
-cocos2d::Node* BtUINodeBuilder_utouch::Create(const std::string& nodeType, const rapidjson::Value& layoutNode)
+cocos2d::Node* BtUINodeBuilder_utouch::Create(const std::string& nodeType, const rapidjson::Value& layoutNode, const cocos2d::Rect& parentRect)
 {
     BT_EXPECT_RET_V2(m_scaleRatio > 0, "trying to parse a node before a valid scale ratio is set.", false);
 
@@ -48,7 +45,7 @@ cocos2d::Node* BtUINodeBuilder_utouch::Create(const std::string& nodeType, const
     auto it_b = m_builders.find(nodeType);
     BT_EXPECT_RET_V2(it_b != m_builders.end(), tfm::format("the *builder* of layout node type '%s' is unregistored.", nodeType), nullptr);
 
-    it_b->second(node, layoutNode);
+    it_b->second(node, layoutNode, parentRect);
     return node;
 }
 
@@ -61,7 +58,7 @@ cocos2d::Vec2 BtUINodeBuilder_utouch::GetScaled(const rapidjson::Value& desc, co
     return cocos2d::Vec2(v.x * m_scaleRatio, v.y * m_scaleRatio);
 }
 
-bool BtUINodeBuilder_utouch::BuildNode(cocos2d::Node* destNode, const rapidjson::Value& desc)
+bool BtUINodeBuilder_utouch::BuildNode(cocos2d::Node* destNode, const rapidjson::Value& desc, const cocos2d::Rect& parentRect)
 {
     BT_EXPECT_RET_V2(destNode, "invalid cc node.", false);
 
@@ -75,14 +72,14 @@ bool BtUINodeBuilder_utouch::BuildNode(cocos2d::Node* destNode, const rapidjson:
 
     destNode->setAnchorPoint(cocos2d::Vec2(0.0f, 1.0f)); // use upper-left corner for alignment
     destNode->setContentSize(cocos2d::Size(size));
-    destNode->setPosition(pos.x, m_runtimeRes.y - pos.y);
+    destNode->setPosition(pos.x, parentRect.size.height - pos.y);
 
     return true;
 }
 
-bool BtUINodeBuilder_utouch::BuildImage(cocos2d::Node* destNode, const rapidjson::Value& desc)
+bool BtUINodeBuilder_utouch::BuildImage(cocos2d::Node* destNode, const rapidjson::Value& desc, const cocos2d::Rect& parentRect)
 {
-    if (!BuildNode(destNode, desc))
+    if (!BuildNode(destNode, desc, parentRect))
         return false;
     
     std::string tileName = BtJsonValue::GetResProp(desc, "Res");

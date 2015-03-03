@@ -18,6 +18,6 @@ public:
     static cocos2d::Node* LoadLayout(const std::string& layoutFile);
 
 private:
-    static cocos2d::Node* LoadLayoutRecursively(BtUINodeBuilder_utouch* builder, const rapidjson::Value& jsonNode);
+    static cocos2d::Node* LoadLayoutRecursively(BtUINodeBuilder_utouch* builder, const rapidjson::Value& jsonNode, const cocos2d::Rect& parentRect);
 };
 
