@@ -3,6 +3,8 @@ require "g_shared"
 require "g_constants"
 require "g_util"
 
+require "tab_exp"
+
 game_sanity = require "game_sanity"
 level_handlers = require "level_handlers"
 ui_handlers = require "ui_handlers"
@@ -12,7 +14,6 @@ game = {}
 -- installed components
 game.simulation = require "simulation"
 game.player = require "player"
-
 
 function game.init() 
 	g_checkpoint("game.init() started.")
@@ -37,6 +38,9 @@ function game.init()
 	game_sanity.check_post_init()
 	
 	g_goto_scene(BTSCN_start)
+
+	g_log_dbg("max_level: "..get_max_level())
+	g_log_dbg("level 1 exp: "..get_level_exp(1))
 
 	g_checkpoint("game.init() done.")
 	return true

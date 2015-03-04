@@ -1,5 +1,6 @@
 
 require "g_shared"
+require "tab_exp"
 
 status = {}
 
@@ -25,12 +26,16 @@ end
 function status.addExp(count)
 	_data[BTPL_Exp] = _data[BTPL_Exp] + count
 
-	if _data[BTPL_Exp] > 20 then
+	if status.exceedLevelExp() then
 		status.levelUp()
 
 		_data[BTPL_Exp] = _data[BTPL_Exp] - 20
 		print(string.format("player exp changed to '%d'.", _data[BTPL_Exp]))
 	end
+end
+
+function status.exceedLevelExp()
+	return _data[BTPL_Exp] >= get_level_exp(_data[BTPL_Level])
 end
 
 function status.levelUp()

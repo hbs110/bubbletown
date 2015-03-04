@@ -1,15 +1,9 @@
 
-package.path=package.path
-	..';lua/external/JSON/?.lua'
-	..';lua/core/?.lua'
-	..';lua/core/g_tab/?.lua'
-	..';lua/player/?.lua'
-	..';lua/player/slices/?.lua'
-	..';lua/simulation/?.lua'
-	..';lua/game/?.lua'
-	..';lua/?.lua'
+package.path = package.path..';lua/?.lua'
+package.path = package.path..require "packages"
 
 -- 数据表
+require "tab_exp"
 require "tab_buildings"
 
 -- 主逻辑入口

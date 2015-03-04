@@ -10,6 +10,7 @@
 #include "BtLuaService.h"
 
 #include "Core/tinyformat/tinyformat.h"
+#include "Core/BtCoreUtil.h"
 
 #include <btlua.h>
 
@@ -50,9 +51,6 @@ bool BtLuaService::Init()
 
     BtLua_SetErrorOutput(std::bind(&BtLuaService::OnError, this, std::placeholders::_1));
 
-    if (!BtLua_ExecFile(L, "lua/bootstrap.lua"))
-        return false;
-
     luabridge::getGlobalNamespace(L)
         .beginNamespace(BtNativeNamespace)
         .addFunction(Func_Print, BtLuaService::NativePrint)
@@ -60,6 +58,9 @@ bool BtLuaService::Init()
 
     // replacing system functions with customized ones 
     BtLua_ExecString(L, tinyformat::format("_G.%s = %s.%s", Func_Print, BtNativeNamespace, Func_Print));
+
+    if (!BtLua_ExecFile(L, "lua/bootstrap.lua"))
+        return false;
 
     return true;
 }
@@ -76,16 +77,11 @@ btlua_handle BtLuaService::GetHandle()
 
 void BtLuaService::OnError(const std::string& errMsg)
 {
-    CCLOG("lua_err: %s", errMsg.c_str());
-}
-
-void BtLuaService::OnPrint(const std::string& msg)
-{
-    CCLOG("lua: %s", msg.c_str());
+    BT_ERROR("lua_err: %s", errMsg);
 }
 
 void BtLuaService::NativePrint(const std::string& msg)
 {
-    Get()->OnPrint(msg);
+    BT_LOG("lua: %s", msg.c_str());
 }
 

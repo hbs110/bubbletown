@@ -48,9 +48,8 @@ public:
     void RegisterFunction(const char* name, FUNC const fp);
 
 private:
-    // callbacks of various internal events
+    // callbacks of internal events
     void OnError(const std::string& errMsg);
-    void OnPrint(const std::string& msg);
 
     // methods exposed to Lua 
     static void NativePrint(const std::string& msg);
