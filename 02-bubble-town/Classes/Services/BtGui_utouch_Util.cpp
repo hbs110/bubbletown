@@ -45,7 +45,7 @@ cocos2d::Vec2 BtJsonValue::GetVec2Prop(const rapidjson::Value& vm, const char* p
     BT_EXPECT_RET(val.size(), tfm::format("property (%s) not found.", propName), BT_INVALID_VEC2);
 
     cocos2d::Vec2 v;
-    int cnt = sscanf_s(val.c_str(), "%f, %f", &v.x, &v.y);
+    int cnt = sscanf(val.c_str(), "%f, %f", &v.x, &v.y);
     BT_EXPECT_RET(cnt == 2, tfm::format("bad format for property (%s).", propName), BT_INVALID_VEC2);
 
     return v;
@@ -76,10 +76,12 @@ void BtUIStdHandlers::onButtonTouch(cocos2d::Ref *pSender, cocos2d::ui::Widget::
 
     if (type == cocos2d::ui::Widget::TouchEventType::BEGAN)
     {
-        BtMsgDispatcher::Get()->notify(BtMsg((int) BtMsgID::UI_ButtonPressed, button->getName()));
+        auto b = BtMsg((int) BtMsgID::UI_ButtonPressed, button->getName());
+        BtMsgDispatcher::Get()->notify(b);
     }
     else if (type == cocos2d::ui::Widget::TouchEventType::ENDED)
     {
-        BtMsgDispatcher::Get()->notify(BtMsg((int) BtMsgID::UI_ButtonReleased, button->getName()));
+        auto b = BtMsg((int) BtMsgID::UI_ButtonReleased, button->getName());
+        BtMsgDispatcher::Get()->notify(b);
     }
 }
