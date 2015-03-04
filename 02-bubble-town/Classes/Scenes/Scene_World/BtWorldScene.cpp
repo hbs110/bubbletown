@@ -31,8 +31,8 @@ bool BtWorldScene::do_init()
 
     auto callback = [](cocos2d::Ref*) { BT_POST_LUA_AND_FLUSH(BtMsgID::GotoScene, BTSCN_town); };
     auto worldButton = cocos2d::MenuItemImage::create(
-        "world_button.png",
-        "world_button.png",
+        "ui_test/world.png",
+        "ui_test/world.png",
         std::bind(callback, std::placeholders::_1));
     worldButton->setName(Bt_SwitchButton);
     worldButton->setPosition(origin.x + visibleSize.width - worldButton->getContentSize().width / 2, origin.y + worldButton->getContentSize().height / 2);

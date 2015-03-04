@@ -31,17 +31,6 @@ bool BtBaseScene::init()
         return false;
     addChild(m_uiRoot, 2);
 
-    auto visibleSize = cocos2d::Director::getInstance()->getVisibleSize();
-    auto origin = cocos2d::Director::getInstance()->getVisibleOrigin();
-
-    cocos2d::ui::Button* btClose = cocos2d::ui::Button::create("CloseNormal.png", "CloseSelected.png");
-    btClose->setPosition(origin + cocos2d::Vec2(visibleSize) - cocos2d::Vec2(btClose->getContentSize() / 2));
-    
-    // the close button handler here should be moved to script
-    BtSetButtonHandler(btClose, []() { BT_POST_LUA_AND_FLUSH(BtMsgID::GotoScene, BTSCN_start); });
-
-    m_uiRoot->addChild(btClose, 1);
-
     if (!do_init())
         return false;
 
