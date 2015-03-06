@@ -1,6 +1,12 @@
 
-package.path = package.path..';lua/?.lua'
+-- injected print
+_G.print = bt_native.print
+
 package.path = package.path..require "packages"
+
+-- debugging output
+-- print(tostring(package.path))
+-- print(tostring(package.searchers))
 
 -- 数据表
 require "tab_exp"

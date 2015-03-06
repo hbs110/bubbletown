@@ -42,6 +42,9 @@ public:
 
     btlua_handle GetHandle();  // main Lua handle accessing
 
+    // use this function to run script with crossplatform support
+    bool RunScriptFile(const char* filename);
+
     template <typename T>
     void RegisterVariable(const char* name, T* var);
     template <typename FUNC>

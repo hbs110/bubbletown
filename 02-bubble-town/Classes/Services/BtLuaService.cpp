@@ -12,6 +12,8 @@
 #include "Core/tinyformat/tinyformat.h"
 #include "Core/BtCoreUtil.h"
 
+#include "BtLuaLoader.h"
+
 #include <btlua.h>
 
 #ifdef _DEBUG
@@ -27,8 +29,6 @@ namespace
 {
     // wouldn't pollute the global namespace
     btlua_handle L;
-
-    BtConstStr Func_Print = "print";
 }
 
 BT_SINGLETON_IMPL(BtLuaService);
@@ -49,17 +49,15 @@ bool BtLuaService::Init()
     if (!L)
         return false;
 
+    // builtin functions & callbacks
+    RegisterFunction("print", &BtLuaService::NativePrint);
     BtLua_SetErrorOutput(std::bind(&BtLuaService::OnError, this, std::placeholders::_1));
 
-    luabridge::getGlobalNamespace(L)
-        .beginNamespace(BtNativeNamespace)
-        .addFunction(Func_Print, BtLuaService::NativePrint)
-        .endNamespace();
+    BtLuaAddSearchPath(L, "lua");
+    BtSetLuaLoader(L, BtLuaLoader);
 
-    // replacing system functions with customized ones 
-    BtLua_ExecString(L, tinyformat::format("_G.%s = %s.%s", Func_Print, BtNativeNamespace, Func_Print));
-
-    if (!BtLua_ExecFile(L, "lua/bootstrap.lua"))
+    // bootstrapping
+    if (!RunScriptFile("bootstrap"))
         return false;
 
     return true;
@@ -83,5 +81,10 @@ void BtLuaService::OnError(const std::string& errMsg)
 void BtLuaService::NativePrint(const std::string& msg)
 {
     BT_LOG("lua: %s", msg.c_str());
+}
+
+bool BtLuaService::RunScriptFile(const char* filename)
+{
+    return BtLua_ExecString(L, tfm::format("require \"%s\"", filename));
 }
 
