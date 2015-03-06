@@ -149,6 +149,7 @@
     <ClCompile Include="..\Classes\Services\BtGuiService.cpp" />
     <ClCompile Include="..\Classes\Services\BtGui_utouch_NodeBuilder.cpp" />
     <ClCompile Include="..\Classes\Services\BtGui_utouch_Util.cpp" />
+    <ClCompile Include="..\Classes\Services\BtLuaBuiltinInterfaces.cpp" />
     <ClCompile Include="..\Classes\Services\BtLuaLoader.cpp" />
     <ClCompile Include="..\Classes\Services\BtLuaService.cpp" />
     <ClCompile Include="..\Classes\Services\BtTestServices.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="..\Classes\Services\BtGuiService.h" />
     <ClInclude Include="..\Classes\Services\BtGui_utouch_NodeBuilder.h" />
     <ClInclude Include="..\Classes\Services\BtGui_utouch_Util.h" />
+    <ClInclude Include="..\Classes\Services\BtLuaBuiltinInterfaces.h" />
     <ClInclude Include="..\Classes\Services\BtLuaLoader.h" />
     <ClInclude Include="..\Classes\Services\BtLuaService.h" />
     <ClInclude Include="..\Classes\Services\BtTestDef.h" />

@@ -131,6 +131,9 @@
     <ClCompile Include="..\Classes\Services\BtLuaLoader.cpp">
       <Filter>Classes\2. Services</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Services\BtLuaBuiltinInterfaces.cpp">
+      <Filter>Classes\2. Services</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -236,6 +239,9 @@
       <Filter>Classes\2. Services\utouch</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Services\BtLuaLoader.h">
+      <Filter>Classes\2. Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Services\BtLuaBuiltinInterfaces.h">
       <Filter>Classes\2. Services</Filter>
     </ClInclude>
   </ItemGroup>

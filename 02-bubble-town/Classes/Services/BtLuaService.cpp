@@ -13,6 +13,7 @@
 #include "Core/BtCoreUtil.h"
 
 #include "BtLuaLoader.h"
+#include "BtLuaBuiltinInterfaces.h"
 
 #include <btlua.h>
 
@@ -50,9 +51,14 @@ bool BtLuaService::Init()
         return false;
 
     // builtin functions & callbacks
-    RegisterFunction("print", &BtLuaService::NativePrint);
+    RegisterFunction("print", &BtLuaBuiltinInterfaces::Print);
+    RegisterFunction("get_app_writable_path", &BtLuaBuiltinInterfaces::GetAppWritablePath);
+    RegisterFunction("load_string_from_file", &BtLuaBuiltinInterfaces::LoadStringFromFile);
+    RegisterFunction("load_string_from_file_wp", &BtLuaBuiltinInterfaces::LoadStringFromFileWP);
+    RegisterFunction("save_string_into_file_wp", &BtLuaBuiltinInterfaces::SaveStringIntoFileWP);
     BtLua_SetErrorOutput(std::bind(&BtLuaService::OnError, this, std::placeholders::_1));
 
+    // preparing package loading 
     BtLuaAddSearchPath(L, "lua");
     BtSetLuaLoader(L, BtLuaLoader);
 
@@ -78,13 +84,9 @@ void BtLuaService::OnError(const std::string& errMsg)
     BT_ERROR("lua_err: %s", errMsg);
 }
 
-void BtLuaService::NativePrint(const std::string& msg)
-{
-    BT_LOG("lua: %s", msg.c_str());
-}
-
 bool BtLuaService::RunScriptFile(const char* filename)
 {
     return BtLua_ExecString(L, tfm::format("require \"%s\"", filename));
 }
+
 

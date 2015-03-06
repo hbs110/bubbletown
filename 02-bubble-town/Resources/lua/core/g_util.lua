@@ -23,7 +23,7 @@ function g_log_dbg(info)
 end 
 
 function g_build_profile_path(profileName)
-    return PLAYER_PROFILE_DIR..profileName..".json"
+    return profileName..".json"
 end
 
 function g_load_json_from_string(str)
@@ -37,19 +37,25 @@ function g_load_json_from_string(str)
 end
 
 function g_load_json(file)
-    local f, err = io.open(file, "r")
-    if f == nil then
-        g_log_err(string.format("Opening file '%s' failed. (%s)", file, err))
-        return nil
-    end
+    -- local f, err = io.open(file, "r")
+    -- if f == nil then
+    --     g_log_err(string.format("Opening file '%s' failed. (%s)", file, err))
+    --     return nil
+    -- end
 
-    local content = f:read("*all")
-    if not content then
+    -- local content = f:read("*all")
+    -- if not content then
+    --     g_log_err(string.format("Reading file '%s' content failed.", file))
+    --     f:close()
+    --     return nil
+    -- end
+    -- f:close()
+
+    local content = bt_native.load_string_from_file_wp(file)
+    if not content or #content == 0 then
         g_log_err(string.format("Reading file '%s' content failed.", file))
-        f:close()
         return nil
     end
-    f:close()
 
     return g_load_json_from_string(content)
 end
@@ -61,21 +67,22 @@ function g_save_json(file, tbl)
         return false
     end
 
-    local f, err = io.open(file, "w")
-    if not f then
-        g_log_err(string.format("Opening file '%s' failed. (%s)", file, err))
-        return false
-    end
+    -- local f, err = io.open(file, "w")
+    -- if not f then
+    --     g_log_err(string.format("Opening file '%s' failed. (%s)", file, err))
+    --     return false
+    -- end
 
-    succ, ret = f:write(ret)
-    if not succ then 
-        g_log_err(string.format("Writing Json '%s' failed. (%s)", file, ret))
-        f:close()
-        return false
-    end
+    -- succ, ret = f:write(ret)
+    -- if not succ then 
+    --     g_log_err(string.format("Writing Json '%s' failed. (%s)", file, ret))
+    --     f:close()
+    --     return false
+    -- end
 
-    f:close()
-    return true
+    -- f:close()
+    -- return true
+    return bt_native.save_string_into_file_wp(file, ret)
 end
 
 function g_goto_scene(sceneName, sceneConfig) 

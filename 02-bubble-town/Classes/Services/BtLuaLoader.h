@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "btlua.h"
+
 // it's a lua callback, which has to be guaranteed as C-style invoking
 extern "C"
 {

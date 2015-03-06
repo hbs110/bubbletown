@@ -31,16 +31,18 @@ function game.init()
 	end
 
 	if not game.player.load(TEST_PLAYER_PROFILE) then
-		g_log_err("Player profile loading failed, possibly broken.")
-		return false
+		g_log_err("Player profile loading failed, start a new profile.")
 	end
 
 	game_sanity.check_post_init()
 	
 	g_goto_scene(BTSCN_start)
 
-	g_log_dbg("max_level: "..get_max_level())
-	g_log_dbg("level 1 exp: "..get_level_exp(1))
+	-- testing/debugging code
+	-- g_log_dbg("max_level: "..get_max_level())
+	-- g_log_dbg("level 1 exp: "..get_level_exp(1))
+	-- local content = bt_native.load_string_from_file("users/default.json");
+	-- g_log_dbg("default.json size: "..#content)
 
 	g_checkpoint("game.init() done.")
 	return true

@@ -13,8 +13,9 @@ end
 
 function archiving.savefile()
 	if _activeProfileName == DEFAULT_PLAYER_PROFILE then
-		print("profile not been correctly initialized, saving request ignored.")
-		return true
+		-- print("profile not been correctly initialized, saving request ignored.")
+		-- return true
+		_activeProfileName = TEST_PLAYER_PROFILE
 	end
 
 	local function _save()
