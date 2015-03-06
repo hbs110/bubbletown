@@ -21,6 +21,23 @@ const int kGridWidth = kScreenWidth / kBubbleWidth;
 const int kGridHeight = kScreenHeight / kBubbleRealHeight;
 const int kBubbleCountPerLine = kScreenWidth / kBubbleWidth;
 
+enum {
+    COLOR_RED = 0,
+    COLOR_BLUE,
+    COLOR_GREEN,
+    COLOR_ORANGE,
+    COLOR_PURPLE,
+    COLOR_WHITE,
+    COLOR_YELLOW,
+    COLOR_NR,
+};
+
+enum {
+    KEYCODE_PAUSE = 59,
+    KEYCODE_SPEEDUP = 77,
+    KEYCODE_SPEEDDOWN = 78,
+};
+    
 bool BubbleCollisionDetect(Vec2 loc1, Vec2 loc2) {
   auto dist = sqrt((loc1.x - loc2.x) * (loc1.x - loc2.x) + (loc1.y - loc2.y) * (loc1.y - loc2.y));
   if (dist <= kBubbleWidth)
@@ -41,7 +58,7 @@ class Grid {
 
 class Bubble {
  public:
-  static Bubble * create(const char *path);
+  static Bubble * create(int color);
   void set_grid(Grid grid) {
     grid_ = grid;
   }
@@ -61,12 +78,14 @@ class Bubble {
   cocos2d::Sprite *sprite_;
 };
 
-Bubble * Bubble::create(const char *path) {
-  auto b = new Bubble();
-  b->sprite_ = Sprite::create(path);
-  b->sprite_->setScale(kBubbleScale);
-  b->sprite_->retain();
-  return b;
+Bubble * Bubble::create(int color) {
+    char path[64];
+    snprintf(path, 64, "bubble_%d.png", color);
+    auto b = new Bubble();
+    b->sprite_ = Sprite::create(path);
+    b->sprite_->setScale(kBubbleScale);
+    b->sprite_->retain();
+    return b;
 }
 
 typedef array<Bubble *, kBubbleCountPerLine> BubbleLine;
@@ -122,7 +141,7 @@ void GridLayer::onEnter() {
   Layer::onEnter();
   scheduleUpdate();
 
-  auto bubble = Bubble::create("bubble.png");
+  auto bubble = Bubble::create(COLOR_RED);
   // addChild(sprite);
   auto size = bubble->sprite()->getContentSize();
   auto s = Director::getInstance()->getWinSize();
@@ -301,21 +320,24 @@ class BubbleLayer : public cocos2d::Layer {
   void StopBubble();
   // for touche
   // void registerWithTouchDispatcher(void);
+    void onKeyPressed(cocos2d::EventKeyboard::KeyCode code, Event* event);
+    void onKeyReleased(cocos2d::EventKeyboard::KeyCode code, Event* event);
   bool onTouchBegan(Touch *touch, Event* event);
   void onTouchMoved(Touch *touch, Event* event);
   void onTouchEnded(Touch *touch, Event* event);
   void onTouchCancelled(Touch *touch, Event* event);
 
- private:
-  Bubble *bubble_ = NULL;
-  float sin_a_ = 0.0;
-  float cos_a_ = 0.0;
-  void addNewSpriteWithCoords(Vec2 p);
-  bool CheckCollision();
+private:
+    Bubble *bubble_ = NULL;
+    float sin_a_ = 0.0;
+    float cos_a_ = 0.0;
+    bool pause_ = false;
+    void addNewSpriteWithCoords(Vec2 p);
+    bool CheckCollision();
 };
 
 void BubbleLayer::addNewSpriteWithCoords(Vec2 dest) {
-  auto bubble = Bubble::create("bubble.png");
+  auto bubble = Bubble::create(COLOR_RED);
   if (bubble == NULL) {
     printf("create bubble faile\n");
     return;
@@ -355,12 +377,38 @@ bool BubbleLayer::init() {
   return true;
 }
 
+void BubbleLayer::onKeyPressed(cocos2d::EventKeyboard::KeyCode code, Event* event)
+{
+    // cocos2d::log("Box2dView:onKeyPressed, keycode: %d", code);
+    // m_test->Keyboard(static_cast<unsigned char>(code));
+}
+
+void BubbleLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode code, Event* event)
+{
+    cocos2d::log("onKeyReleased, keycode: %d", code);
+    switch (code) {
+    case KEYCODE_PAUSE:
+        pause_ = !pause_;
+        break;
+    case KEYCODE_SPEEDUP:
+        break;
+    case KEYCODE_SPEEDDOWN:
+        break;
+    }
+}
+
 bool BubbleLayer::onTouchBegan(Touch *touch, Event* event) {
   return true;
 }
 
 void BubbleLayer::onTouchMoved(Touch *touch, Event* event) {
   cocos2d::log("%s\n", __FUNCTION__);
+}
+
+static int RandomColor() {
+    struct timeval now;
+    cocos2d::gettimeofday(&now, nullptr);
+    return now.tv_usec % COLOR_NR;
 }
 
 void BubbleLayer::onTouchEnded(Touch *touch, Event* event) {
@@ -385,7 +433,7 @@ void BubbleLayer::onTouchEnded(Touch *touch, Event* event) {
   if (direction)
     cos_a_ = -cos_a_;
 
-  bubble_ = Bubble::create("bubble.png");
+  bubble_ = Bubble::create(RandomColor());
   if (bubble_ == NULL) {
     cocos2d::log("create bubble faile\n");
     return;
@@ -413,6 +461,12 @@ void BubbleLayer::onEnter() {
   listener->onTouchMoved = CC_CALLBACK_2(BubbleLayer::onTouchMoved, this);
   listener->onTouchEnded = CC_CALLBACK_2(BubbleLayer::onTouchEnded, this);    
   _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+
+  auto keyboardListener = cocos2d::EventListenerKeyboard::create();
+  keyboardListener->onKeyPressed = CC_CALLBACK_2(BubbleLayer::onKeyPressed, this);
+  keyboardListener->onKeyReleased = CC_CALLBACK_2(BubbleLayer::onKeyReleased, this);
+  _eventDispatcher->addEventListenerWithFixedPriority(keyboardListener, -11);
+  // _keyboardListener = keyboardListener;
 }
 
 void BubbleLayer::TimeCallback(float dt) {
@@ -500,26 +554,30 @@ bool BubbleLayer::CheckCollision() {
   return false;
 }
 
-void BubbleLayer::update(float dt) {
-  Move(dt);
-  CheckEdge();
+void BubbleLayer::update(float dt)
+{
+    if (pause_)
+        return;
 
-  auto gl = GridLayer::Shared();
-  if (CheckOutScreen()) {
-    assert(gl);
-    auto dest = gl->Pos2Grid(bubble_->sprite()->getPosition());
-    auto s = bubble_;
-    StopBubble();
-    gl->FillGrid(dest, s, false);
-    return;
-  }
-  if (CheckCollision()) {
-    auto dest = gl->Pos2Grid(bubble_->sprite()->getPosition());
-    auto s = bubble_;
-    StopBubble();
-    gl->FillGrid(dest, s, false);
-    return;
-  }
+    Move(dt);
+    CheckEdge();
+
+    auto gl = GridLayer::Shared();
+    if (CheckOutScreen()) {
+        assert(gl);
+        auto dest = gl->Pos2Grid(bubble_->sprite()->getPosition());
+        auto s = bubble_;
+        StopBubble();
+        gl->FillGrid(dest, s, false);
+        return;
+    }
+    if (CheckCollision()) {
+        auto dest = gl->Pos2Grid(bubble_->sprite()->getPosition());
+        auto s = bubble_;
+        StopBubble();
+        gl->FillGrid(dest, s, false);
+        return;
+    }
 }
 
 bool BubbleScene::init() {
