@@ -38,6 +38,8 @@ LOCAL_SRC_FILES := ../main.cpp \
 ../../Classes/Scenes/BtSceneFactory.cpp \
 ../../Classes/Services/BtGui_utouch.cpp \
 ../../Classes/Services/BtGui_utouch_NodeBuilder.cpp \
+../../Classes/Services/BtLuaLoader.cpp \
+../../Classes/Services/BtLuaBuiltinInterfaces.cpp \
 ../../Classes/Services/BtLuaService.cpp \
 ../../Classes/Services/BtGui_utouch_Util.cpp \
 ../../Classes/Services/BtGuiService.cpp \

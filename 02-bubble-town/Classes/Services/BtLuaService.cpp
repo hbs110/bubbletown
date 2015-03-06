@@ -10,6 +10,10 @@
 #include "BtLuaService.h"
 
 #include "Core/tinyformat/tinyformat.h"
+#include "Core/BtCoreUtil.h"
+
+#include "BtLuaLoader.h"
+#include "BtLuaBuiltinInterfaces.h"
 
 #include <btlua.h>
 
@@ -26,8 +30,6 @@ namespace
 {
     // wouldn't pollute the global namespace
     btlua_handle L;
-
-    BtConstStr Func_Print = "print";
 }
 
 BT_SINGLETON_IMPL(BtLuaService);
@@ -48,18 +50,21 @@ bool BtLuaService::Init()
     if (!L)
         return false;
 
+    // builtin functions & callbacks
+    RegisterFunction("print", &BtLuaBuiltinInterfaces::Print);
+    RegisterFunction("get_app_writable_path", &BtLuaBuiltinInterfaces::GetAppWritablePath);
+    RegisterFunction("load_string_from_file", &BtLuaBuiltinInterfaces::LoadStringFromFile);
+    RegisterFunction("load_string_from_file_wp", &BtLuaBuiltinInterfaces::LoadStringFromFileWP);
+    RegisterFunction("save_string_into_file_wp", &BtLuaBuiltinInterfaces::SaveStringIntoFileWP);
     BtLua_SetErrorOutput(std::bind(&BtLuaService::OnError, this, std::placeholders::_1));
 
-    if (!BtLua_ExecFile(L, "lua/bootstrap.lua"))
+    // preparing package loading 
+    BtLuaAddSearchPath(L, "lua");
+    BtSetLuaLoader(L, BtLuaLoader);
+
+    // bootstrapping
+    if (!RunScriptFile("bootstrap"))
         return false;
-
-    luabridge::getGlobalNamespace(L)
-        .beginNamespace(BtNativeNamespace)
-        .addFunction(Func_Print, BtLuaService::NativePrint)
-        .endNamespace();
-
-    // replacing system functions with customized ones 
-    BtLua_ExecString(L, tinyformat::format("_G.%s = %s.%s", Func_Print, BtNativeNamespace, Func_Print));
 
     return true;
 }
@@ -76,16 +81,12 @@ btlua_handle BtLuaService::GetHandle()
 
 void BtLuaService::OnError(const std::string& errMsg)
 {
-    CCLOG("lua_err: %s", errMsg.c_str());
+    BT_ERROR("lua_err: %s", errMsg);
 }
 
-void BtLuaService::OnPrint(const std::string& msg)
+bool BtLuaService::RunScriptFile(const char* filename)
 {
-    CCLOG("lua: %s", msg.c_str());
+    return BtLua_ExecString(L, tfm::format("require \"%s\"", filename));
 }
 
-void BtLuaService::NativePrint(const std::string& msg)
-{
-    Get()->OnPrint(msg);
-}
 

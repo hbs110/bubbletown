@@ -1,15 +1,15 @@
 
-package.path=package.path
-	..';lua/external/JSON/?.lua'
-	..';lua/core/?.lua'
-	..';lua/core/g_tab/?.lua'
-	..';lua/player/?.lua'
-	..';lua/player/slices/?.lua'
-	..';lua/simulation/?.lua'
-	..';lua/game/?.lua'
-	..';lua/?.lua'
+-- injected print
+_G.print = bt_native.print
+
+package.path = package.path..require "packages"
+
+-- debugging output
+-- print(tostring(package.path))
+-- print(tostring(package.searchers))
 
 -- 数据表
+require "tab_exp"
 require "tab_buildings"
 
 -- 主逻辑入口

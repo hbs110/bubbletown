@@ -3,6 +3,8 @@ require "g_shared"
 require "g_constants"
 require "g_util"
 
+require "tab_exp"
+
 game_sanity = require "game_sanity"
 level_handlers = require "level_handlers"
 ui_handlers = require "ui_handlers"
@@ -12,7 +14,6 @@ game = {}
 -- installed components
 game.simulation = require "simulation"
 game.player = require "player"
-
 
 function game.init() 
 	g_checkpoint("game.init() started.")
@@ -30,13 +31,18 @@ function game.init()
 	end
 
 	if not game.player.load(TEST_PLAYER_PROFILE) then
-		g_log_err("Player profile loading failed, possibly broken.")
-		return false
+		g_log_err("Player profile loading failed, start a new profile.")
 	end
 
 	game_sanity.check_post_init()
 	
 	g_goto_scene(BTSCN_start)
+
+	-- testing/debugging code
+	-- g_log_dbg("max_level: "..get_max_level())
+	-- g_log_dbg("level 1 exp: "..get_level_exp(1))
+	-- local content = bt_native.load_string_from_file("users/default.json");
+	-- g_log_dbg("default.json size: "..#content)
 
 	g_checkpoint("game.init() done.")
 	return true

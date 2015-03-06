@@ -42,15 +42,17 @@ public:
 
     btlua_handle GetHandle();  // main Lua handle accessing
 
+    // use this function to run script with crossplatform support
+    bool RunScriptFile(const char* filename);
+
     template <typename T>
     void RegisterVariable(const char* name, T* var);
     template <typename FUNC>
     void RegisterFunction(const char* name, FUNC const fp);
 
 private:
-    // callbacks of various internal events
+    // callbacks of internal events
     void OnError(const std::string& errMsg);
-    void OnPrint(const std::string& msg);
 
     // methods exposed to Lua 
     static void NativePrint(const std::string& msg);

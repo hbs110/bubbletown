@@ -116,7 +116,7 @@ bool BtUINodeBuilder_utouch::BuildButton(cocos2d::Node* destNode, const rapidjso
     BT_EXPECT_RET(button, "node type is not ImageView when calling BuildImage()", false);
 
     // button text
-    std::string btText = BtJsonValue::GetResProp(desc, "ButtonText");
+    std::string btText = BtJsonValue::GetStrProp(desc, "ButtonText");
     if (btText.size())
     {
         button->setTitleText(btText);
