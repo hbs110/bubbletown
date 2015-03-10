@@ -241,11 +241,11 @@ void GridLayer::GetAroundGrid(Grid v, vector<Grid> *vec_grid) {
 
   static int offset1[][2] = {
     { -1,  0, },
-    { -1,  1, },
     {  0,  1, },
+    {  1,  1, },
     {  1,  0, },
-    {  0, -1, },
     { -1, -1, },
+    {  0, -1, },
   };
 
   int (*offset)[2] = v.y & 0x01 ? &offset1[0] : &offset0[0];
@@ -264,12 +264,12 @@ void GridLayer::FindOverlapGrid(Vec2 pos, vector<Grid> *vec_grid) {
   auto g = Pos2Grid(pos);
   vector<Grid> around;
   GetAroundGrid(g, &around);
-  // cocos2d::log("get around of: %d %d %d\n", g.x, g.y, around.size());
+  cocos2d::log("get around of: %d %d %d\n", g.x, g.y, around.size());
   for (auto& v : around) {
-    //cocos2d::log("around: %d %d\n", v.x, v.y);
-    if (BubbleCollisionDetect(pos, Grid2Pos(v))) {
+      if (BubbleCollisionDetect(pos, Grid2Pos(v))) {
         vec_grid->push_back(v);
-    }
+        // cocos2d::log("around: %d %d\n", v.x, v.y);
+      }
   }
 }
 
@@ -379,8 +379,6 @@ bool BubbleLayer::init() {
 
 void BubbleLayer::onKeyPressed(cocos2d::EventKeyboard::KeyCode code, Event* event)
 {
-    // cocos2d::log("Box2dView:onKeyPressed, keycode: %d", code);
-    // m_test->Keyboard(static_cast<unsigned char>(code));
 }
 
 void BubbleLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode code, Event* event)
@@ -390,6 +388,17 @@ void BubbleLayer::onKeyReleased(cocos2d::EventKeyboard::KeyCode code, Event* eve
     case KEYCODE_PAUSE:
         pause_ = !pause_;
         break;
+#if 0
+    case 124: {
+        auto gl = GridLayer::Shared();
+        vector<Grid> grids;
+        gl->FindOverlapGrid(bubble_->sprite()->getPosition(), &grids);
+        for (auto& g : grids) {
+            cocos2d::log("around %d,%d\n", g.x, g.y);
+        }
+    }
+        break;
+#endif
     case KEYCODE_SPEEDUP:
         break;
     case KEYCODE_SPEEDDOWN:
@@ -548,6 +557,9 @@ bool BubbleLayer::CheckCollision() {
   for (auto& g : grids) {
     if (gl->IsFilled(g)) {
       cocos2d::log("collision %d,%d\n", g.x, g.y);
+      for (auto& g2 : grids) {
+          cocos2d::log("around %d,%d\n", g2.x, g2.y);
+      }
       return true;
     }
   }
@@ -564,6 +576,7 @@ void BubbleLayer::update(float dt)
 
     auto gl = GridLayer::Shared();
     if (CheckOutScreen()) {
+        cocos2d::log("fill out screen");
         assert(gl);
         auto dest = gl->Pos2Grid(bubble_->sprite()->getPosition());
         auto s = bubble_;
@@ -572,6 +585,7 @@ void BubbleLayer::update(float dt)
         return;
     }
     if (CheckCollision()) {
+        cocos2d::log("fill collision");
         auto dest = gl->Pos2Grid(bubble_->sprite()->getPosition());
         auto s = bubble_;
         StopBubble();
