@@ -1,9 +1,11 @@
 #include <vector>
 #include <array>
+#include <list>
 #include "BubbleScene.h"
 
 using std::array;
 using std::vector;
+using std::list;
 using cocos2d::Vec2;
 using cocos2d::Touch;
 using cocos2d::Event;
@@ -57,6 +59,7 @@ class Grid {
 };
 
 class Bubble {
+  friend class BubbleLayer;
  public:
   static Bubble * create(int color);
   void set_grid(Grid grid) {
@@ -72,10 +75,12 @@ class Bubble {
     return sprite_;
   }
  protected:
-  Grid grid_;
-  int color_;
-  int type_;
-  cocos2d::Sprite *sprite_;
+    Grid grid_;
+    int color_;
+    int type_;
+    cocos2d::Sprite *sprite_;
+    bool remove_ = false;
+    bool mark_ = false;
 };
 
 Bubble * Bubble::create(int color) {
@@ -85,6 +90,7 @@ Bubble * Bubble::create(int color) {
     b->sprite_ = Sprite::create(path);
     b->sprite_->setScale(kBubbleScale);
     b->sprite_->retain();
+    b->color_ = color;
     return b;
 }
 
@@ -109,9 +115,9 @@ class GridLayer : public cocos2d::Layer {
   Grid Pos2Grid(Vec2);
 
   void FillGrid(Grid dest, Bubble *bubble, bool replace = false);
-  bool IsFilled(Grid dest);
-  bool CheckCollision(Sprite *s);
+  Bubble * GetFilled(Grid dest);
   void FindOverlapGrid(Vec2 pos, vector<Grid> *vec_grid);
+    void GetAroundBubble(Bubble *center, vector<Bubble *> *vec_bubble);
 
   static GridLayer * Shared() {
     if (gridlayer == NULL) {
@@ -186,12 +192,12 @@ void GridLayer::update(float dt) {
 #endif
 }
 
-bool GridLayer::IsFilled(Grid dest) {
-  return lines_[dest.y][dest.x] ? true : false;
+Bubble * GridLayer::GetFilled(Grid dest) {
+    return lines_[dest.y][dest.x];
 }
 
 void GridLayer::FillGrid(Grid dest, Bubble *bubble, bool replace) {
-  cocos2d::log("fill grid xy %d, %d", dest.x, dest.y);
+    // cocos2d::log("fill grid xy %d, %d", dest.x, dest.y);
   if (dest.x >= kGridWidth || dest.y >= kGridHeight) {
     // assert(0);
     // return;
@@ -202,12 +208,19 @@ void GridLayer::FillGrid(Grid dest, Bubble *bubble, bool replace) {
     cocos2d::log("old %p\n", old);
     return;
   }
-  assert(old == nullptr);
-  auto pos = Grid2Pos(dest);
-  cocos2d::log("fill pos xy %f, %f", pos.x, pos.y);
-  addChild(bubble->sprite());
-  bubble->sprite()->setPosition(pos);
-  lines_[dest.y][dest.x] = bubble;
+
+  if (bubble) {
+      auto pos = Grid2Pos(dest);
+      // cocos2d::log("fill pos xy %f, %f", pos.x, pos.y);
+      addChild(bubble->sprite());
+      bubble->sprite()->setPosition(pos);
+      lines_[dest.y][dest.x] = bubble;
+  } else {
+      if (old) {
+          removeChild(old->sprite());
+      }
+      lines_[dest.y][dest.x] = nullptr;
+  }
 }
 
 Grid GridLayer::Pos2Grid(Vec2 pos) {
@@ -260,11 +273,23 @@ void GridLayer::GetAroundGrid(Grid v, vector<Grid> *vec_grid) {
   }
 }
 
+void GridLayer::GetAroundBubble(Bubble *center, vector<Bubble *> *vec_bubble) {
+    auto g = Pos2Grid(center->sprite()->getPosition());
+    vector<Grid> around;
+    GetAroundGrid(g, &around);
+    for (auto& v : around) {
+        auto b = GetFilled(v);
+        if (b) {
+            vec_bubble->push_back(b);
+        }
+    }
+}
+
 void GridLayer::FindOverlapGrid(Vec2 pos, vector<Grid> *vec_grid) {
   auto g = Pos2Grid(pos);
   vector<Grid> around;
   GetAroundGrid(g, &around);
-  cocos2d::log("get around of: %d %d %d\n", g.x, g.y, around.size());
+  // cocos2d::log("get around of: %d %d %d\n", g.x, g.y, around.size());
   for (auto& v : around) {
       if (BubbleCollisionDetect(pos, Grid2Pos(v))) {
         vec_grid->push_back(v);
@@ -329,11 +354,16 @@ class BubbleLayer : public cocos2d::Layer {
 
 private:
     Bubble *bubble_ = NULL;
+    Bubble *next_ = NULL;
     float sin_a_ = 0.0;
     float cos_a_ = 0.0;
     bool pause_ = false;
+    void SetNextBubble();
     void addNewSpriteWithCoords(Vec2 p);
     bool CheckCollision();
+    bool DoCheckMatch(Bubble *start, Bubble *center, size_t match,
+                      list<Bubble *> *remove_list);
+    bool CheckMatch(Bubble *start);
 };
 
 void BubbleLayer::addNewSpriteWithCoords(Vec2 dest) {
@@ -420,6 +450,19 @@ static int RandomColor() {
     return now.tv_usec % COLOR_NR;
 }
 
+void BubbleLayer::SetNextBubble() {
+    auto s = Director::getInstance()->getWinSize();
+    auto origin = Vec2(s.width/2, 0);
+    next_ = Bubble::create(RandomColor());
+    if (next_ == NULL) {
+        cocos2d::log("create bubble faile\n");
+        return;
+    }
+    addChild(next_->sprite());
+    next_->sprite()->setPosition(origin);
+    next_->sprite()->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+}
+
 void BubbleLayer::onTouchEnded(Touch *touch, Event* event) {
   if (bubble_)
     return;
@@ -442,14 +485,8 @@ void BubbleLayer::onTouchEnded(Touch *touch, Event* event) {
   if (direction)
     cos_a_ = -cos_a_;
 
-  bubble_ = Bubble::create(RandomColor());
-  if (bubble_ == NULL) {
-    cocos2d::log("create bubble faile\n");
-    return;
-  }
-  addChild(bubble_->sprite());
-  bubble_->sprite()->setPosition(origin);
-  bubble_->sprite()->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+  bubble_ = next_;
+  SetNextBubble();
 }
 
 void BubbleLayer::onTouchCancelled(Touch *touch, Event* event) {
@@ -476,6 +513,8 @@ void BubbleLayer::onEnter() {
   keyboardListener->onKeyReleased = CC_CALLBACK_2(BubbleLayer::onKeyReleased, this);
   _eventDispatcher->addEventListenerWithFixedPriority(keyboardListener, -11);
   // _keyboardListener = keyboardListener;
+
+  SetNextBubble();
 }
 
 void BubbleLayer::TimeCallback(float dt) {
@@ -534,7 +573,7 @@ void BubbleLayer::CheckEdge() {
   }
 }
 
-const int kBubbleMoveSpeed = 400;
+const int kBubbleMoveSpeed = 600;
 void BubbleLayer::Move(float dt) {
   if (bubble_ == NULL)
     return;
@@ -555,15 +594,74 @@ bool BubbleLayer::CheckCollision() {
   vector<Grid> grids;
   gl->FindOverlapGrid(bubble_->sprite()->getPosition(), &grids);
   for (auto& g : grids) {
-    if (gl->IsFilled(g)) {
+    if (gl->GetFilled(g)) {
       cocos2d::log("collision %d,%d\n", g.x, g.y);
-      for (auto& g2 : grids) {
-          cocos2d::log("around %d,%d\n", g2.x, g2.y);
-      }
+      // for (auto& g2 : grids) {
+      //     cocos2d::log("around %d,%d\n", g2.x, g2.y);
+      // }
       return true;
     }
   }
   return false;
+}
+
+bool BubbleLayer::DoCheckMatch(Bubble *start, Bubble *center, size_t match,
+                               list<Bubble *> *remove_list)
+{
+    vector<Bubble *> around;
+    bool res = match >= 3;
+    if (res) {
+        center->remove_ = true;
+        remove_list->push_back(center);
+    }
+
+    GridLayer::Shared()->GetAroundBubble(center, &around);
+    if (around.size() == 0)
+        return res;
+
+    for (size_t i = 0; i < around.size(); i++) {
+        if (around[i] == start)
+            continue;
+        if (center->color_ != around[i]->color_)
+            continue;
+        if (around[i]->mark_)
+            continue;
+
+        around[i]->mark_ = true;
+        auto ismatched = DoCheckMatch(center, around[i], match + 1, remove_list);
+        if (ismatched) {
+            res = true;
+            if (!center->remove_) {
+                center->remove_ = true;
+                remove_list->push_back(center);
+            }
+        }
+        around[i]->mark_ = false;
+    }
+
+    return res;
+}
+
+bool BubbleLayer::CheckMatch(Bubble *start) {
+  list<Bubble *> remove_list;
+  start->mark_ = true;
+  bool match = DoCheckMatch(NULL, start, 1, &remove_list);
+  start->mark_ = false;
+  if (match) {
+      auto gl = GridLayer::Shared();
+      while (remove_list.begin() != remove_list.end()) {
+          auto b = remove_list.front();
+          remove_list.pop_front();
+          // cocos2d::log("remove %p\n", b);
+          gl->FillGrid(gl->Pos2Grid(b->sprite()->getPosition()),
+                       nullptr, true);
+          b->sprite()->release();
+          delete b;
+      }
+  } else {
+      cocos2d::log("not match");
+  }
+  return match;
 }
 
 void BubbleLayer::update(float dt)
@@ -590,6 +688,7 @@ void BubbleLayer::update(float dt)
         auto s = bubble_;
         StopBubble();
         gl->FillGrid(dest, s, false);
+        CheckMatch(s);
         return;
     }
 }
