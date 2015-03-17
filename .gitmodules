@@ -1,12 +1,15 @@
 [submodule "02-bubble-town/Dependencies/BtLua"]
 	path = 02-bubble-town/Dependencies/BtLua
 	url = https://github.com/mc-gulu/BtLua.git
-[submodule "tools/utouch"]
-	path = tools/utouch
-	url = https://github.com/mc-gulu/utouch.git
 [submodule "02-bubble-town/Classes/Core/tinyformat"]
 	path = 02-bubble-town/Classes/Core/tinyformat
 	url = https://github.com/c42f/tinyformat.git
 [submodule "02-bubble-town/Classes/Core/strtk"]
 	path = 02-bubble-town/Classes/Core/strtk
 	url = https://github.com/ArashPartow/strtk.git
+[submodule "external/cocos2d-x"]
+	path = external/cocos2d-x
+	url = https://github.com/mc-gulu/cocos2d-x.git
+[submodule "external/utouch"]
+	path = external/utouch
+	url = https://github.com/mc-gulu/utouch.git
