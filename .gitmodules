@@ -1,11 +1,11 @@
-[submodule "02-bubble-town/Dependencies/BtLua"]
-	path = 02-bubble-town/Dependencies/BtLua
+[submodule "games/02-bubbletown/Dependencies/BtLua"]
+	path = games/02-bubbletown/Dependencies/BtLua
 	url = https://github.com/mc-gulu/BtLua.git
-[submodule "02-bubble-town/Classes/Core/tinyformat"]
-	path = 02-bubble-town/Classes/Core/tinyformat
+[submodule "games/02-bubbletown/Classes/Core/tinyformat"]
+	path = games/02-bubbletown/Classes/Core/tinyformat
 	url = https://github.com/c42f/tinyformat.git
-[submodule "02-bubble-town/Classes/Core/strtk"]
-	path = 02-bubble-town/Classes/Core/strtk
+[submodule "games/02-bubbletown/Classes/Core/strtk"]
+	path = games/02-bubbletown/Classes/Core/strtk
 	url = https://github.com/ArashPartow/strtk.git
 [submodule "external/cocos2d-x"]
 	path = external/cocos2d-x

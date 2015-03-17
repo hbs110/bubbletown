@@ -58,8 +58,13 @@ bool BtLuaService::Init()
     RegisterFunction("save_string_into_file_wp", &BtLuaBuiltinInterfaces::SaveStringIntoFileWP);
     BtLua_SetErrorOutput(std::bind(&BtLuaService::OnError, this, std::placeholders::_1));
 
+    char curDir[MAX_PATH];
+    ::GetCurrentDirectoryA(MAX_PATH, curDir);
+    std::string foo(curDir);
+    foo += "\\lua\\";
+
     // preparing package loading 
-    BtLuaAddSearchPath(L, "lua");
+    BtLuaAddSearchPath(L, foo.c_str());
     BtSetLuaLoader(L, BtLuaLoader);
 
     // bootstrapping

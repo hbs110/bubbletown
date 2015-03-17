@@ -53,6 +53,18 @@ bool AppDelegate::applicationDidFinishLaunching()
 
     // initialize director
     auto director = cocos2d::Director::getInstance();
+
+    WCHAR utf16Path[MAX_PATH] = { 0 };
+    GetCurrentDirectoryW(sizeof(utf16Path) - 1, utf16Path);
+
+    char utf8Path[MAX_PATH] = { 0 };
+    int nNum = WideCharToMultiByte(CP_UTF8, 0, utf16Path, -1, utf8Path, sizeof(utf8Path), nullptr, nullptr);
+
+    std::string s_resourcePath = utf8Path;
+    s_resourcePath.append("/");
+
+    cocos2d::FileUtils::getInstance()->addSearchPath(s_resourcePath, true);
+
     auto glview = director->getOpenGLView();
     if(!glview) {
         glview = cocos2d::GLViewImpl::createWithRect("bubbletown", cocos2d::Rect(0, 0, 720, 1280), 0.6f);

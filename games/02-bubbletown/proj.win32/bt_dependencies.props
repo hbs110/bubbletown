@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <cocos_src>..\..\..\external\cocos2d-x\cocos</cocos_src>
+    <cocos_external>..\..\..\external\cocos2d-x\external</cocos_external>
+    <cocos_lib>..\..\..\external\cocos2d-x\build\win32-msvc-vs2013-x86\lib</cocos_lib>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(cocos_external);$(cocos_external)\glfw3\include\win32;$(cocos_external)\win32-specific\gles\include\OGLES;$(cocos_src);$(cocos_src)\platform</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>cocos2d.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(cocos_external)\win32-specific\gles\prebuilt;$(cocos_lib)\$(ConfigurationName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="cocos_src">
+      <Value>$(cocos_src)</Value>
+    </BuildMacro>
+    <BuildMacro Include="cocos_external">
+      <Value>$(cocos_external)</Value>
+    </BuildMacro>
+    <BuildMacro Include="cocos_lib">
+      <Value>$(cocos_lib)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

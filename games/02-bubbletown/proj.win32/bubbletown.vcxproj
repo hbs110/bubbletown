@@ -14,7 +14,7 @@
     <ProjectGuid>{BEA75904-D6B1-4D13-BE03-0BC96205348E}</ProjectGuid>
     <RootNamespace>bubble-town-win32</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <ProjectName>bubble-town</ProjectName>
+    <ProjectName>bubbletown</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -41,12 +41,10 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\cocos\2d\cocos2dx.props" />
-    <Import Project="..\..\..\cocos\2d\cocos2d_headers.props" />
+    <Import Project="bt_dependencies.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="..\..\..\cocos\2d\cocos2dx.props" />
-    <Import Project="..\..\..\cocos\2d\cocos2d_headers.props" />
+    <Import Project="bt_dependencies.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
@@ -73,7 +71,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\Classes;..\Dependencies\BtLua-dist\include\lua;..\Dependencies\BtLua-dist\include\luabridge;..\Dependencies\BtLua-dist\include;..\..\..\external;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Classes;..\Dependencies\BtLua-dist\include\lua;..\Dependencies\BtLua-dist\include\luabridge;..\Dependencies\BtLua-dist\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;COCOS2D_DEBUG=1;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -101,7 +99,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\Classes;..\Dependencies\BtLua-dist\include\lua;..\Dependencies\BtLua-dist\include\luabridge;..\Dependencies\BtLua-dist\include;..\..\..\external;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Classes;..\Dependencies\BtLua-dist\include\lua;..\Dependencies\BtLua-dist\include\luabridge;..\Dependencies\BtLua-dist\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -197,11 +195,6 @@
     <ClInclude Include="..\Classes\stdafx.h" />
     <ClInclude Include="..\Classes\Tests\TestGui_utouch.h" />
     <ClInclude Include="main.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\cocos\2d\libcocos2d.vcxproj">
-      <Project>{98a51ba8-fc3a-415b-ac8f-8c7bd464e93e}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
