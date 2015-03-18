@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <bt_external>..\..\..\external</bt_external>
+    <bt_cocos>$(bt_external)\cocos2d-x</bt_cocos>
+    <bt_cocos_dist>$(bt_external)\cocos2d-x-dist</bt_cocos_dist>
+    <bt_lua_dist>$(bt_external)\BtLua-dist</bt_lua_dist>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup />
+  <ItemGroup>
+    <BuildMacro Include="bt_external">
+      <Value>$(bt_external)</Value>
+    </BuildMacro>
+    <BuildMacro Include="bt_cocos">
+      <Value>$(bt_cocos)</Value>
+    </BuildMacro>
+    <BuildMacro Include="bt_cocos_dist">
+      <Value>$(bt_cocos_dist)</Value>
+    </BuildMacro>
+    <BuildMacro Include="bt_lua_dist">
+      <Value>$(bt_lua_dist)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

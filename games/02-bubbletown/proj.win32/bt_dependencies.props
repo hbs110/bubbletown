@@ -1,47 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ImportGroup Label="PropertySheets" />
-  <PropertyGroup Label="UserMacros">
-    <cocos_src>..\..\..\external\cocos2d-x\cocos</cocos_src>
-    <cocos_external>..\..\..\external\cocos2d-x\external</cocos_external>
-    <cocos_lib>..\..\..\external\cocos2d-x-dist</cocos_lib>
-    <btlua_include>..\..\..\external\BtLua-dist\include</btlua_include>
-    <btlua_lib>..\..\..\external\BtLua-dist\lib\vs2013</btlua_lib>
-    <btlua_bin>..\..\..\external\BtLua-dist\bin</btlua_bin>
-  </PropertyGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="..\..\..\set_env_vs.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(cocos_external);$(cocos_external)\glfw3\include\win32;$(cocos_external)\win32-specific\gles\include\OGLES;$(cocos_src);$(cocos_src)\platform;$(btlua_include)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(bt_cocos)\external;$(bt_cocos)\external\glfw3\include\win32;$(bt_cocos)\external\win32-specific\gles\include\OGLES;$(bt_cocos)\cocos;$(bt_cocos)\cocos\platform;$(bt_lua_dist)\include;$(bt_lua_dist)\include\lua;$(bt_lua_dist)\include\luabridge</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>cocos2d.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(cocos_lib)\$(ConfigurationName);$(btlua_lib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(bt_cocos_dist)\$(ConfigurationName);$(bt_lua_dist)\lib\vs2013;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(btlua_bin)\*.dll $(TargetDir)
-copy $(cocos_lib)\$(ConfigurationName)\*.dll $(TargetDir)
+      <Command>copy $(bt_lua_dist)\bin\*.dll $(TargetDir)
+copy $(bt_cocos_dist)\$(ConfigurationName)\*.dll $(TargetDir)
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <BuildMacro Include="cocos_src">
-      <Value>$(cocos_src)</Value>
-    </BuildMacro>
-    <BuildMacro Include="cocos_external">
-      <Value>$(cocos_external)</Value>
-    </BuildMacro>
-    <BuildMacro Include="cocos_lib">
-      <Value>$(cocos_lib)</Value>
-    </BuildMacro>
-    <BuildMacro Include="btlua_include">
-      <Value>$(btlua_include)</Value>
-    </BuildMacro>
-    <BuildMacro Include="btlua_lib">
-      <Value>$(btlua_lib)</Value>
-    </BuildMacro>
-    <BuildMacro Include="btlua_bin">
-      <Value>$(btlua_bin)</Value>
-    </BuildMacro>
-  </ItemGroup>
+  <ItemGroup />
 </Project>
