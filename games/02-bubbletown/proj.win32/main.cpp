@@ -4,6 +4,7 @@
 
 USING_NS_CC;
 
+
 int APIENTRY _tWinMain(HINSTANCE hInstance,
                        HINSTANCE hPrevInstance,
                        LPTSTR    lpCmdLine,
@@ -11,6 +12,11 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
+
+#ifdef _WIN32
+    const char* GWorkingDir = "..\\Resources\\";
+    ::SetCurrentDirectoryA(GWorkingDir);
+#endif
 
     // create the application instance
     AppDelegate app;

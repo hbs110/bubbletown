@@ -10,7 +10,7 @@ Thumbs.db
 external/BtLua-dist
 
 # bubbletown
-games/02-bubbletown/Dependencies/BtLua-*
+games/02-bubbletown/bin.win32*
 games/02-bubbletown/Resources/lua/*.sublime-project
 games/02-bubbletown/Resources/lua/*.sublime-workspace
 

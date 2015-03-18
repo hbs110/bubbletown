@@ -41,6 +41,12 @@ AppDelegate::~AppDelegate()
 
 bool AppDelegate::applicationDidFinishLaunching() 
 {
+    BT_LOG("app started.");
+    const auto& paths = cocos2d::FileUtils::getInstance()->getSearchPaths();
+    for (const auto& p : paths)
+        BT_LOG("    search path: %s", p);
+    BT_LOG("    writable path: %s", cocos2d::FileUtils::getInstance()->getWritablePath());
+
     BtTestServices::CreateInst();
 
     BtRegisterGuiTests_utouch();

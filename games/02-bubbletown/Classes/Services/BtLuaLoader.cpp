@@ -13,12 +13,31 @@
 
 #include "Core/BtCoreUtil.h"
 
+class BtMuteFileMissingLog
+{
+public:
+    BtMuteFileMissingLog() 
+    {
+        m_saved = cocos2d::FileUtils::getInstance()->isPopupNotify();
+        cocos2d::FileUtils::getInstance()->setPopupNotify(false); 
+    }
+    ~BtMuteFileMissingLog() 
+    {
+        cocos2d::FileUtils::getInstance()->setPopupNotify(m_saved);
+    }
+
+    bool m_saved;
+};
+
 extern "C" 
 {
     int BtLuaLoader(lua_State *L)
     {
         static const std::string BYTECODE_FILE_EXT = ".luac";
         static const std::string NOT_BYTECODE_FILE_EXT = ".lua";
+
+        // silent the file-missing logging temporarily
+        BtMuteFileMissingLog _dummy_;
 
         std::string filename(luaL_checkstring(L, 1));
         size_t pos = filename.rfind(BYTECODE_FILE_EXT);
