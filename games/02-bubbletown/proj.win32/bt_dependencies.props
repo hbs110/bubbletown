@@ -4,7 +4,7 @@
   <PropertyGroup Label="UserMacros">
     <cocos_src>..\..\..\external\cocos2d-x\cocos</cocos_src>
     <cocos_external>..\..\..\external\cocos2d-x\external</cocos_external>
-    <cocos_lib>..\..\..\external\cocos2d-x\build\win32-msvc-vs2013-x86\lib</cocos_lib>
+    <cocos_lib>..\..\..\external\cocos2d-x-dist</cocos_lib>
     <btlua_include>..\..\..\external\BtLua-dist\include</btlua_include>
     <btlua_lib>..\..\..\external\BtLua-dist\lib\vs2013</btlua_lib>
     <btlua_bin>..\..\..\external\BtLua-dist\bin</btlua_bin>
@@ -16,10 +16,12 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>cocos2d.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(cocos_external)\win32-specific\gles\prebuilt;$(cocos_lib)\$(ConfigurationName);$(btlua_lib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(cocos_lib)\$(ConfigurationName);$(btlua_lib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(btlua_bin)\*.dll $(TargetDir)</Command>
+      <Command>copy $(btlua_bin)\*.dll $(TargetDir)
+copy $(cocos_lib)\$(ConfigurationName)\*.dll $(TargetDir)
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

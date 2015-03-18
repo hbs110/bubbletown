@@ -31,3 +31,4 @@ games/02-bubbletown/Resources/lua/*.sublime-workspace
 
 # 生成的包
 /**/bin/**/*.apk
+/external/cocos2d-x-dist
