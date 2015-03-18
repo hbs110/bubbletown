@@ -25,9 +25,9 @@ enum class BtLogType
 
 void BtLogStandard(BtLogType type, const std::string& err);
 
-#define BT_VERB(info, ...)      BtLogStandard(BtLogType::Verbose, tfm::format("bubbletown: %.2f %s", GAppCurrentTime, tfm::format(info, __VA_ARGS__)))
-#define BT_LOG(info, ...)       BtLogStandard(BtLogType::Normal, tfm::format("bubbletown: %.2f %s", GAppCurrentTime, tfm::format(info, __VA_ARGS__)))
-#define BT_ERROR(info, ...)     BtLogStandard(BtLogType::Error, tfm::format("bubbletown: %.2f %s", GAppCurrentTime, tfm::format(info, __VA_ARGS__)))
+#define BT_VERB(info, ...)      BtLogStandard(BtLogType::Verbose, tfm::format("bubbletown: %.2f %s", GAppCurrentTime, tfm::format(info, ##__VA_ARGS__)))
+#define BT_LOG(info, ...)       BtLogStandard(BtLogType::Normal, tfm::format("bubbletown: %.2f %s", GAppCurrentTime, tfm::format(info, ##__VA_ARGS__)))
+#define BT_ERROR(info, ...)     BtLogStandard(BtLogType::Error, tfm::format("bubbletown: %.2f %s", GAppCurrentTime, tfm::format(info, ##__VA_ARGS__)))
 
 enum class BtLogMode
 {
