@@ -17,7 +17,7 @@
 
 #include "Core/BtMsgDef.h"
 
-#include "Core/tinyformat/tinyformat.h"
+#include <tinyformat.h>
 
 BtTownSceneUI::BtTownSceneUI() 
     : m_btBuild(nullptr)

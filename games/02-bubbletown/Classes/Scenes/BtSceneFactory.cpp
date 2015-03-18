@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "BtSceneFactory.h"
 
-#include "Core/tinyformat/tinyformat.h"
+#include <tinyformat.h>
 #include "Core/BtCoreUtil.h"
 
 BT_SINGLETON_IMPL(BtSceneFactory);

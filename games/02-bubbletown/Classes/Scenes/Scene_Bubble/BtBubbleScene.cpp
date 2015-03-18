@@ -15,7 +15,7 @@
 
 #include "Services/BtLuaService.h"
 
-#include "Core/tinyformat/tinyformat.h"
+#include <tinyformat.h>
 
 #include "json/document.h"
 #include "json/writer.h"

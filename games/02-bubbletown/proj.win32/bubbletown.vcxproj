@@ -165,8 +165,6 @@
     <ClInclude Include="..\Classes\Core\BtMsgDef_AUTOGEN.h" />
     <ClInclude Include="..\Classes\Core\BtMsgDispatcher.h" />
     <ClInclude Include="..\Classes\Core\BtMsgHandlerSet.h" />
-    <ClInclude Include="..\Classes\Core\strtk\strtk.hpp" />
-    <ClInclude Include="..\Classes\Core\tinyformat\tinyformat.h" />
     <ClInclude Include="..\Classes\Scenes\BtBaseScene.h" />
     <ClInclude Include="..\Classes\Scenes\BtSceneFactory.h" />
     <ClInclude Include="..\Classes\Scenes\Scene_Bubble\BtBubbleScene.h" />

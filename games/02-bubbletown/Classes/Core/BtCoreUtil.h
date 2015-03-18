@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "Core/tinyformat/tinyformat.h"
+#include <tinyformat.h>
 
 extern double GAppStartTime;
 extern double GAppCurrentTime;

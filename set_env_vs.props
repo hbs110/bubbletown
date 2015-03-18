@@ -6,6 +6,9 @@
     <bt_cocos>$(bt_external)\cocos2d-x</bt_cocos>
     <bt_cocos_dist>$(bt_external)\cocos2d-x-dist</bt_cocos_dist>
     <bt_lua_dist>$(bt_external)\BtLua-dist</bt_lua_dist>
+    <bt_utouch>$(bt_external)\utouch</bt_utouch>
+    <bt_strtk>$(bt_external)\strtk</bt_strtk>
+    <bt_tinyformat>$(bt_external)\tinyformat</bt_tinyformat>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup />

@@ -7,7 +7,7 @@
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(bt_cocos)\external;$(bt_cocos)\external\glfw3\include\win32;$(bt_cocos)\external\win32-specific\gles\include\OGLES;$(bt_cocos)\cocos;$(bt_cocos)\cocos\platform;$(bt_lua_dist)\include;$(bt_lua_dist)\include\lua;$(bt_lua_dist)\include\luabridge</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(bt_cocos)\external;$(bt_cocos)\external\glfw3\include\win32;$(bt_cocos)\external\win32-specific\gles\include\OGLES;$(bt_cocos)\cocos;$(bt_cocos)\cocos\platform;$(bt_lua_dist)\include;$(bt_lua_dist)\include\lua;$(bt_lua_dist)\include\luabridge;$(bt_strtk);$(bt_tinyformat)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>cocos2d.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>

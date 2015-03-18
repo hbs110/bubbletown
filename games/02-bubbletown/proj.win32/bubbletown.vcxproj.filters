@@ -12,12 +12,6 @@
     <Filter Include="Classes\1. Core">
       <UniqueIdentifier>{194f8a3b-de92-4047-80ce-35a36b9eca85}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Classes\1. Core\tinyformat">
-      <UniqueIdentifier>{3d8b48b2-e2a4-4d2a-8d3a-b863a5b308b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Classes\1. Core\strtk">
-      <UniqueIdentifier>{6114e59c-6957-456e-afe1-2dd3b5090b02}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Classes\2. Services">
       <UniqueIdentifier>{281ea409-9714-40eb-9ab8-631cb1d830b9}</UniqueIdentifier>
     </Filter>
@@ -199,9 +193,6 @@
     <ClInclude Include="..\Classes\AppUtil.h">
       <Filter>Classes\4. App</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Core\tinyformat\tinyformat.h">
-      <Filter>Classes\1. Core\tinyformat</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Core\BtCoreUtil.h">
       <Filter>Classes\1. Core</Filter>
     </ClInclude>
@@ -213,9 +204,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Services\BtTestServices.h">
       <Filter>Classes\2. Services</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Core\strtk\strtk.hpp">
-      <Filter>Classes\1. Core\strtk</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Core\BtMsgHandlerSet.h">
       <Filter>Classes\1. Core</Filter>
