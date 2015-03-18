@@ -1,9 +1,13 @@
 ﻿# Ignore thumbnails created by windows
 Thumbs.db
 
+*.opensdf
 *.sdf
 *.suo
 /**/ipch/**
+
+# external
+external/BtLua-dist
 
 # bubbletown
 games/02-bubbletown/Dependencies/BtLua-*

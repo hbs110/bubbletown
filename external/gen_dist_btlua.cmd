@@ -1,1 +1,1 @@
-python gen_btlua_bin_dist.py
+python gen_dist_btlua.py

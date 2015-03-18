@@ -3,41 +3,49 @@ import shutil
 import os
 import fnmatch
 
-BtLuaDistDir = "BtLua-dist"
-BtLuaDistInclude = os.path.join(BtLuaDistDir, "include")
+_join = os.path.join
 
-BtSrcDir_Lua = 'BtLua/dep/lua/src'
+BtLuaDistDir = "BtLua-dist"
+BtLua_Toolset = "vs2013"
+BtSrcDir_Lua = "BtLua/dep/lua-5.2.3-" + BtLua_Toolset + "-shared"
 BtSrcDir_LuaBridge = "BtLua/dep/LuaBridge/Source/LuaBridge"
 
 BtLua_LibFiles = [ 
-    "lua-5.2.3-static.lib",
-    "lua-5.2.3-static-debug.lib", 
-    "btlua-static.lib", 
-    "btlua-static-debug.lib"
+    _join("BtLua", "build", BtLua_Toolset, "bin", "btlua-shared.lib"),
+    _join("BtLua", "build", BtLua_Toolset, "bin", "btlua-shared-debug.lib"),
 ]
 
-BtLua_Toolset = "vs2013"
+BtLua_DLLFiles = [ 
+    _join("BtLua", "build", BtLua_Toolset, "bin", "btlua-shared.dll"),
+    _join("BtLua", "build", BtLua_Toolset, "bin", "btlua-shared-debug.dll"),
+]
 
 def main():
-    # remove existing dist directory
+    print("erasing existing dist directory...")
     if os.path.exists(BtLuaDistDir):
         shutil.rmtree(BtLuaDistDir)
 
-    # copy headers
+    print("copying BtLua headers...")
+    BtLuaDistInclude = _join(BtLuaDistDir, "include")
     shutil.copytree("BtLua/include", BtLuaDistInclude)
-    shutil.copytree(BtSrcDir_LuaBridge, os.path.join(BtLuaDistInclude, "LuaBridge"))
 
-    # copy lua headers
-    target_dir = os.path.join(BtLuaDistInclude, "lua")
-    os.makedirs(target_dir)
-    for f in os.listdir(BtSrcDir_Lua):
-        if fnmatch.fnmatch(f, '*.h') or fnmatch.fnmatch(f, '*.hpp'):
-            shutil.copyfile(os.path.join(BtSrcDir_Lua, f), os.path.join(target_dir, f))
+    print("copying lua headers and binaries...")
+    shutil.copytree(_join(BtSrcDir_Lua, "include"), _join(BtLuaDistInclude, "lua"))
+    shutil.copytree(_join(BtSrcDir_Lua, "lib"), _join(BtLuaDistDir, "lib", BtLua_Toolset))
+    shutil.copytree(_join(BtSrcDir_Lua, "bin"), _join(BtLuaDistDir, "bin"))
 
-    # copy lib (currently only the static release version is used)
-    os.makedirs(os.path.join(BtLuaDistDir, "lib", BtLua_Toolset))
+    print("copying luabridge headers...")
+    shutil.copytree(BtSrcDir_LuaBridge, _join(BtLuaDistInclude, "LuaBridge"))
+
+    print("copying BtLua lib files...")
     for f in BtLua_LibFiles:
-        shutil.copyfile(os.path.join("BtLua", "build", BtLua_Toolset, "bin", f), os.path.join(BtLuaDistDir, "lib", BtLua_Toolset, f))
+        shutil.copyfile(f, _join(BtLuaDistDir,  "lib", BtLua_Toolset, os.path.basename(f)))
+
+    print("copying BtLua binaries...")
+    for f in BtLua_DLLFiles:
+        shutil.copyfile(f, _join(BtLuaDistDir,  "bin", os.path.basename(f)))
+    
+    print("done successfully!")
 
 if __name__ == '__main__':
     main()

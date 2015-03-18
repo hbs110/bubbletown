@@ -5,16 +5,22 @@
     <cocos_src>..\..\..\external\cocos2d-x\cocos</cocos_src>
     <cocos_external>..\..\..\external\cocos2d-x\external</cocos_external>
     <cocos_lib>..\..\..\external\cocos2d-x\build\win32-msvc-vs2013-x86\lib</cocos_lib>
+    <btlua_include>..\..\..\external\BtLua-dist\include</btlua_include>
+    <btlua_lib>..\..\..\external\BtLua-dist\lib\vs2013</btlua_lib>
+    <btlua_bin>..\..\..\external\BtLua-dist\bin</btlua_bin>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(cocos_external);$(cocos_external)\glfw3\include\win32;$(cocos_external)\win32-specific\gles\include\OGLES;$(cocos_src);$(cocos_src)\platform</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(cocos_external);$(cocos_external)\glfw3\include\win32;$(cocos_external)\win32-specific\gles\include\OGLES;$(cocos_src);$(cocos_src)\platform;$(btlua_include)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>cocos2d.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(cocos_external)\win32-specific\gles\prebuilt;$(cocos_lib)\$(ConfigurationName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(cocos_external)\win32-specific\gles\prebuilt;$(cocos_lib)\$(ConfigurationName);$(btlua_lib);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>copy $(btlua_bin)\*.dll $(TargetDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <BuildMacro Include="cocos_src">
@@ -25,6 +31,15 @@
     </BuildMacro>
     <BuildMacro Include="cocos_lib">
       <Value>$(cocos_lib)</Value>
+    </BuildMacro>
+    <BuildMacro Include="btlua_include">
+      <Value>$(btlua_include)</Value>
+    </BuildMacro>
+    <BuildMacro Include="btlua_lib">
+      <Value>$(btlua_lib)</Value>
+    </BuildMacro>
+    <BuildMacro Include="btlua_bin">
+      <Value>$(btlua_bin)</Value>
     </BuildMacro>
   </ItemGroup>
 </Project>

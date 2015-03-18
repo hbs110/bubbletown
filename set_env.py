@@ -7,6 +7,7 @@ btjoin = os.path.join
 bt_paths = dict(
 	bt_root 		= '.',
 	bt_cocos2dx 	= btjoin('.', 'external', 'cocos2d-x'),
+	bt_lua 			= btjoin('.', 'external', 'BtLua-dist'),
 	bt_utouch 		= btjoin('.', 'external', 'utouch'),
 	)
 

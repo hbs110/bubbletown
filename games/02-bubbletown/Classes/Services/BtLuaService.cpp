@@ -18,13 +18,12 @@
 #include <btlua.h>
 
 #ifdef _DEBUG
-#   define LIB_NAME_POSTFIX  "-debug"
+#pragma comment(lib, "lua_d.lib")
+#pragma comment(lib, "btlua-shared-debug.lib")
 #else
-#   define LIB_NAME_POSTFIX  ""
+#pragma comment(lib, "lua.lib")
+#pragma comment(lib, "btlua-shared.lib")
 #endif
-
-#pragma comment(lib, "lua-5.2.3-static"LIB_NAME_POSTFIX".lib")
-#pragma comment(lib, "btlua-static"LIB_NAME_POSTFIX".lib")
 
 namespace
 {
