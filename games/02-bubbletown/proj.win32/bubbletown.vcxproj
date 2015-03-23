@@ -129,7 +129,9 @@
     <ClCompile Include="..\Classes\Core\BtMsgHandlerSet.cpp" />
     <ClCompile Include="..\Classes\Scenes\BtBaseScene.cpp" />
     <ClCompile Include="..\Classes\Scenes\BtSceneFactory.cpp" />
+    <ClCompile Include="..\Classes\Scenes\Scene_Bubble\BtBubbleArena.cpp" />
     <ClCompile Include="..\Classes\Scenes\Scene_Bubble\BtBubbleScene.cpp" />
+    <ClCompile Include="..\Classes\Scenes\Scene_Bubble\BtBubbleTestUI.cpp" />
     <ClCompile Include="..\Classes\Scenes\Scene_Start\BtStartScene.cpp" />
     <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTiledMap.cpp" />
     <ClCompile Include="..\Classes\Scenes\Scene_Town\BtTownBuilding.cpp" />
@@ -167,7 +169,9 @@
     <ClInclude Include="..\Classes\Core\BtMsgHandlerSet.h" />
     <ClInclude Include="..\Classes\Scenes\BtBaseScene.h" />
     <ClInclude Include="..\Classes\Scenes\BtSceneFactory.h" />
+    <ClInclude Include="..\Classes\Scenes\Scene_Bubble\BtBubbleArena.h" />
     <ClInclude Include="..\Classes\Scenes\Scene_Bubble\BtBubbleScene.h" />
+    <ClInclude Include="..\Classes\Scenes\Scene_Bubble\BtBubbleTestUI.h" />
     <ClInclude Include="..\Classes\Scenes\Scene_Start\BtStartScene.h" />
     <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTiledMap.h" />
     <ClInclude Include="..\Classes\Scenes\Scene_Town\BtTownBuilding.h" />

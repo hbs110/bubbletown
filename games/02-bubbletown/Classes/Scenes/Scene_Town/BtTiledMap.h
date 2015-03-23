@@ -10,9 +10,6 @@
 
 #include "Core/BtCoreDef.h"
 
-typedef cocos2d::experimental::TMXTiledMap tileMap_t;
-typedef cocos2d::experimental::TMXLayer tileLayer_t;
-
 BtConstStr BtLayer_Background   = "layer_background";
 BtConstStr BtLayer_Sockets      = "layer_sockets";
 

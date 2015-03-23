@@ -11,6 +11,9 @@
 #include "Core/BtMsgDef.h"
 #include "Scenes/BtBaseScene.h"
 
+class BtBubbleTestUI;
+class BtBubbleArena;
+
 class BtBubbleScene : public BtBaseScene
 {
 public:
@@ -28,16 +31,9 @@ protected:
     void onButton_Next();
     void onButton_BackToTown();
 
-    void showEndScreen(bool show);
-
-    cocos2d::ui::Button* m_btLoot;
-    cocos2d::ui::Button* m_btRestart;
-    cocos2d::ui::Button* m_btNext;
-    cocos2d::ui::Button* m_btBackToTown;
-
-    cocos2d::ui::Text* m_labelPlaying;
-    cocos2d::ui::Text* m_labelEnd;
-
     int m_curPlayingLevel;
+
+    BtBubbleTestUI* m_testUI;
+    BtBubbleArena*  m_arena;
 };
 

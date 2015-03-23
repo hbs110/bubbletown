@@ -29,7 +29,7 @@ bool BtBaseScene::init()
     m_uiRoot = cocos2d::Layer::create();
     if (!m_uiRoot)
         return false;
-    addChild(m_uiRoot, 2);
+    addChild(m_uiRoot, 10);
 
     if (!do_init())
         return false;

@@ -122,3 +122,22 @@ T BtIsZero(T value)
 {
     return value < (T)BT_EPSILON && value > - (T)BT_EPSILON;
 }
+
+typedef cocos2d::experimental::TMXTiledMap tileMap_t;
+typedef cocos2d::experimental::TMXLayer tileLayer_t;
+
+inline float BtGetVisibleWidth()
+{
+    return cocos2d::Director::getInstance()->getVisibleSize().width;
+}
+
+inline float BtGetVisibleHeight()
+{
+    return cocos2d::Director::getInstance()->getVisibleSize().height;
+}
+
+inline float BtGetVisibleTop()
+{
+    return cocos2d::Director::getInstance()->getVisibleOrigin().y + cocos2d::Director::getInstance()->getVisibleSize().height;
+}
+

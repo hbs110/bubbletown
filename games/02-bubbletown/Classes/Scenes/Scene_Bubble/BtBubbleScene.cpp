@@ -21,6 +21,9 @@
 #include "json/writer.h"
 #include "json/stringbuffer.h"
 
+#include "BtBubbleTestUI.h"
+#include "BtBubbleArena.h"
+
 static std::string _json_doc_to_string(const rapidjson::Document& doc)
 {
     using namespace rapidjson;
@@ -38,62 +41,36 @@ static auto fnBackToTown = []() { BT_POST_LUA_AND_FLUSH(BtMsgID::GotoScene, BTSC
     BT_EXPECT_RET(expr, errMsg, fnBackToTown())   // fnBackToTown() is called immediately so BT_EXPECT_RET() still returns nothing
 
 BtBubbleScene::BtBubbleScene() 
-    : m_btLoot(nullptr)
-    , m_btRestart(nullptr)
-    , m_btNext(nullptr)
-    , m_btBackToTown(nullptr)
-    , m_labelPlaying(nullptr)
-    , m_labelEnd(nullptr)
-    , m_curPlayingLevel(BT_INVALID_ID)
+    : m_curPlayingLevel(BT_INVALID_ID)
+    , m_testUI(nullptr)
+    , m_arena(nullptr)
 {
 
 }
 
 bool BtBubbleScene::do_init()
 {
-    cocos2d::Vec2 center = cocos2d::Director::getInstance()->getVisibleOrigin() + cocos2d::Vec2(cocos2d::Director::getInstance()->getVisibleSize()) / 2;
+    m_testUI = new BtBubbleTestUI;
+    if (!m_testUI->init(m_uiRoot))
+        return false;
 
-    auto makeTest = [&](const std::string& text, const cocos2d::Vec2& position, buttonHandler_t handler) -> cocos2d::ui::Button* {
-        std::string res = tfm::format("ui_test/%s.png", text);
-        auto bt = cocos2d::ui::Button::create(res, res);
-        if (bt)
-        {
-            bt->setName(text);
-            bt->setPosition(position);
-            if (handler)
-            {
-                BtSetButtonHandler(bt, handler);
-            }
-            else
-            {
-                registerLuaHandler(bt);
-            }
-            m_uiRoot->addChild(bt, 1);
-        }
-        return bt;
-    };
+    BtSetButtonHandler(m_testUI->m_btLoot, std::bind(&BtBubbleScene::onButton_Loot, this));
+    BtSetButtonHandler(m_testUI->m_btBackToTown, std::bind(&BtBubbleScene::onButton_BackToTown, this));
+    BtSetButtonHandler(m_testUI->m_btRestart, std::bind(&BtBubbleScene::onButton_Restart, this));
+    BtSetButtonHandler(m_testUI->m_btNext, std::bind(&BtBubbleScene::onButton_Next, this));
 
-    auto createLabel = [&](const std::string& text) -> cocos2d::ui::Text*{
-        auto label = cocos2d::ui::Text::create(text, "Arial", 16);
-        label->setPosition(cocos2d::Vec2(center.x, center.y + 50));
-        m_uiRoot->addChild(label, 1);
-        return label;
-    };
+    m_arena = new BtBubbleArena;
+    if (!m_arena->init())
+        return false;
 
-    m_btLoot    = makeTest("loot", center, std::bind(&BtBubbleScene::onButton_Loot, this));
-    m_btBackToTown = makeTest("back", cocos2d::Vec2(center.x - 30.0f, center.y - 50), std::bind(&BtBubbleScene::onButton_BackToTown, this));
-    m_btRestart = makeTest("restart", cocos2d::Vec2(center.x, center.y - 50), std::bind(&BtBubbleScene::onButton_Restart, this));
-    m_btNext = makeTest("next", cocos2d::Vec2(center.x + 30.0f, center.y - 50), std::bind(&BtBubbleScene::onButton_Next, this));
-
-    m_labelPlaying  = createLabel("Playing Screen");
-    m_labelEnd      = createLabel("End Screen");
+    addChild(m_arena->getCombatLayer(), 2);
 
     return true;
 }
 
 void BtBubbleScene::do_enter()
 {
-    showEndScreen(false);
+    m_testUI->showEndScreen(false);
 
     // read 'battleConfig' below for current level
     std::string battleConfig = m_preEnterConfig;
@@ -147,7 +124,7 @@ void BtBubbleScene::onButton_Loot()
     }
     BT_POST_LUA_AND_FLUSH(BtMsgID::LevelCompleted, _json_doc_to_string(doc));
 
-    showEndScreen(true);
+    m_testUI->showEndScreen(true);
 }
 
 void BtBubbleScene::onButton_Restart()
@@ -163,16 +140,5 @@ void BtBubbleScene::onButton_Next()
 void BtBubbleScene::onButton_BackToTown()
 {
     BT_POST_LUA_AND_FLUSH(BtMsgID::GotoScene, BTSCN_town);
-}
-
-void BtBubbleScene::showEndScreen(bool show)
-{
-    m_labelPlaying->setVisible(!show);
-    m_btLoot->setVisible(!show);
-
-    m_labelEnd->setVisible(show);
-    m_btRestart->setVisible(show);
-    m_btNext->setVisible(show);
-    m_btBackToTown->setVisible(show);
 }
 

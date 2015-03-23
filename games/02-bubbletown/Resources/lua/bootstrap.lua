@@ -12,6 +12,9 @@ package.path = package.path..require "packages"
 require "tab_exp"
 require "tab_buildings"
 
+-- 快速框架
+require "def_combat"
+
 -- 主逻辑入口
 game = require "game"
 
